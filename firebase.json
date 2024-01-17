@@ -2,8 +2,8 @@
   "functions": {
       "source": "functions",
       "predeploy": [
-          "yarn workspace:build:shared",
-          "yarn workspace:build:functions"
+          "yarn workspace:shared:build",
+          "yarn workspace:functions:build"
       ],
       "ignore": [
           "firebase.json",
@@ -12,10 +12,9 @@
       ]
   },
   "hosting": {
-      "public": "frontend/build",
+      "public": "frontend/dist",
       "predeploy": [
-          "yarn workspace:build:shared",
-          "yarn workspace:build:frontend"
+          "yarn workspace:frontend:build"
       ],
       "headers": [
           {
