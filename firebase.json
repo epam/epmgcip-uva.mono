@@ -1,8 +1,7 @@
 {
   "functions": {
-      "source": "functions",
+      "source": "packages/functions",
       "predeploy": [
-          "yarn workspace:shared:build",
           "yarn workspace:functions:build"
       ],
       "ignore": [
@@ -12,34 +11,14 @@
       ]
   },
   "hosting": {
-      "public": "frontend/dist",
+      "public": "packages/frontend/dist",
       "predeploy": [
           "yarn workspace:frontend:build"
-      ],
-      "headers": [
-          {
-              "headers": [
-                  {
-                      "key": "Cache-Control",
-                      "value": "no-cache"
-                  }
-              ]
-          }
       ],
       "ignore": [
           "firebase.json",
           "**/.*",
           "**/node_modules/**"
-      ],
-      "rewrites": [
-          {
-              "source": "/api/**",
-              "function": "app"
-          },
-          {
-              "source": "!/@(api)/**",
-              "destination": "/index.html"
-          }
       ]
   },
   "emulators": {
