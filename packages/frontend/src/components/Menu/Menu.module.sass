@@ -1,0 +1,34 @@
+@use 'src/colors'
+@import 'src/typography'
+
+.menuWrapper
+    z-index: -1
+    position: absolute
+    top: 0
+    left: 0
+    opacity: 0
+    width: 100vw
+    height: 100vh
+    background-color: colors.$blue-dark
+    padding: 8px 12px 0 30px
+    box-sizing: border-box
+
+    .menuContent
+        max-width: calc(768px - 30px)
+        display: flex
+        flex-direction: column
+        margin: 0 auto
+
+    .menuCloseButton
+        width: 30px
+
+    .menuLink
+        @extend .H3
+        color: colors.$white
+        padding-bottom: 24px
+
+        &:hover
+            text-decoration: underline
+
+    .currentMenuLink
+        text-decoration: underline

@@ -1,0 +1,21 @@
+@use 'src/colors'
+
+.manageUsersWrapper
+    padding: 16px
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    justify-content: flex-end
+
+    .addUserButton
+        color: colors.$white
+        background-color: colors.$blue-light
+        height: 32px
+        padding: 4px 16px
+        border-radius: 8px
+        justify-content: center
+        align-items: center
+
+        &:hover
+            background-color: colors.$blue-lightest

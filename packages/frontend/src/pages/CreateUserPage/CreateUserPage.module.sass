@@ -1,0 +1,57 @@
+@use 'src/colors'
+@import 'src/typography'
+
+.createUserWrapper
+    padding: 24px
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+
+    .createUserTitle
+        @extend .H3
+        color: colors.$gray-dark
+        margin-bottom: 18px
+
+    .createUserForm
+        display: flex
+        flex-direction: column
+        align-items: center
+
+        .selectPlaceholder
+            @extend .T1
+            color: colors.$gray
+
+        .buttonsPanel
+            width: 100%
+            margin-top: 12px
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+
+            .createUserButton
+                @extend .H6
+                width: 147px
+                height: 48px
+                box-sizing: border-box
+                border-radius: 8px
+                justify-content: center
+                align-items: center
+
+            .backButton
+                color: colors.$violet
+                background-color: colors.$white
+                border: 1px solid colors.$violet
+
+                &:hover
+                    color: colors.$white
+                    background-color: colors.$blue-light
+                    border: none
+
+            .submitButton
+                color: colors.$white
+                background-color: colors.$blue-light
+
+                &:hover
+                    background-color: colors.$blue-lightest

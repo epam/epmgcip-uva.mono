@@ -1,0 +1,27 @@
+@use 'src/colors'
+@import 'src/typography'
+
+.headerWrapper 
+    width: 100%
+    max-width: 768px
+    height: 46px
+    background-color: colors.$white
+    display: grid
+    grid-template-columns: 55% 35% auto
+    align-items: center
+    justify-content: normal
+    padding: 6px 12px
+    margin: 0
+    box-sizing: border-box
+    border-bottom: 1px solid colors.$gray-light
+    position: fixed
+    top: 0
+    z-index: 1
+
+    .headerLogo
+        height: 30px
+
+    .userName
+        @extend .H5
+        color: colors.$violet
+        text-align: end

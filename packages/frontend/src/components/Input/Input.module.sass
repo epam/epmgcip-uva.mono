@@ -1,0 +1,26 @@
+@use 'src/colors'
+@import 'src/typography'
+
+.label
+    @extend .H6
+    display: flex
+    flex-direction: column
+
+.inputRequired
+    color: colors.$orange
+
+.input
+    @extend .T1
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+    height: 48px
+    border: 1px solid colors.$gray
+    border-radius: 8px
+    background-color: colors.$white
+    padding: 12px
+    box-sizing: border-box
+    margin-top: 8px
+    margin-bottom: 18px
+
+    &::placeholder
+        color: colors.$gray
