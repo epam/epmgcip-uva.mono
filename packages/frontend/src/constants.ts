@@ -1,4 +1,5 @@
 import { UserRole, UserStatus } from "./types";
+import translation from 'src/translations/Russian.json';
 
 export const ROOT_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
@@ -9,13 +10,13 @@ export const MANAGE_USERS_ROUTE = '/users';
 export const CREATE_USER_ROUTE = '/users/create';
 
 export const USER_ROLES = [
-    { name: 'Админ', value: UserRole.Admin },
-    { name: 'Координатор', value: UserRole.Coordinator },
+    { name: translation.admin, value: UserRole.Admin },
+    { name: translation.coordinator, value: UserRole.Coordinator },
 ]
  
 export const USER_STATUSES = [
-    { name: 'Активный', value: UserStatus.Active },
-    { name: 'Неактивный', value: UserStatus.Inactive },
+    { name: translation.active, value: UserStatus.Active },
+    { name: translation.inactive, value: UserStatus.Inactive },
 ]
 
 export const DEFAULT_NOTIFICATION = 'Default Notification Message';

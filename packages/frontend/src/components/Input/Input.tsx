@@ -1,4 +1,5 @@
 import css from './Input.module.sass';
+import translation from 'src/translations/Russian.json';
 
 interface InputProps {
   value: string;
@@ -36,7 +37,7 @@ export const Input = ({
       <input
         type='text'
         required={required}
-        placeholder={placeholder || 'Ввод'}
+        placeholder={placeholder || translation.input}
         minLength={minLength}
         maxLength={maxLength}
         className={inputClasses}

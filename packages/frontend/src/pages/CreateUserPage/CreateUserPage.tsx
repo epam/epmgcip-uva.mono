@@ -6,6 +6,7 @@ import { MANAGE_USERS_ROUTE, USER_ROLES, USER_STATUSES } from 'src/constants';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from 'src/utils';
 import { useSelector } from 'react-redux';
+import translation from 'src/translations/Russian.json';
 
 export const CreateUserPage = () => {
   const navigate = useNavigate();
@@ -43,12 +44,12 @@ export const CreateUserPage = () => {
 
   return (
     <div className={css.createUserWrapper}>
-      <div className={css.createUserTitle}>Добавить пользователя</div>
+      <div className={css.createUserTitle}>{translation.addUser}</div>
       <form className={css.createUserForm} onSubmit={handleSubmit}>
         <Input
           value={name}
           setChange={setName}
-          labelText='Имя'
+          labelText={translation.name}
           required
           minLength={2}
           maxLength={256}
@@ -56,7 +57,7 @@ export const CreateUserPage = () => {
         <Input
           value={telegramName}
           setChange={setTelegramName}
-          labelText='Имя в Telegram'
+          labelText={translation.telegramName}
           required
           minLength={5}
           maxLength={32}
@@ -65,16 +66,16 @@ export const CreateUserPage = () => {
           value={role}
           setChange={setRole}
           options={USER_ROLES}
-          labelText='Роль'
+          labelText={translation.role}
           required
-          placeholder='Выбор'
+          placeholder={translation.choice}
           selectClassName={!role ? css.selectPlaceholder : undefined}
         />
         <Select
           value={status}
           setChange={setStatus}
           options={USER_STATUSES}
-          labelText='Статус'
+          labelText={translation.status}
           required
         />
         <div className={css.buttonsPanel}>
@@ -82,7 +83,7 @@ export const CreateUserPage = () => {
             onClick={handleCreateUser}
             className={`${css.createUserButton} ${css.backButton}`}
           >
-            Назад
+            {translation.back}
           </Button>
           <Button
             onClick={() => null}
@@ -90,7 +91,7 @@ export const CreateUserPage = () => {
             id='create-user-submit'
             disabled={isCreating}
           >
-            {isCreating ? <Loader size={'12px'} /> : 'Добавить'}
+            {isCreating ? <Loader size={'12px'} /> : translation.add}
           </Button>
         </div>
       </form>
