@@ -1,0 +1,25 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.notificationWrapper
+    @extend .H6
+    z-index: -1
+    position: absolute
+    top: 20px
+    left: 50%
+    transform: translateX(-50%)
+    opacity: 0
+    min-width: 200px
+    width: 90%
+    max-width: 768px
+    min-height: 80px
+    border: 1px solid colors.$blue-dark
+    background-color: colors.$white
+    border-radius: 8px
+    padding: 12px
+    box-sizing: border-box
+    display: flex
+    justify-content: center
+    align-items: center
+    text-align: justify
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5)

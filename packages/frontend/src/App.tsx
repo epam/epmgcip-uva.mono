@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Header, Menu } from './components';
+import { Outlet } from 'react-router-dom';
+import css from './App.module.sass';
+import { useSelector } from 'react-redux';
+import { IState } from './types';
+import { useEffect } from 'react';
+import { hideElement, showElement } from './utils';
+import { Notification } from './components';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const userName = useSelector((state: IState) => state.userName);
+  const isMenu = useSelector((state: IState) => state.isMenu);
+  const menu = document.getElementById('menu');
+
+  useEffect(() => {
+    if (menu) {
+      isMenu ? showElement(menu) : hideElement(menu)
+    }
+  }, [isMenu, menu]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Header userName={userName} />
+      <div className={css.app}>
+        <Outlet />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Menu />
+      <Notification />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

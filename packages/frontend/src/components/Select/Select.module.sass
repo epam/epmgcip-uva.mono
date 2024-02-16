@@ -1,0 +1,37 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.label
+    @extend .H6
+    display: flex
+    flex-direction: column
+
+.selectRequired
+    color: colors.$orange
+
+.select
+    @extend .T1
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+    height: 48px
+    border: 1px solid colors.$gray
+    border-radius: 8px
+    background-color: colors.$white
+    padding: 12px
+    box-sizing: border-box
+    margin-top: 8px
+    margin-bottom: 18px
+    appearance: none
+    background-image: url("./assets/arrow.svg")
+    background-repeat: no-repeat
+    background-position: right 21px top 50%
+
+    &:active
+        opacity: 0.75
+
+.select select
+    display: none
+
+.placeholder
+    @extend .T1
+    color: colors.$gray
