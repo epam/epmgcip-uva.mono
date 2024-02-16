@@ -1,4 +1,4 @@
-import { IAction, IState } from '../types';
+import { IAction, IState } from 'src/types';
 import { SET_SHOW_MENU, SET_USER_NAME } from './types';
   
   
