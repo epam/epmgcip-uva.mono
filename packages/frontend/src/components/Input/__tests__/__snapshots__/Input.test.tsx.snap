@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Input > should render 1`] = `
+<div>
+  <label
+    class="_label_b6b18a"
+  >
+    <div>
+      Test Label
+    </div>
+    <input
+      class="_input_b6b18a"
+      placeholder="Ввод"
+      type="text"
+      value="Test Value"
+    />
+  </label>
+</div>
+`;

@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Select > should render 1`] = `
+<div>
+  <label
+    class="_labelClass_1e72f6"
+  >
+    <div>
+      Test Label
+    </div>
+    <select
+      class="_select_1e72f6"
+    >
+      <option
+        value="value_1"
+      >
+        Name 1
+      </option>
+      <option
+        value="value_2"
+      >
+        Name 2
+      </option>
+    </select>
+  </label>
+</div>
+`;

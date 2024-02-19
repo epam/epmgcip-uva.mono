@@ -23,7 +23,7 @@ export const Header = ({ userName }: HeaderProps) => {
       <img className={css.headerLogo} src={LogoSvg} />
       <div className={css.userName}>{userName || translation.login}</div>
       <Button onClick={handleShowMenu}>
-        <img className={css.headerLogo} src={MenuSvg} />
+        <img className={css.headerLogo} src={MenuSvg} alt='Open Menu Button' />
       </Button>
     </div>
   );

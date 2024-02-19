@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Button > should render 1`] = `
+<div>
+  <button
+    class="_button_6e8901 additionalTestClass"
+  >
+    <div>
+      Test Button
+    </div>
+  </button>
+</div>
+`;

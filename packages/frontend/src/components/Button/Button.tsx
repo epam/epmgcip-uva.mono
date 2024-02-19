@@ -15,10 +15,12 @@ export const Button = ({
   id,
   disabled,
 }: ButtonProps) => {
+  const buttonClasses = className ? `${css.button} ${className}` : css.button;
+
   return (
     <button
       onClick={onClick}
-      className={`${css.button} ${className}`}
+      className={buttonClasses}
       id={id}
       disabled={disabled}
     >
