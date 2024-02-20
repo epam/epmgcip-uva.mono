@@ -10,7 +10,7 @@ exports[`Testing: Header > should render 1`] = `
       src="/packages/frontend/src/assets/logo.svg"
     />
     <div
-      class="_userName_b11e5d"
+      class="_editorName_b11e5d"
     >
       Test User Name
     </div>
