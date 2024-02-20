@@ -26,11 +26,10 @@ export const Select = <T,>({
   labelClassName,
   selectClassName,
 }: SelectProps<T>) => {
-  const { label, select } = css;
-  const labelClasses = labelClassName ? `${label} ${labelClassName}` : label;
+  const labelClasses = labelClassName ? `${css.labelClass} ${css.labelClassName}` : css.labelClass;
   const selectClasses = selectClassName
-    ? `${select} ${selectClassName}`
-    : select;
+    ? `${css.select} ${selectClassName}`
+    : css.select;
 
   return (
     <label className={labelClasses}>

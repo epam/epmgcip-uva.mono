@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Header > should render 1`] = `
+<div>
+  <div
+    class="_headerWrapper_b11e5d"
+  >
+    <img
+      class="_headerLogo_b11e5d"
+      src="/packages/frontend/src/assets/logo.svg"
+    />
+    <div
+      class="_userName_b11e5d"
+    >
+      Test User Name
+    </div>
+    <button
+      class="_button_6e8901"
+    >
+      <img
+        alt="Open Menu Button"
+        class="_headerLogo_b11e5d"
+        src="/packages/frontend/src/assets/menu.svg"
+      />
+    </button>
+  </div>
+</div>
+`;

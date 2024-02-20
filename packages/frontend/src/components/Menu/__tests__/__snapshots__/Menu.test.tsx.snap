@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Menu > should render 1`] = `
+<div>
+  <div
+    class="_menuWrapper_5677b1"
+    id="menu"
+  >
+    <div
+      class="_menuContent_5677b1"
+    >
+      <button
+        class="_button_6e8901"
+      >
+        <img
+          class="_menuCloseButton_5677b1"
+          src="/packages/frontend/src/assets/cross.svg"
+        />
+      </button>
+      <a
+        class="_link_04e8aa _menuLink_5677b1"
+      >
+        Events
+      </a>
+      <a
+        class="_link_04e8aa _menuLink_5677b1"
+      >
+        Create Event
+      </a>
+      <a
+        class="_link_04e8aa _menuLink_5677b1"
+      >
+        Volunteers List
+      </a>
+      <a
+        class="_link_04e8aa _menuLink_5677b1"
+      >
+        Manage Stuff
+      </a>
+      <a
+        class="_link_04e8aa _menuLink_5677b1"
+      >
+        Logout
+      </a>
+    </div>
+  </div>
+</div>
+`;

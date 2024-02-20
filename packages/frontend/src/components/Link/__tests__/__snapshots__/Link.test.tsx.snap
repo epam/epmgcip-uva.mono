@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Link > should render 1`] = `
+<div>
+  <a
+    class="_link_04e8aa additionalTestClass"
+  >
+    <div>
+      Test Link
+    </div>
+  </a>
+</div>
+`;

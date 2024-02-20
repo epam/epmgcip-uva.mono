@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Notification > should render 1`] = `
+<div>
+  <div
+    class="_notificationWrapper_3741e4"
+    id="notification"
+  >
+    Default Notification Message
+  </div>
+</div>
+`;

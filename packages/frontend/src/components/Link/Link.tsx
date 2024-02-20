@@ -8,8 +8,10 @@ interface ButtonProps {
 }
 
 export const Link = ({ children, onClick, className }: ButtonProps) => {
+  const linkClass = className ? `${css.link} ${className}` : css.link;
+
   return (
-    <a className={`${css.link} ${className}`} onClick={onClick}>
+    <a className={linkClass} onClick={onClick}>
       {children}
     </a>
   );

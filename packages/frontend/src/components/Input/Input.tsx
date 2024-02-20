@@ -24,9 +24,8 @@ export const Input = ({
   labelClassName,
   inputClassName,
 }: InputProps) => {
-  const { label, input } = css;
-  const labelClasses = labelClassName ? `${label} ${labelClassName}` : label;
-  const inputClasses = inputClassName ? `${input} ${inputClassName}` : input;
+  const labelClasses = labelClassName ? `${css.label} ${labelClassName}` : css.label;
+  const inputClasses = inputClassName ? `${css.input} ${inputClassName}` : css.input;
 
   return (
     <label className={labelClasses}>

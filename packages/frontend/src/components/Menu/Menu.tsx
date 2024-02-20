@@ -12,7 +12,7 @@ import {
   MANAGE_USERS_ROUTE,
   ROOT_ROUTE,
   VOLUNTEERS_ROUTE,
-} from '../../constants';
+} from 'src/constants';
 
 const getMenuLinkClasses = (currentRoute: string, chekingRoute: string) =>
   currentRoute === chekingRoute

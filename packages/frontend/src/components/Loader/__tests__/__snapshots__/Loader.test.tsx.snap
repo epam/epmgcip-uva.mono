@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Loader > should render 1`] = `
+<div>
+  <div
+    class="_loader_ab8c53"
+  />
+</div>
+`;
