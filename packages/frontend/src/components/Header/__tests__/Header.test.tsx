@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import * as Actions from 'src/redux/actions';
 
 
-const userNameMock = 'Test User Name';
+const editorNameMock = 'Test User Name';
 const observableMock = vi.fn();
 const dispatchMock = <T,>() => vi.fn() as T;
 const getStateMock = vi.fn();
@@ -33,7 +33,7 @@ describe('Testing: Header', () => {
   it('should render', () => {
     const { container } = render(
       <Provider store={storeMock}>
-        <Header userName={userNameMock} />
+        <Header editorName={editorNameMock} />
       </Provider>
     );
 
@@ -45,7 +45,7 @@ describe('Testing: Header', () => {
 
     render(
       <Provider store={storeMock}>
-        <Header userName={userNameMock} />
+        <Header editorName={editorNameMock} />
       </Provider>
     );
 

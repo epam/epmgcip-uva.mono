@@ -8,7 +8,7 @@ import { hideElement, showElement } from './utils';
 import { Notification } from './components';
 
 function App() {
-  const userName = useSelector((state: IState) => state.userName);
+  const editorName = useSelector((state: IState) => state.editor.name);
   const isMenu = useSelector((state: IState) => state.isMenu);
   const menu = document.getElementById('menu');
 
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <>
-      <Header userName={userName} />
+      <Header editorName={editorName} />
       <div className={css.app}>
         <Outlet />
       </div>

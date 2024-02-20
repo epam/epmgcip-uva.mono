@@ -8,10 +8,10 @@ import { Dispatch } from '@reduxjs/toolkit';
 import translation from 'src/translations/Russian.json';
 
 interface HeaderProps {
-  userName: string;
+  editorName: string;
 }
 
-export const Header = ({ userName }: HeaderProps) => {
+export const Header = ({ editorName }: HeaderProps) => {
   const dispatch: Dispatch = useDispatch();
 
   const handleShowMenu = () => {
@@ -21,7 +21,7 @@ export const Header = ({ userName }: HeaderProps) => {
   return (
     <div className={css.headerWrapper}>
       <img className={css.headerLogo} src={LogoSvg} />
-      <div className={css.userName}>{userName || translation.login}</div>
+      <div className={css.editorName}>{editorName || translation.login}</div>
       <Button onClick={handleShowMenu}>
         <img className={css.headerLogo} src={MenuSvg} alt='Open Menu Button' />
       </Button>

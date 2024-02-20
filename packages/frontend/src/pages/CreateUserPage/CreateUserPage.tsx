@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Loader, Select } from 'src/components';
 import css from './CreateUserPage.module.sass';
-import { IState, UserRole, UserStatus } from 'src/types';
+import { IState, IUser, UserRole, UserStatus } from 'src/types';
 import { MANAGE_USERS_ROUTE, USER_ROLES, USER_STATUSES } from 'src/constants';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from 'src/utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import translation from 'src/translations/Russian.json';
+import { v4 as uuidv4 } from 'uuid';
+import { Dispatch } from '@reduxjs/toolkit';
+import { addUsersToList } from 'src/redux/actions';
 
 export const CreateUserPage = () => {
   const navigate = useNavigate();
-  const userName = useSelector((state: IState) => state.userName);
+  const dispatch: Dispatch = useDispatch();
+  const editorName = useSelector((state: IState) => state.editor.name);
 
   const [isCreating, setIsCreating] = useState(false);
   const [name, setName] = useState('');
@@ -25,12 +29,24 @@ export const CreateUserPage = () => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    const currentDate = new Date().toString();
+    const newUser: IUser = {
+      name,
+      telegramName,
+      role: role as UserRole,
+      status,
+      id: uuidv4(),
+      createdAt: currentDate,
+      createdBy: editorName,
+    };
+
     setIsCreating(() => true);
 
-    createUser(
-      { name, telegramName, role: role as UserRole, status },
-      userName
-    ).then(() => {
+    createUser(newUser).then((result) => {
+      if (result) {
+        dispatch(addUsersToList([newUser]));
+      }
+
       setIsCreating(() => true);
       handleCreateUser();
     });

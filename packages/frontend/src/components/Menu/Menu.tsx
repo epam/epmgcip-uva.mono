@@ -3,7 +3,7 @@ import css from './Menu.module.sass';
 import CloseSvg from 'src/assets/cross.svg';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
-import { setMenu, setUserName } from 'src/redux/actions';
+import { setMenu, setEditorName } from 'src/redux/actions';
 import { Link } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -32,7 +32,7 @@ export const Menu = () => {
     handleCloseMenu();
   };
   const handleLogout = () => {
-    dispatch(setUserName(''));
+    dispatch(setEditorName(''));
     handleChangePage(ROOT_ROUTE);
   };
 

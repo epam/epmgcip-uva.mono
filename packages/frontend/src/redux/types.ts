@@ -1,2 +1,4 @@
-export const SET_USER_NAME = 'SET_USER_NAME';
+export const SET_EDITOR_NAME = 'SET_EDITOR_NAME';
 export const SET_SHOW_MENU = 'SET_SHOW_MENU';
+export const ADD_USERS_TO_LIST = 'ADD_USERS_TO_LIST';
+export const UPDATE_USERS_LIST = 'UPDATE_USERS_LIST';

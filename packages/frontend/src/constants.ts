@@ -8,6 +8,7 @@ export const CREATE_EVENT_ROUTE = '/events/create';
 export const VOLUNTEERS_ROUTE = '/volunteers';
 export const MANAGE_USERS_ROUTE = '/users';
 export const CREATE_USER_ROUTE = '/users/create';
+export const EDIT_USER_ROUTE = '/users/edit/:telegramName';
 
 export const USER_ROLES = [
     { name: translation.admin, value: UserRole.Admin },
@@ -24,4 +25,11 @@ export const NOTIFICATIONS = (value: string) => ({
     USER_EXISTS: `Извините, пользователь c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитель с администратору`,
     USER_CREATED: `Пользователь ${value} успешно создан`,
     USER_CREATION_ERROR: `Ошибка при создании пользователя ${value}`,
+    USER_DOES_NOT_EXIST: `Извините, пользователь c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитель с администратору`,
+    USER_UPDATED: `Пользователь ${value} успешно изменен`,
+    USER_UPDATE_ERROR: `Ошибка при изменении пользователя ${value}`,
+    USER_DELETED: `Пользователь ${value} успешно удален`,
+    USER_DELETE_ERROR: `Ошибка при удалении пользователя ${value}`,
 })
+
+export const DELETE_USER_QUESTION = (value: string) => `Вы точно хотите удалить пользователя ${value}?`
