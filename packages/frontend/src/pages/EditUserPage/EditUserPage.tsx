@@ -4,6 +4,7 @@ import css from './EditUserPage.module.sass';
 import { IState, IUser, IValidationError, UserStatus } from 'src/types';
 import {
   DELETE_USER_QUESTION,
+  EMPTY_USER,
   MANAGE_USERS_ROUTE,
   USER_ROLES,
   USER_STATUSES,
@@ -22,7 +23,7 @@ export const EditUserPage = () => {
   const usersList = useSelector((state: IState) => state.usersList);
   const editableUser = usersList.find(
     (user) => user.telegramName === userTelegramName
-  ) as IUser;
+  ) || EMPTY_USER;
   const undatedUserIndex = usersList.findIndex(
     (user) => user.telegramName === userTelegramName
   );
@@ -79,6 +80,7 @@ export const EditUserPage = () => {
 
             dispatch(updateUsersList(updatedUsersList));
           }
+
           handleUpdateUser();
         }
       );
@@ -92,8 +94,8 @@ export const EditUserPage = () => {
     updatedUsersList.splice(undatedUserIndex, 1);
 
     dispatch(updateUsersList(updatedUsersList));
-    deleteUser(editableTelegramName, editableName);
     setIsSaving(() => true);
+    deleteUser(editableTelegramName, editableName);
     handleUpdateUser();
   };
 
@@ -146,6 +148,8 @@ export const EditUserPage = () => {
           handleClose={handleDelete}
           handleSubmit={handleDeleteUser}
           message={DELETE_USER_QUESTION(editableName)}
+          submitClassName={css.modalUserDeleteButton}
+          cancelClassName={css.modalCancelButton}
         />
       )}
       <form className={css.editUserForm} onSubmit={handleSubmit}>
@@ -153,7 +157,6 @@ export const EditUserPage = () => {
           value={name}
           setChange={setName}
           labelText={translation.name}
-          required
           isValidationError={isStartEditing && !!validationErrors.name}
           errorMessage={validationErrors.name}
         />
@@ -161,7 +164,6 @@ export const EditUserPage = () => {
           value={telegramName}
           setChange={setTelegramName}
           labelText={translation.telegramName}
-          required
           isValidationError={isStartEditing && !!validationErrors.telegramName}
           errorMessage={validationErrors.telegramName}
         />
@@ -170,7 +172,6 @@ export const EditUserPage = () => {
           setChange={setRole}
           options={USER_ROLES}
           labelText={translation.role}
-          required
           placeholder={translation.choice}
           selectClassName={!role ? css.selectPlaceholder : undefined}
           isValidationError={isStartEditing && !!validationErrors.role}
@@ -181,7 +182,6 @@ export const EditUserPage = () => {
           setChange={setStatus}
           options={USER_STATUSES}
           labelText={translation.status}
-          required
         />
         <div className={css.buttonsPanel}>
           <Button
@@ -193,7 +193,7 @@ export const EditUserPage = () => {
           <Button
             onClick={() => null}
             className={`${css.editUserButton} ${css.submitButton}`}
-            id='save-user-submit'
+            id='update-user-submit'
             disabled={isSaving || !isEditing}
           >
             {isSaving ? <Loader size={'12px'} /> : translation.save}

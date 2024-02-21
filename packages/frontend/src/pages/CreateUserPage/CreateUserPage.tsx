@@ -78,7 +78,6 @@ export const CreateUserPage = () => {
           value={name}
           setChange={setName}
           labelText={translation.name}
-          required
           isValidationError={isStartSubmitting && !!validationErrors.name}
           errorMessage={validationErrors.name}
         />
@@ -86,7 +85,6 @@ export const CreateUserPage = () => {
           value={telegramName}
           setChange={setTelegramName}
           labelText={translation.telegramName}
-          required
           isValidationError={
             isStartSubmitting && !!validationErrors.telegramName
           }
@@ -97,7 +95,6 @@ export const CreateUserPage = () => {
           setChange={setRole}
           options={USER_ROLES}
           labelText={translation.role}
-          required
           placeholder={translation.choice}
           selectClassName={!role ? css.selectPlaceholder : undefined}
           isValidationError={isStartSubmitting && !!validationErrors.role}
@@ -108,7 +105,6 @@ export const CreateUserPage = () => {
           setChange={setStatus}
           options={USER_STATUSES}
           labelText={translation.status}
-          required
         />
         <div className={css.buttonsPanel}>
           <Button

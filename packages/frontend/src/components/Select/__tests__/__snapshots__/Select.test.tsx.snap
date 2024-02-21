@@ -3,7 +3,7 @@
 exports[`Testing: Select > should render 1`] = `
 <div>
   <label
-    class="_labelClass_1e72f6"
+    class="_label_1e72f6"
   >
     <div>
       Test Label

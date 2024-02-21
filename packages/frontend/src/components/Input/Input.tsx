@@ -4,7 +4,7 @@ import translation from 'src/translations/Russian.json';
 interface InputProps {
   value: string;
   setChange: React.Dispatch<React.SetStateAction<string>>;
-  labelText: string;
+  labelText?: string;
   minLength?: number;
   maxLength?: number;
   required?: boolean;

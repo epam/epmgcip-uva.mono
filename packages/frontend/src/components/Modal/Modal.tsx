@@ -2,13 +2,15 @@ import css from './Modal.module.sass';
 import { Button } from '../Button/Button';
 import { Loader } from '../Loader/Loader';
 
-interface LoaderProps {
+interface ModalProps {
   cancelButtonMessage: string;
   submitButtonMessage: string;
   isLoading: boolean;
   handleClose: () => void;
   handleSubmit: () => void;
   message: string;
+  submitClassName: string;
+  cancelClassName: string;
 }
 
 export const Modal = ({
@@ -18,21 +20,27 @@ export const Modal = ({
   handleClose,
   handleSubmit,
   message,
-}: LoaderProps) => {
+  submitClassName,
+  cancelClassName,
+}: ModalProps) => {
+  const submitClassNames = submitClassName
+    ? `${css.deleteUserButton} ${submitClassName}`
+    : css.deleteUserButton;
+  const cancelClassNames = cancelClassName
+    ? `${css.deleteUserButton} ${cancelClassName}`
+    : css.deleteUserButton;
+
   return (
     <div className={css.modalWrapper}>
       <div className={css.modalContainer}>
         <div className={css.modalMessage}>{message}</div>
         <div className={css.buttonsPanel}>
-          <Button
-            onClick={handleClose}
-            className={`${css.deleteUserButton} ${css.backButton}`}
-          >
+          <Button onClick={handleClose} className={cancelClassNames}>
             {cancelButtonMessage}
           </Button>
           <Button
             onClick={handleSubmit}
-            className={`${css.deleteUserButton} ${css.submitButton}`}
+            className={submitClassNames}
             disabled={isLoading}
           >
             {isLoading ? <Loader size={'12px'} /> : submitButtonMessage}

@@ -1,4 +1,10 @@
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { showNotification } from './showNotification';
@@ -19,7 +25,15 @@ export const editUser = async (
   }
 
   try {
-    await updateDoc(doc(usersRef, telegramName), { ...updatedFields });
+    if (updatedFields.telegramName) {
+      await setDoc(doc(usersRef, updatedFields.telegramName), {
+        ...user,
+        ...updatedFields,
+      });
+      deleteDoc(doc(usersRef, telegramName));
+    } else {
+      await updateDoc(doc(usersRef, telegramName), { ...updatedFields });
+    }
 
     showNotification(NOTIFICATIONS(name).USER_UPDATED, 3000);
 
