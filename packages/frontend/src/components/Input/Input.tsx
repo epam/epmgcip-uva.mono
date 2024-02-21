@@ -4,7 +4,7 @@ import translation from 'src/translations/Russian.json';
 interface InputProps {
   value: string;
   setChange: React.Dispatch<React.SetStateAction<string>>;
-  labelText: string;
+  labelText?: string;
   minLength?: number;
   maxLength?: number;
   required?: boolean;
@@ -24,15 +24,21 @@ export const Input = ({
   labelClassName,
   inputClassName,
 }: InputProps) => {
-  const labelClasses = labelClassName ? `${css.label} ${labelClassName}` : css.label;
-  const inputClasses = inputClassName ? `${css.input} ${inputClassName}` : css.input;
+  const labelClasses = labelClassName
+    ? `${css.label} ${labelClassName}`
+    : css.label;
+  const inputClasses = inputClassName
+    ? `${css.input} ${inputClassName}`
+    : css.input;
 
   return (
     <label className={labelClasses}>
-      <div>
-        {labelText}
-        {required && <span className={css.inputRequired}> *</span>}
-      </div>
+      {labelText && (
+        <div>
+          {labelText}
+          {required && <span className={css.inputRequired}> *</span>}
+        </div>
+      )}
       <input
         type='text'
         required={required}

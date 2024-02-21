@@ -1,4 +1,5 @@
 @use 'src/style/colors'
+@import 'src/style/typography'
 
 .manageUsersWrapper
     padding: 16px
@@ -6,16 +7,42 @@
     height: calc(100vh - 46px)
     box-sizing: border-box
     display: flex
-    justify-content: flex-end
+    flex-direction: column
+    align-items: center
 
-    .addUserButton
-        color: colors.$white
-        background-color: colors.$blue-light
-        height: 32px
-        padding: 4px 16px
-        border-radius: 8px
-        justify-content: center
+    .manageUsersTitleWrapper
+        width: 100%
+        display: flex
+        flex-direction: row
+        justify-content: space-between
         align-items: center
+        margin-bottom: 6px
 
-        &:hover
-            background-color: colors.$blue-lightest
+        .manageUsersTitle
+            @extend .H3
+
+        .addUserButton
+            color: colors.$white
+            background-color: colors.$blue-light
+            min-height: 32px
+            padding: 4px 16px
+            border-radius: 8px
+            justify-content: center
+            align-items: center
+            align-self: flex-end
+
+            &:hover
+                background-color: colors.$blue-lightest   
+
+.manageUsersLoader
+    margin-top: 50%
+
+.manageUsersSearchLabel
+    width: 100%
+
+.manageUsersSearchInput
+    width: 100%
+    padding: 12px 12px 12px 40px
+    background-image: url('src/assets/loupe.svg')
+    background-position: 10px 10px
+    background-repeat: no-repeat

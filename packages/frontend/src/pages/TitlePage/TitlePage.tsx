@@ -2,13 +2,13 @@ import css from './TitlePage.module.sass';
 import UVC from 'src/assets/uvc-logo.png';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
-import { setUserName } from 'src/redux/actions';
+import { setEditorName } from 'src/redux/actions';
 
 export const TitlePage = () => {
   const dispatch: Dispatch = useDispatch();
 
   const handleSetUserName = () => {
-    dispatch(setUserName('Monroe Panela'));
+    dispatch(setEditorName('Monroe Panela'));
   };
 
   return (

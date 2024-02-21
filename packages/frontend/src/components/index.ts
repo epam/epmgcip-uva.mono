@@ -6,3 +6,5 @@ export { Input } from './Input/Input';
 export { Select } from './Select/Select';
 export { Loader } from './Loader/Loader';
 export { Notification } from './Notification/Notification';
+export { Dot } from './Dot/Dot';
+export { Modal } from './Modal/Modal';

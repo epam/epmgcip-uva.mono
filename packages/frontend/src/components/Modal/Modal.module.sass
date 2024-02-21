@@ -1,0 +1,64 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.modalWrapper
+    width: 100vw
+    height: 100vh
+    z-index: 100
+    background-color: #30324059
+    transition: all .3s ease-out
+    box-sizing: border-box
+    position: absolute
+    top: 0
+    left: 0
+
+    .modalContainer
+        z-index: 200
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        background-color: colors.$white
+        width: 80%
+        padding: 24px
+        border-radius: 8px
+        display: flex
+        flex-direction: column
+        gap: 18px
+
+        .modalMessage
+            @extend .T1
+            text-align: center
+
+        .buttonsPanel
+            width: 100%
+            margin-top: 12px
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+
+            .deleteUserButton
+                @extend .H6
+                width: 120px
+                height: 42px
+                box-sizing: border-box
+                border-radius: 8px
+                justify-content: center
+                align-items: center
+
+            .backButton
+                color: colors.$violet
+                background-color: colors.$white
+                border: 1px solid colors.$violet
+
+                &:hover
+                    color: colors.$white
+                    background-color: colors.$blue-light
+                    border: none
+
+            .submitButton
+                color: colors.$white
+                background-color: colors.$blue-light
+
+                &:hover
+                    background-color: colors.$blue-lightest

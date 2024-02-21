@@ -5,10 +5,11 @@ import {
 } from 'react-router-dom';
 
 import App from '../App';
-import { ManageUsersPage, TitlePage, CreateUserPage } from '../pages';
+import { ManageUsersPage, TitlePage, CreateUserPage, EditUserPage } from '../pages';
 import {
   CREATE_EVENT_ROUTE,
   CREATE_USER_ROUTE,
+  EDIT_USER_ROUTE,
   EVENTS_ROUTE,
   LOGIN_ROUTE,
   MANAGE_USERS_ROUTE,
@@ -25,6 +26,7 @@ const routes = (
     <Route path={VOLUNTEERS_ROUTE} element={<div>create event</div>} />
     <Route path={MANAGE_USERS_ROUTE} element={<ManageUsersPage />} />
     <Route path={CREATE_USER_ROUTE} element={<CreateUserPage />} />
+    <Route path={EDIT_USER_ROUTE} element={<EditUserPage />} />
   </Route>
 );
 
