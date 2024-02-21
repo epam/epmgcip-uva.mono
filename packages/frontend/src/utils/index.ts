@@ -6,3 +6,4 @@ export { getUser } from './getUser';
 export { getAllUsers } from './getAllUsers';
 export { editUser } from './editUser';
 export { deleteUser } from './deleteUser';
+export { validateValues } from './validateValues';

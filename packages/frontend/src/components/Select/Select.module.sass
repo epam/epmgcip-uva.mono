@@ -5,6 +5,7 @@
     @extend .H6
     display: flex
     flex-direction: column
+    margin-bottom: 18px
 
 .selectRequired
     color: colors.$orange
@@ -20,7 +21,6 @@
     padding: 12px
     box-sizing: border-box
     margin-top: 8px
-    margin-bottom: 18px
     appearance: none
     background-image: url("./assets/arrow.svg")
     background-repeat: no-repeat
@@ -35,3 +35,10 @@
 .placeholder
     @extend .T1
     color: colors.$gray
+
+.validationError
+    @extend .T3
+    align-self: flex-start
+    color: colors.$orange
+    margin-top: 2px
+    margin-bottom: 0

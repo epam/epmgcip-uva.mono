@@ -4,13 +4,15 @@ import translation from 'src/translations/Russian.json';
 interface InputProps {
   value: string;
   setChange: React.Dispatch<React.SetStateAction<string>>;
-  labelText?: string;
+  labelText: string;
   minLength?: number;
   maxLength?: number;
   required?: boolean;
   placeholder?: string;
   labelClassName?: string;
   inputClassName?: string;
+  isValidationError?: boolean;
+  errorMessage?: string;
 }
 
 export const Input = ({
@@ -23,6 +25,8 @@ export const Input = ({
   placeholder,
   labelClassName,
   inputClassName,
+  isValidationError,
+  errorMessage,
 }: InputProps) => {
   const labelClasses = labelClassName
     ? `${css.label} ${labelClassName}`
@@ -49,6 +53,11 @@ export const Input = ({
         value={value}
         onChange={(e) => setChange(e.target.value)}
       />
+      {isValidationError && (
+        <p className={css.validationError}>
+          {isValidationError && errorMessage}
+        </p>
+      )}
     </label>
   );
 };
