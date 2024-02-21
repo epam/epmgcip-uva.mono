@@ -1,10 +1,10 @@
 export interface IUser {
   id: string;
   name: string;
-  // telegramId: string;
   telegramName: string;
   role: UserRole;
   status: UserStatus;
+  telegramId?: string;
   createdAt?: string;
   createdBy?: string;
   updatedAt?: string;

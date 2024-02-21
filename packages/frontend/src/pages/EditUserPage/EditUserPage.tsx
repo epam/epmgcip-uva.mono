@@ -117,7 +117,7 @@ export const EditUserPage = () => {
     <div className={css.editUserWrapper}>
       <div className={css.editUserTitle}>{translation.editUser}</div>
       <Button className={css.deleteUserButton} onClick={handleDelete}>
-        Удалить
+        {translation.delete}
       </Button>
       {isDelete && (
         <Modal
@@ -135,7 +135,7 @@ export const EditUserPage = () => {
           setChange={setName}
           labelText={translation.name}
           required
-          minLength={2}
+          minLength={1}
           maxLength={256}
         />
         <Input

@@ -67,7 +67,7 @@ export const CreateUserPage = () => {
           setChange={setName}
           labelText={translation.name}
           required
-          minLength={2}
+          minLength={1}
           maxLength={256}
         />
         <Input
