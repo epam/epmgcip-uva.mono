@@ -36,3 +36,6 @@ export enum UserStatus {
   Inactive = 'inactive',
 }
 
+export interface IValidationError {
+  [key: string]: string;
+}

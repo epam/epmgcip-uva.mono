@@ -33,3 +33,11 @@ export const NOTIFICATIONS = (value: string) => ({
 })
 
 export const DELETE_USER_QUESTION = (value: string) => `Вы точно хотите удалить пользователя ${value}?`
+
+export const EMPTY_USER = {
+    id: '00000000-0000-0000-0000-000000000000',
+    name: '',
+    telegramName: '',
+    role: UserRole.Coordinator,
+    status: UserStatus.Inactive
+  }

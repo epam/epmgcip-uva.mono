@@ -14,6 +14,8 @@ interface SelectProps<T> {
   placeholder?: string;
   labelClassName?: string;
   selectClassName?: string;
+  isValidationError?: boolean;
+  errorMessage?: string;
 }
 
 export const Select = <T,>({
@@ -25,8 +27,12 @@ export const Select = <T,>({
   placeholder,
   labelClassName,
   selectClassName,
+  isValidationError,
+  errorMessage,
 }: SelectProps<T>) => {
-  const labelClasses = labelClassName ? `${css.labelClass} ${css.labelClassName}` : css.labelClass;
+  const labelClasses = labelClassName
+    ? `${css.label} ${css.labelClassName}`
+    : css.label;
   const selectClasses = selectClassName
     ? `${css.select} ${selectClassName}`
     : css.select;
@@ -43,15 +49,22 @@ export const Select = <T,>({
         className={selectClasses}
         required={required}
       >
-        {placeholder && <option disabled={true} value=''>
-          {placeholder}
-        </option>}
+        {placeholder && (
+          <option disabled={true} value=''>
+            {placeholder}
+          </option>
+        )}
         {options.map(({ name, value }) => (
           <option key={value} value={value}>
             {name}
           </option>
         ))}
       </select>
+      {isValidationError && (
+        <p className={css.validationError}>
+          {isValidationError && errorMessage}
+        </p>
+      )}
     </label>
   );
 };

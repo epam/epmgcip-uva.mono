@@ -15,7 +15,7 @@
         margin-bottom: 4px
 
     .deleteUserButton
-        color: colors.$blue-light
+        color: colors.$orange
         align-self: center
         margin-bottom: 14px
 
@@ -34,6 +34,7 @@
             display: flex
             flex-direction: row
             justify-content: space-between
+            gap: 18px
 
             .editUserButton
                 @extend .H6
@@ -65,3 +66,20 @@
                 &[disabled]
                     cursor: auto 
                     background-color: colors.$gray-light
+
+.modalCancelButton
+    color: colors.$violet
+    background-color: colors.$white
+    border: 1px solid colors.$violet
+
+    &:hover
+        color: colors.$white
+        background-color: colors.$blue-light
+        border: none
+
+.modalUserDeleteButton
+    background-color: colors.$orange
+    color: colors.$white
+
+    &:hover
+        background-color: colors.$blue-lightest

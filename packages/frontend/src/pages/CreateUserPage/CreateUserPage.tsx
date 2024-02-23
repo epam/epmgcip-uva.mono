@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Loader, Select } from 'src/components';
 import css from './CreateUserPage.module.sass';
-import { IState, IUser, UserRole, UserStatus } from 'src/types';
+import { IState, IUser, IValidationError, UserRole, UserStatus } from 'src/types';
 import { MANAGE_USERS_ROUTE, USER_ROLES, USER_STATUSES } from 'src/constants';
 import { useNavigate } from 'react-router-dom';
-import { createUser } from 'src/utils';
+import { createUser, validateValues } from 'src/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import translation from 'src/translations/Russian.json';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,6 +21,8 @@ export const CreateUserPage = () => {
   const [telegramName, setTelegramName] = useState<string>('');
   const [role, setRole] = useState('');
   const [status, setStatus] = useState<UserStatus>(UserStatus.Active);
+  const [validationErrors, setValidationErrors] = useState<IValidationError>({});
+  const [isStartSubmitting, setIsStartSubmitting] = useState(false);
 
   const handleCreateUser = () => {
     navigate(MANAGE_USERS_ROUTE);
@@ -28,35 +30,45 @@ export const CreateUserPage = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsStartSubmitting(() => true);
 
-    const currentDate = new Date().toString();
-    const newUser: IUser = {
-      name,
-      telegramName,
-      role: role as UserRole,
-      status,
-      id: uuidv4(),
-      createdAt: currentDate,
-      createdBy: editorName,
-    };
-
-    setIsCreating(() => true);
-
-    createUser(newUser).then((result) => {
-      if (result) {
-        dispatch(addUsersToList([newUser]));
-      }
+    if (Object.keys(validationErrors).length === 0) {
+      const currentDate = new Date().toString();
+      const newUser: IUser = {
+        name,
+        telegramName,
+        role: role as UserRole,
+        status,
+        id: uuidv4(),
+        createdAt: currentDate,
+        createdBy: editorName,
+      };
 
       setIsCreating(() => true);
-      handleCreateUser();
-    });
+
+      createUser(newUser).then((result) => {
+        if (result) {
+          dispatch(addUsersToList([newUser]));
+        }
+        handleCreateUser();
+      });
+    }
   };
 
   useEffect(() => {
     if (telegramName.length > 0 && !telegramName.startsWith('@')) {
       setTelegramName((previousValue) => `@${previousValue}`);
     }
-  }, [telegramName]);
+
+    setValidationErrors(
+      validateValues({
+        name,
+        telegramName,
+        role,
+        status,
+      })
+    );
+  }, [name, role, status, telegramName]);
 
   return (
     <div className={css.createUserWrapper}>
@@ -66,33 +78,33 @@ export const CreateUserPage = () => {
           value={name}
           setChange={setName}
           labelText={translation.name}
-          required
-          minLength={1}
-          maxLength={256}
+          isValidationError={isStartSubmitting && !!validationErrors.name}
+          errorMessage={validationErrors.name}
         />
         <Input
           value={telegramName}
           setChange={setTelegramName}
           labelText={translation.telegramName}
-          required
-          minLength={5}
-          maxLength={32}
+          isValidationError={
+            isStartSubmitting && !!validationErrors.telegramName
+          }
+          errorMessage={validationErrors.telegramName}
         />
         <Select
           value={role}
           setChange={setRole}
           options={USER_ROLES}
           labelText={translation.role}
-          required
           placeholder={translation.choice}
           selectClassName={!role ? css.selectPlaceholder : undefined}
+          isValidationError={isStartSubmitting && !!validationErrors.role}
+          errorMessage={validationErrors.role}
         />
         <Select
           value={status}
           setChange={setStatus}
           options={USER_STATUSES}
           labelText={translation.status}
-          required
         />
         <div className={css.buttonsPanel}>
           <Button

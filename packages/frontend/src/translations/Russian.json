@@ -9,7 +9,7 @@
     "status": "Статус",
     "back": "Назад",
     "add": "Добавить",
-    "admin": "Админ",
+    "admin": "Администратор",
     "coordinator": "Координатор",
     "active": "Активный",
     "inactive": "Неактивный",
@@ -26,5 +26,13 @@
     "userDeleted": "Пользователь {{value}} успешно удален",
     "userDeleteError": "Ошибка при удалении пользователя {{value}}",
     "delete": "Удалить",
-    "deleteUserQuestion": "Вы точно хотите удалить пользователя {{value}}?"
+    "deleteUserQuestion": "Вы точно хотите удалить пользователя {{value}}?",
+    "emptyUsersList": "Пользователей нет, добавьте",
+    "enterName": "Введите имя пользователя",
+    "nameTooLong": "Слишком длинное имя пользователя",
+    "enterTelegramName": "Введите имя пользователя в Telegram",
+    "telegramNameTooShort": "Слишком короткое имя пользователя в Telegram",
+    "telegramNameTooLong": "Слишком длинное имя пользователя в Telegram",
+    "telegramNameIncorrect": "Имя пользователя в Telegram начинается с @ и может включать A-Z, a-z, 0–9 и нижнее подчеркивание",
+    "chooseRole": "Выберите роль пользователя"
 }

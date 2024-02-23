@@ -11,6 +11,8 @@ interface InputProps {
   placeholder?: string;
   labelClassName?: string;
   inputClassName?: string;
+  isValidationError?: boolean;
+  errorMessage?: string;
 }
 
 export const Input = ({
@@ -23,6 +25,8 @@ export const Input = ({
   placeholder,
   labelClassName,
   inputClassName,
+  isValidationError,
+  errorMessage,
 }: InputProps) => {
   const labelClasses = labelClassName
     ? `${css.label} ${labelClassName}`
@@ -49,6 +53,11 @@ export const Input = ({
         value={value}
         onChange={(e) => setChange(e.target.value)}
       />
+      {isValidationError && (
+        <p className={css.validationError}>
+          {isValidationError && errorMessage}
+        </p>
+      )}
     </label>
   );
 };

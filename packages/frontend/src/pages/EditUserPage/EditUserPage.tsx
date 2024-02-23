@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Loader, Modal, Select } from 'src/components';
 import css from './EditUserPage.module.sass';
-import { IState, IUser, UserStatus } from 'src/types';
-import { DELETE_USER_QUESTION, MANAGE_USERS_ROUTE, USER_ROLES, USER_STATUSES } from 'src/constants';
+import { IState, IUser, IValidationError, UserStatus } from 'src/types';
+import {
+  DELETE_USER_QUESTION,
+  EMPTY_USER,
+  MANAGE_USERS_ROUTE,
+  USER_ROLES,
+  USER_STATUSES,
+} from 'src/constants';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteUser, editUser } from 'src/utils';
+import { deleteUser, editUser, validateValues } from 'src/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import translation from 'src/translations/Russian.json';
 import { Dispatch } from '@reduxjs/toolkit';
@@ -17,7 +23,7 @@ export const EditUserPage = () => {
   const usersList = useSelector((state: IState) => state.usersList);
   const editableUser = usersList.find(
     (user) => user.telegramName === userTelegramName
-  ) as IUser;
+  ) || EMPTY_USER;
   const undatedUserIndex = usersList.findIndex(
     (user) => user.telegramName === userTelegramName
   );
@@ -39,6 +45,10 @@ export const EditUserPage = () => {
   const [role, setRole] = useState(editableRole);
   const [status, setStatus] = useState<UserStatus>(editableStatus);
   const [isDelete, setIsDelete] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<IValidationError>(
+    {}
+  );
+  const [isStartEditing, setIsStartEditing] = useState(false);
 
   const handleUpdateUser = () => {
     navigate(MANAGE_USERS_ROUTE);
@@ -46,44 +56,46 @@ export const EditUserPage = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsStartEditing(() => true);
 
-    const currentDate = new Date().toString();
-    const updatedFields: Partial<IUser> = {
-      ...(name !== editableName && { name }),
-      ...(telegramName !== editableTelegramName && { telegramName }),
-      ...(role !== editableRole && { role }),
-      ...(status !== editableStatus && { status }),
-      updatedAt: currentDate,
-      updatedBy: editorName,
-    };
+    if (Object.keys(validationErrors).length === 0) {
+      const currentDate = new Date().toString();
+      const updatedFields: Partial<IUser> = {
+        ...(name !== editableName && { name }),
+        ...(telegramName !== editableTelegramName && { telegramName }),
+        ...(role !== editableRole && { role }),
+        ...(status !== editableStatus && { status }),
+        updatedAt: currentDate,
+        updatedBy: editorName,
+      };
 
-    setIsSaving(() => true);
+      setIsSaving(() => true);
 
-    editUser(editableTelegramName, editableName, updatedFields).then(
-      (result) => {
-        if (result) {
-          const updatedUser: IUser = { ...editableUser, ...updatedFields };
-          const updatedUsersList: IUser[] = [...usersList];
-          updatedUsersList[undatedUserIndex] = { ...updatedUser };
+      editUser(editableTelegramName, editableName, updatedFields).then(
+        (result) => {
+          if (result) {
+            const updatedUser: IUser = { ...editableUser, ...updatedFields };
+            const updatedUsersList: IUser[] = [...usersList];
+            updatedUsersList[undatedUserIndex] = { ...updatedUser };
 
-          dispatch(updateUsersList(updatedUsersList));
+            dispatch(updateUsersList(updatedUsersList));
+          }
+
+          handleUpdateUser();
         }
-        setIsSaving(() => true);
-        handleUpdateUser();
-      }
-    );
+      );
+    }
   };
 
-  const handleDelete = () =>
-    setIsDelete((previousValue) => !previousValue);
+  const handleDelete = () => setIsDelete((previousValue) => !previousValue);
 
   const handleDeleteUser = () => {
     const updatedUsersList: IUser[] = [...usersList];
     updatedUsersList.splice(undatedUserIndex, 1);
 
     dispatch(updateUsersList(updatedUsersList));
-    deleteUser(editableTelegramName, editableName);
     setIsSaving(() => true);
+    deleteUser(editableTelegramName, editableName);
     handleUpdateUser();
   };
 
@@ -102,6 +114,15 @@ export const EditUserPage = () => {
     } else {
       setIsEditing(() => false);
     }
+
+    setValidationErrors(
+      validateValues({
+        name,
+        telegramName,
+        role,
+        status,
+      })
+    );
   }, [
     editableName,
     editableRole,
@@ -127,6 +148,8 @@ export const EditUserPage = () => {
           handleClose={handleDelete}
           handleSubmit={handleDeleteUser}
           message={DELETE_USER_QUESTION(editableName)}
+          submitClassName={css.modalUserDeleteButton}
+          cancelClassName={css.modalCancelButton}
         />
       )}
       <form className={css.editUserForm} onSubmit={handleSubmit}>
@@ -134,33 +157,31 @@ export const EditUserPage = () => {
           value={name}
           setChange={setName}
           labelText={translation.name}
-          required
-          minLength={1}
-          maxLength={256}
+          isValidationError={isStartEditing && !!validationErrors.name}
+          errorMessage={validationErrors.name}
         />
         <Input
           value={telegramName}
           setChange={setTelegramName}
           labelText={translation.telegramName}
-          required
-          minLength={5}
-          maxLength={32}
+          isValidationError={isStartEditing && !!validationErrors.telegramName}
+          errorMessage={validationErrors.telegramName}
         />
         <Select
           value={role}
           setChange={setRole}
           options={USER_ROLES}
           labelText={translation.role}
-          required
           placeholder={translation.choice}
           selectClassName={!role ? css.selectPlaceholder : undefined}
+          isValidationError={isStartEditing && !!validationErrors.role}
+          errorMessage={validationErrors.role}
         />
         <Select
           value={status}
           setChange={setStatus}
           options={USER_STATUSES}
           labelText={translation.status}
-          required
         />
         <div className={css.buttonsPanel}>
           <Button
@@ -172,7 +193,7 @@ export const EditUserPage = () => {
           <Button
             onClick={() => null}
             className={`${css.editUserButton} ${css.submitButton}`}
-            id='save-user-submit'
+            id='update-user-submit'
             disabled={isSaving || !isEditing}
           >
             {isSaving ? <Loader size={'12px'} /> : translation.save}
