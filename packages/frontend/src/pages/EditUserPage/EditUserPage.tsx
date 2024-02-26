@@ -71,7 +71,7 @@ export const EditUserPage = () => {
 
       setIsSaving(() => true);
 
-      editUser(editableTelegramName, editableName, updatedFields).then(
+      editUser(editableTelegramName, updatedFields).then(
         (result) => {
           if (result) {
             const updatedUser: IUser = { ...editableUser, ...updatedFields };
@@ -95,7 +95,7 @@ export const EditUserPage = () => {
 
     dispatch(updateUsersList(updatedUsersList));
     setIsSaving(() => true);
-    deleteUser(editableTelegramName, editableName);
+    deleteUser(editableTelegramName);
     handleUpdateUser();
   };
 

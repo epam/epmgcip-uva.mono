@@ -7,3 +7,5 @@ export { getAllUsers } from './getAllUsers';
 export { editUser } from './editUser';
 export { deleteUser } from './deleteUser';
 export { validateValues } from './validateValues';
+export { getSearch } from './getSearch';
+export { getClassesList } from './getClassesList';

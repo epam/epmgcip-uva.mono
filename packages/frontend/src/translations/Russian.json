@@ -34,5 +34,6 @@
     "telegramNameTooShort": "Слишком короткое имя пользователя в Telegram",
     "telegramNameTooLong": "Слишком длинное имя пользователя в Telegram",
     "telegramNameIncorrect": "Имя пользователя в Telegram начинается с @ и может включать A-Z, a-z, 0–9 и нижнее подчеркивание",
-    "chooseRole": "Выберите роль пользователя"
+    "chooseRole": "Выберите роль пользователя",
+    "usersNotFound": "Пользователи с таким именем не найдены"
 }

@@ -1,3 +1,4 @@
+import { getClassesList } from 'src/utils';
 import css from './Select.module.sass';
 
 interface IOption {
@@ -30,12 +31,12 @@ export const Select = <T,>({
   isValidationError,
   errorMessage,
 }: SelectProps<T>) => {
-  const labelClasses = labelClassName
-    ? `${css.label} ${css.labelClassName}`
-    : css.label;
-  const selectClasses = selectClassName
-    ? `${css.select} ${selectClassName}`
-    : css.select;
+  const labelClasses = getClassesList(css.label, labelClassName);
+  const selectClasses = getClassesList(
+    css.select,
+    selectClassName,
+    isValidationError ? css.selectError : undefined
+  );
 
   return (
     <label className={labelClasses}>
@@ -47,7 +48,6 @@ export const Select = <T,>({
         value={value}
         onChange={(e) => setChange(e.target.value as T)}
         className={selectClasses}
-        required={required}
       >
         {placeholder && (
           <option disabled={true} value=''>
