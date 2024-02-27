@@ -1,3 +1,4 @@
+import { getClassesList } from 'src/utils';
 import css from './Input.module.sass';
 import translation from 'src/translations/Russian.json';
 
@@ -28,12 +29,13 @@ export const Input = ({
   isValidationError,
   errorMessage,
 }: InputProps) => {
-  const labelClasses = labelClassName
-    ? `${css.label} ${labelClassName}`
-    : css.label;
-  const inputClasses = inputClassName
-    ? `${css.input} ${inputClassName}`
-    : css.input;
+  const labelClasses = getClassesList(css.label, labelClassName);
+
+  const inputClasses = getClassesList(
+    css.input,
+    inputClassName,
+    isValidationError ? css.inputError : undefined
+  );
 
   return (
     <label className={labelClasses}>
@@ -45,7 +47,6 @@ export const Input = ({
       )}
       <input
         type='text'
-        required={required}
         placeholder={placeholder || translation.input}
         minLength={minLength}
         maxLength={maxLength}

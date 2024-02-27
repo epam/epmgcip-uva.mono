@@ -2,7 +2,7 @@ import css from './ManageUsersPage.module.sass';
 import { Button, Input, Loader } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import { CREATE_USER_ROUTE } from 'src/constants';
-import { getAllUsers } from 'src/utils';
+import { getAllUsers, getSearch } from 'src/utils';
 import { IState } from 'src/types';
 import { useEffect, useState } from 'react';
 import translation from 'src/translations/Russian.json';
@@ -49,7 +49,7 @@ export const ManageUsersPage = () => {
       {isLoading ? (
         <Loader className={css.manageUsersLoader} />
       ) : (
-        <UsersBlock users={currentUsersList} />
+        <UsersBlock users={getSearch(currentUsersList, searchInput)} isSearch={!!searchInput} />
       )}
     </div>
   );

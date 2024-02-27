@@ -10,18 +10,18 @@ export const createUser = async (newUser: IUser): Promise<boolean> => {
   const usersRef = collection(firebaseDb, 'users');
 
   if (user) {
-    showNotification(NOTIFICATIONS(newUser.name).USER_EXISTS, 6000);
+    showNotification(NOTIFICATIONS(newUser.telegramName).USER_EXISTS, 6000);
     return false;
   }
 
   try {
     await setDoc(doc(usersRef, newUser.telegramName), newUser);
 
-    showNotification(NOTIFICATIONS(newUser.name).USER_CREATED, 3000);
+    showNotification(NOTIFICATIONS(newUser.telegramName).USER_CREATED, 3000);
 
     return true;
   } catch {
-    showNotification(NOTIFICATIONS(newUser.name).USER_CREATION_ERROR, 3000);
+    showNotification(NOTIFICATIONS(newUser.telegramName).USER_CREATION_ERROR, 3000);
 
     return false;
   }
