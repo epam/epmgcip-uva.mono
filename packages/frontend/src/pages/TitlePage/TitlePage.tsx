@@ -3,7 +3,7 @@ import css from './TitlePage.module.sass';
 import UVC from 'src/assets/uvc-logo.png';
 import { EVENTS_ROUTE, NOTIFICATIONS } from 'src/constants';
 import { Button } from 'src/components';
-import { IUser } from 'src/types';
+import { IUser, UserStatus } from 'src/types';
 import { useDispatch } from 'react-redux';
 import { TelegramLoginButton } from 'src/components';
 import { setEditor } from 'src/redux/actions';
@@ -48,6 +48,18 @@ export const TitlePage = () => {
           className={css.setUserButton}
         >
           Координатор
+        </Button>
+        <Button
+          onClick={() => handleSetUser({ ...ADMIN_MOCK, status: UserStatus.Inactive })}
+          className={css.setUserButton}
+        >
+          Админ неактив
+        </Button>
+        <Button
+          onClick={() => handleSetUser({ ...COORDINATOR_MOCK, status: UserStatus.Inactive })}
+          className={css.setUserButton}
+        >
+          Координатор неактив
         </Button>
       </div>
     </>
