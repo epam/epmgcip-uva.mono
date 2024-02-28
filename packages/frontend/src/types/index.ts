@@ -12,9 +12,7 @@ export interface IUser {
 }
 
 export interface IState {
-  editor: {
-    name: string;
-  };
+  editor: IUser;
   isMenu: boolean;
   usersList: IUser[];
   loading: boolean;

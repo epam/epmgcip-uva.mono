@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Header } from '../Header';
 import { Provider } from 'react-redux';
 import * as Actions from 'src/redux/actions';
+import { EVENTS_ROUTE } from 'src/constants';
 
 
 const editorNameMock = 'Test User Name';
@@ -42,6 +43,8 @@ describe('Testing: Header', () => {
 
   it('should call dispatch after click', () => {
     const spyOnSetMenu = vi.spyOn(Actions, 'setMenu')
+    
+    window.location = { pathname: EVENTS_ROUTE } as Location;
 
     render(
       <Provider store={storeMock}>

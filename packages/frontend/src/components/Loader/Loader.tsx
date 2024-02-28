@@ -1,3 +1,4 @@
+import { getClassesList } from 'src/utils';
 import css from './Loader.module.sass';
 
 interface LoaderProps {
@@ -6,7 +7,7 @@ interface LoaderProps {
 }
 
 export const Loader = ({ size, className }: LoaderProps) => {
-  const loadersClasses =  className ? `${css.loader} ${className}` : css.loader;
+  const loadersClasses = getClassesList(css.loader, className);
 
   return <div className={loadersClasses} style={{ width: size, height: size }}></div>;
 };

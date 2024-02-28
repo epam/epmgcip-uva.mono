@@ -11,7 +11,7 @@ export const Notification = () => {
   };
 
   return (
-    <div id='notification' className={css.notificationWrapper} onClick={handleHideNotification}>
+    <div id='notification' data-testid = 'notification-test-id' className={css.notificationWrapper} onClick={handleHideNotification}>
       {DEFAULT_NOTIFICATION}
     </div>
   );

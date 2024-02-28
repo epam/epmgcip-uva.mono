@@ -1,3 +1,4 @@
+import { getClassesList } from 'src/utils';
 import css from './Button.module.sass';
 
 interface ButtonProps {
@@ -15,7 +16,7 @@ export const Button = ({
   id,
   disabled,
 }: ButtonProps) => {
-  const buttonClasses = className ? `${css.button} ${className}` : css.button;
+  const buttonClasses = getClassesList(css.button, className);
 
   return (
     <button

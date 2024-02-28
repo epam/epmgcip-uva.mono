@@ -9,3 +9,4 @@ export { deleteUser } from './deleteUser';
 export { validateValues } from './validateValues';
 export { getSearch } from './getSearch';
 export { getClassesList } from './getClassesList';
+export { checkUserAuthorization } from './checkUserAuthorization';

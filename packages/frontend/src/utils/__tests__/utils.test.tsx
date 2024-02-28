@@ -4,6 +4,11 @@ import { getSearch } from '../getSearch';
 import { IUser, UserRole, UserStatus } from 'src/types';
 import { validateValues } from '../validateValues';
 import translation from 'src/translations/Russian.json';
+import { checkUserAuthorization } from '../checkUserAuthorization';
+import { render, screen } from '@testing-library/react';
+import { Notification } from 'src/components';
+import { showElement } from '../showElement';
+import { hideElement } from '../hideElement';
 
 const mainClassMock = 'main-class-test';
 const usersMock = [
@@ -75,12 +80,12 @@ describe('Testing: utils', () => {
   );
 
   it.each`
-    inputValues                                                    | expected
-    ${{}}                                                          | ${validationErrorMock}
-    ${{ name: filledFieldsMock.name }}                             | ${{ role: translation.chooseRole, telegramName: translation.enterTelegramName }}
-    ${{ telegramName: filledFieldsMock.telegramName }}             | ${{ role: translation.chooseRole, name: translation.enterName }}
-    ${{ role: filledFieldsMock.role }}                             | ${{ telegramName: translation.enterTelegramName, name: translation.enterName }}
-    ${{ ...filledFieldsMock, name: veryLongNameMock }}             | ${{ name: translation.nameTooLong }}
+    inputValues                                        | expected
+    ${{}}                                              | ${validationErrorMock}
+    ${{ name: filledFieldsMock.name }}                 | ${{ role: translation.chooseRole, telegramName: translation.enterTelegramName }}
+    ${{ telegramName: filledFieldsMock.telegramName }} | ${{ role: translation.chooseRole, name: translation.enterName }}
+    ${{ role: filledFieldsMock.role }}                 | ${{ telegramName: translation.enterTelegramName, name: translation.enterName }}
+    ${{ ...filledFieldsMock, name: veryLongNameMock }} | ${{ name: translation.nameTooLong }}
   `(
     'validateValues should return correct result for inputValues: $inputValues',
     ({ inputValues, expected }) => {
@@ -91,7 +96,7 @@ describe('Testing: utils', () => {
   );
 
   it.each`
-    inputValues                                                    | expected
+    inputValues                               | expected
     ${{ telegramName: '@test' }}              | ${{ telegramName: translation.telegramNameTooShort }}
     ${{ telegramName: veryLongTelegramName }} | ${{ telegramName: translation.telegramNameTooLong }}
     ${{ telegramName: 'test_test' }}          | ${{ telegramName: translation.telegramNameIncorrect }}
@@ -109,9 +114,52 @@ describe('Testing: utils', () => {
   `(
     'validateValues (telegramName) should return correct result for inputValues: $inputValues',
     ({ inputValues, expected }) => {
-      const received = validateValues({ ...filledFieldsMock, ...inputValues});
+      const received = validateValues({ ...filledFieldsMock, ...inputValues });
 
       expect(received).toStrictEqual(expected);
     }
   );
+
+  it.each`
+    user                                                | expected
+    ${undefined}                                        | ${false}
+    ${{} as IUser}                                      | ${false}
+    ${{ ...usersMock[0], status: UserStatus.Inactive }} | ${false}
+    ${{ ...usersMock[1] }}                              | ${false}
+    ${usersMock[0]}                                     | ${usersMock[0].role}
+    ${{ ...usersMock[1], status: UserStatus.Active }}   | ${usersMock[1].role}
+  `(
+    'checkUserAuthorization should return $expected when user: $user',
+    ({ user, expected }) => {
+      const received = checkUserAuthorization(user);
+
+      expect(received).toStrictEqual(expected);
+    }
+  );
+
+  it('showElement should show element', () => {
+    render(<Notification />);
+
+    const notificationElement = screen.getByTestId('notification-test-id');
+
+    showElement(notificationElement, 'Test Message');
+
+    const style = window.getComputedStyle(notificationElement);
+
+    expect(style.opacity).toBe('1');
+    expect(style.zIndex).toBe('100');
+  });
+
+  it('hideElement should hide element', () => {
+    render(<Notification />);
+
+    const notificationElement = screen.getByTestId('notification-test-id');
+
+    hideElement(notificationElement);
+
+    const style = window.getComputedStyle(notificationElement);
+
+    expect(style.opacity).toBe('');
+    expect(style.zIndex).toBe('');
+  });
 });

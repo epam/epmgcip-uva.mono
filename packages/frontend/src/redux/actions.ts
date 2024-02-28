@@ -1,9 +1,9 @@
 import { IUser } from 'src/types';
-import { ADD_USERS_TO_LIST, SET_SHOW_MENU, SET_EDITOR_NAME, UPDATE_USERS_LIST } from './types';
+import { ADD_USERS_TO_LIST, SET_SHOW_MENU, SET_EDITOR, UPDATE_USERS_LIST } from './types';
 
-export const setEditorName = (name: string) => ({
-  type: SET_EDITOR_NAME,
-  payload: name,
+export const setEditor = (editor: IUser) => ({
+  type: SET_EDITOR,
+  payload: editor,
 });
 
 export const setMenu = (menuState: boolean) => ({
