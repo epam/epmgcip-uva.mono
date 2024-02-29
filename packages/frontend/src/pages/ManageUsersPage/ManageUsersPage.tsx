@@ -2,7 +2,6 @@ import css from './ManageUsersPage.module.sass';
 import { Button, Input, Loader } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import { CREATE_USER_ROUTE, EVENTS_ROUTE, ROOT_ROUTE } from 'src/constants';
-import { checkUserAuthorization, getAllUsers, getSearch } from 'src/utils';
 import { IState, UserRole } from 'src/types';
 import { useEffect, useState } from 'react';
 import translation from 'src/translations/Russian.json';
@@ -10,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UsersBlock } from './components/UsersBlock/UsersBlock';
 import { Dispatch } from '@reduxjs/toolkit';
 import { addUsersToList } from 'src/redux/actions';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
+import { getAllUsers } from 'src/utils/getAllUsers';
+import { getSearch } from 'src/utils/getSearch';
 
 export const ManageUsersPage = () => {
   const dispatch: Dispatch = useDispatch();

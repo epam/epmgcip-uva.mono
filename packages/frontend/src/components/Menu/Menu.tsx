@@ -15,9 +15,10 @@ import {
   VOLUNTEERS_ROUTE,
 } from 'src/constants';
 import { IState, IUser, UserRole } from 'src/types';
-import { checkUserAuthorization, getClassesList } from 'src/utils';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import translation from 'src/translations/Russian.json';
 import { useState } from 'react';
+import { getClassesList } from 'src/utils/getClassesList';
 
 const getMenuLinkClasses = (condition: boolean) =>
   getClassesList(css.menuLink, condition ? css.currentMenuLink : undefined);

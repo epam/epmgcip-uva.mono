@@ -1,4 +1,4 @@
-import { getClassesList } from 'src/utils';
+import { getClassesList } from 'src/utils/getClassesList';
 import css from './Select.module.sass';
 
 interface IOption {

@@ -3,12 +3,14 @@ import css from './TitlePage.module.sass';
 import UVC from 'src/assets/uvc-logo.png';
 import { EVENTS_ROUTE, NOTIFICATIONS } from 'src/constants';
 import { Button } from 'src/components';
-import { IUser, UserStatus } from 'src/types';
+import { IUser } from 'src/types';
 import { useDispatch } from 'react-redux';
 import { TelegramLoginButton } from 'src/components';
 import { setEditor } from 'src/redux/actions';
 import { ADMIN_MOCK, COORDINATOR_MOCK } from 'src/mocks';
-import { checkUserAuthorization, getUser, showNotification } from 'src/utils';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
+import { showNotification } from 'src/utils/showNotification';
+import { getUser } from 'src/utils/getUser';
 
 export const TitlePage = () => {
   const navigate = useNavigate();
@@ -50,13 +52,17 @@ export const TitlePage = () => {
           Координатор
         </Button>
         <Button
-          onClick={() => handleSetUser({ ...ADMIN_MOCK, status: UserStatus.Inactive })}
+          onClick={() =>
+            handleSetUser(ADMIN_MOCK.telegramName)
+          }
           className={css.setUserButton}
         >
           Админ неактив
         </Button>
         <Button
-          onClick={() => handleSetUser({ ...COORDINATOR_MOCK, status: UserStatus.Inactive })}
+          onClick={() =>
+            handleSetUser(COORDINATOR_MOCK.telegramName)
+          }
           className={css.setUserButton}
         >
           Координатор неактив

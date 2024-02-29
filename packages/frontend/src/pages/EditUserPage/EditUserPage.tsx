@@ -12,11 +12,14 @@ import {
   USER_STATUSES,
 } from 'src/constants';
 import { useNavigate, useParams } from 'react-router-dom';
-import { checkUserAuthorization, deleteUser, editUser, validateValues } from 'src/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import translation from 'src/translations/Russian.json';
 import { Dispatch } from '@reduxjs/toolkit';
 import { updateUsersList } from 'src/redux/actions';
+import { editUser } from 'src/utils/editUser';
+import { deleteUser } from 'src/utils/deleteUser';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
+import { validateValues } from 'src/utils/validateValues';
 
 export const EditUserPage = () => {
   const navigate = useNavigate();

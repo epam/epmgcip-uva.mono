@@ -1,7 +1,7 @@
 import css from './Modal.module.sass';
 import { Button } from '../Button/Button';
 import { Loader } from '../Loader/Loader';
-import { getClassesList } from 'src/utils';
+import { getClassesList } from 'src/utils/getClassesList';
 
 interface ModalProps {
   cancelButtonMessage: string;

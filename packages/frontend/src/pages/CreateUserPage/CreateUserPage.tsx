@@ -16,12 +16,14 @@ import {
   USER_STATUSES,
 } from 'src/constants';
 import { useNavigate } from 'react-router-dom';
-import { checkUserAuthorization, createUser, validateValues } from 'src/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import translation from 'src/translations/Russian.json';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch } from '@reduxjs/toolkit';
 import { addUsersToList } from 'src/redux/actions';
+import { createUser } from 'src/utils/createUser';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
+import { validateValues } from 'src/utils/validateValues';
 
 export const CreateUserPage = () => {
   const navigate = useNavigate();

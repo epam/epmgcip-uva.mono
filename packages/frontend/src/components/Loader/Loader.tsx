@@ -1,4 +1,4 @@
-import { getClassesList } from 'src/utils';
+import { getClassesList } from 'src/utils/getClassesList';
 import css from './Loader.module.sass';
 
 interface LoaderProps {

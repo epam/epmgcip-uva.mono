@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ROOT_ROUTE } from 'src/constants';
-import { checkUserAuthorization } from 'src/utils';
+import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { IState } from 'src/types';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
