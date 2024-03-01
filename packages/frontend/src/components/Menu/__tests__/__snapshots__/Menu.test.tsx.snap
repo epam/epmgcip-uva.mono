@@ -20,27 +20,22 @@ exports[`Testing: Menu > should render 1`] = `
       <a
         class="_link_04e8aa _menuLink_5677b1"
       >
-        Events
+        События
       </a>
       <a
         class="_link_04e8aa _menuLink_5677b1"
       >
-        Create Event
+        Создать событие
       </a>
       <a
         class="_link_04e8aa _menuLink_5677b1"
       >
-        Volunteers List
+        Список волонтеров
       </a>
       <a
         class="_link_04e8aa _menuLink_5677b1"
       >
-        Manage Stuff
-      </a>
-      <a
-        class="_link_04e8aa _menuLink_5677b1"
-      >
-        Logout
+        Выйти
       </a>
     </div>
   </div>

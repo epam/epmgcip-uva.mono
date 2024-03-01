@@ -2,14 +2,12 @@ import { IAction, IState, IUser } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
   SET_SHOW_MENU,
-  SET_EDITOR_NAME,
+  SET_EDITOR,
   UPDATE_USERS_LIST,
 } from './types';
 
 const initialState: IState = {
-  editor: {
-    name: '',
-  },
+  editor: {} as IUser,
   usersList: [] as IUser[],
   isMenu: false,
   loading: false,
@@ -18,10 +16,10 @@ const initialState: IState = {
 
 const rootReducer = (state = initialState, action: IAction) => {
   switch (action.type) {
-    case SET_EDITOR_NAME:
+    case SET_EDITOR:
       return {
         ...state,
-        editor: { ...state.editor, name: action.payload },
+        editor: action.payload,
         error: null,
         loading: false,
       };

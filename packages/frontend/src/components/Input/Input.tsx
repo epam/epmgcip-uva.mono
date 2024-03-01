@@ -1,4 +1,4 @@
-import { getClassesList } from 'src/utils';
+import { getClassesList } from 'src/utils/getClassesList';
 import css from './Input.module.sass';
 import translation from 'src/translations/Russian.json';
 

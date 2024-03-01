@@ -1,6 +1,7 @@
 import css from './Modal.module.sass';
 import { Button } from '../Button/Button';
 import { Loader } from '../Loader/Loader';
+import { getClassesList } from 'src/utils/getClassesList';
 
 interface ModalProps {
   cancelButtonMessage: string;
@@ -9,8 +10,8 @@ interface ModalProps {
   handleClose: () => void;
   handleSubmit: () => void;
   message: string;
-  submitClassName: string;
-  cancelClassName: string;
+  submitClassName?: string;
+  cancelClassName?: string;
 }
 
 export const Modal = ({
@@ -23,12 +24,8 @@ export const Modal = ({
   submitClassName,
   cancelClassName,
 }: ModalProps) => {
-  const submitClassNames = submitClassName
-    ? `${css.deleteUserButton} ${submitClassName}`
-    : css.deleteUserButton;
-  const cancelClassNames = cancelClassName
-    ? `${css.deleteUserButton} ${cancelClassName}`
-    : css.deleteUserButton;
+  const submitClassNames = getClassesList(css.deleteUserButton, submitClassName);
+  const cancelClassNames = getClassesList(css.deleteUserButton, cancelClassName);
 
   return (
     <div className={css.modalWrapper}>

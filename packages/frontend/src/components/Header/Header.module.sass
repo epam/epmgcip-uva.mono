@@ -21,7 +21,13 @@
     .headerLogo
         height: 30px
 
-    .userName
+    .editorName
         @extend .H5
         color: colors.$violet
         text-align: end
+
+    .headerMenuButton
+        &:disabled,
+        &[disabled]
+            cursor: not-allowed
+            background-color: colors.$white

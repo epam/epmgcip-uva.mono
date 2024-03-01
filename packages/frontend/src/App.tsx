@@ -1,11 +1,11 @@
-import { Header, Menu } from './components';
+import { Header, Menu, Notification } from './components';
 import { Outlet } from 'react-router-dom';
 import css from './App.module.sass';
 import { useSelector } from 'react-redux';
 import { IState } from './types';
 import { useEffect } from 'react';
-import { hideElement, showElement } from './utils';
-import { Notification } from './components';
+import { showElement } from './utils/showElement';
+import { hideElement } from './utils/hideElement';
 
 function App() {
   const editorName = useSelector((state: IState) => state.editor.name);
@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     if (menu) {
-      isMenu ? showElement(menu) : hideElement(menu)
+      isMenu ? showElement(menu) : hideElement(menu);
     }
   }, [isMenu, menu]);
 

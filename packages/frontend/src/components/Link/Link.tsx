@@ -1,3 +1,4 @@
+import { getClassesList } from 'src/utils/getClassesList';
 import css from './Link.module.sass'
 
 
@@ -8,7 +9,7 @@ interface ButtonProps {
 }
 
 export const Link = ({ children, onClick, className }: ButtonProps) => {
-  const linkClass = className ? `${css.link} ${className}` : css.link;
+  const linkClass = getClassesList(css.link, className);
 
   return (
     <a className={linkClass} onClick={onClick}>

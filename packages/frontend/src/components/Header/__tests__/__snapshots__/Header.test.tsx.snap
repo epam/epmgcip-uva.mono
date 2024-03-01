@@ -15,7 +15,8 @@ exports[`Testing: Header > should render 1`] = `
       Test User Name
     </div>
     <button
-      class="_button_6e8901"
+      class="_button_6e8901 _headerMenuButton_b11e5d"
+      disabled=""
     >
       <img
         alt="Open Menu Button"
