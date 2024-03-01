@@ -8,3 +8,4 @@ export { Loader } from './Loader/Loader';
 export { Notification } from './Notification/Notification';
 export { Dot } from './Dot/Dot';
 export { Modal } from './Modal/Modal';
+export * from './TelegramLoginButton/TelegramLoginButton';
