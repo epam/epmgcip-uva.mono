@@ -41,7 +41,7 @@ export const TitlePage = () => {
       <div className={css.telegramWidget}>
         <TelegramLoginButton
           botName="SerozhsTestBot"
-          dataOnauth={(user) => handleSetUser(user.username)}
+          dataOnauth={(user) => handleSetUser(`@${user.username}`)}
           usePic={true}
         />
         <Button
