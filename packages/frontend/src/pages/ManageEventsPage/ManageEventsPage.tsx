@@ -1,19 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { ROOT_ROUTE } from 'src/constants';
-import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { IState } from 'src/types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 export const ManageEventsPage = () => {
   const navigate = useNavigate();
   const editor = useSelector((state: IState) => state.editor);
+  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
 
   useEffect(() => {
-    if (!checkUserAuthorization(editor)) {
-      navigate(ROOT_ROUTE);
-    }
+    editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
   }, [editor, navigate]);
 
-  return checkUserAuthorization(editor) && <div>Events Page</div>;
+  return isEditorHasPermissions && <div>Events Page</div>;
 };

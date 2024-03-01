@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Loader, Modal, Select } from 'src/components';
 import css from './EditUserPage.module.sass';
-import { IState, IUser, IValidationError, UserRole, UserStatus } from 'src/types';
+import {
+  IState,
+  IUser,
+  IValidationError,
+  UserRole,
+  UserStatus,
+} from 'src/types';
 import {
   DELETE_USER_QUESTION,
   EMPTY_USER,
@@ -18,7 +24,6 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { updateUsersList } from 'src/redux/actions';
 import { editUser } from 'src/utils/editUser';
 import { deleteUser } from 'src/utils/deleteUser';
-import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { validateValues } from 'src/utils/validateValues';
 
 export const EditUserPage = () => {
@@ -55,6 +60,7 @@ export const EditUserPage = () => {
     {}
   );
   const [isStartEditing, setIsStartEditing] = useState(false);
+  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
 
   const handleUpdateUser = () => {
     navigate(MANAGE_USERS_ROUTE);
@@ -104,11 +110,9 @@ export const EditUserPage = () => {
   };
 
   useEffect(() => {
-    if (!checkUserAuthorization(editor)) {
-      navigate(ROOT_ROUTE);
-    }
+    editor.role ? setIsEditorHasPermissions(true) : navigate(ROOT_ROUTE);
 
-    if (checkUserAuthorization(editor) === UserRole.Coordinator) {
+    if (editor.role === UserRole.Coordinator) {
       navigate(EVENTS_ROUTE);
     }
 
@@ -149,7 +153,8 @@ export const EditUserPage = () => {
   ]);
 
   return (
-    checkUserAuthorization(editor) === UserRole.Admin && (
+    isEditorHasPermissions &&
+    editor.role === UserRole.Admin && (
       <div className={css.editUserWrapper}>
         <div className={css.editUserTitle}>{translation.editUser}</div>
         <Button className={css.deleteUserButton} onClick={switchDeleteModal}>

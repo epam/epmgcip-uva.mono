@@ -22,7 +22,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Dispatch } from '@reduxjs/toolkit';
 import { addUsersToList } from 'src/redux/actions';
 import { createUser } from 'src/utils/createUser';
-import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { validateValues } from 'src/utils/validateValues';
 
 export const CreateUserPage = () => {
@@ -36,8 +35,11 @@ export const CreateUserPage = () => {
   const [telegramName, setTelegramName] = useState<string>('');
   const [role, setRole] = useState('');
   const [status, setStatus] = useState<UserStatus>(UserStatus.Active);
-  const [validationErrors, setValidationErrors] = useState<IValidationError>({});
+  const [validationErrors, setValidationErrors] = useState<IValidationError>(
+    {}
+  );
   const [isStartSubmitting, setIsStartSubmitting] = useState(false);
+  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
 
   const handleCreateUser = () => {
     navigate(MANAGE_USERS_ROUTE);
@@ -71,11 +73,9 @@ export const CreateUserPage = () => {
   };
 
   useEffect(() => {
-    if (!checkUserAuthorization(editor)) {
-      navigate(ROOT_ROUTE);
-    }
+    editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
 
-    if (checkUserAuthorization(editor) === UserRole.Coordinator) {
+    if (editor.role === UserRole.Coordinator) {
       navigate(EVENTS_ROUTE);
     }
 
@@ -94,7 +94,8 @@ export const CreateUserPage = () => {
   }, [editor, name, navigate, role, status, telegramName]);
 
   return (
-    checkUserAuthorization(editor) === UserRole.Admin && (
+    isEditorHasPermissions &&
+    editor.role === UserRole.Admin && (
       <div className={css.createUserWrapper}>
         <div className={css.createUserTitle}>{translation.addUser}</div>
         <form className={css.createUserForm} onSubmit={handleSubmit}>

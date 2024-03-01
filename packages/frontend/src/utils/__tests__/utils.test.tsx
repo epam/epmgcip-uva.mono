@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getClassesList } from '../getClassesList';
 import { getSearch } from '../getSearch';
 import { IUser, UserRole, UserStatus } from 'src/types';
@@ -9,6 +9,7 @@ import { render, screen } from '@testing-library/react';
 import { Notification } from 'src/components';
 import { showElement } from '../showElement';
 import { hideElement } from '../hideElement';
+import { getUser } from '../getUser';
 
 const mainClassMock = 'main-class-test';
 const usersMock = [
@@ -40,6 +41,15 @@ const validationErrorMock = {
 const veryLongNameMock =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam iaculis, odio ac sollicitudin maximus, tellus arcu malesuada lacus, fringilla pretium urna lorem velit. In non bibendum felis. Donec felis libero, ullamcorper non finibus ut, malesuada ut dolor.';
 const veryLongTelegramName = '@Loremipsumdolorsitametconsectetu';
+
+vi.mock('src/utils/getUser.ts', async () => {
+  const actual = await vi.importActual('src/utils/getUser.ts');
+
+  return {
+    ...actual,
+    getUser: () => vi.fn().mockReturnValue(true),
+  };
+});
 
 describe('Testing: utils', () => {
   it.each`
@@ -130,7 +140,11 @@ describe('Testing: utils', () => {
     ${{ ...usersMock[1], status: UserStatus.Active }}   | ${usersMock[1].role}
   `(
     'checkUserAuthorization should return $expected when user: $user',
-    ({ user, expected }) => {
+    async ({ user, expected }) => {
+      // vi.spyOn('src/utils/getUser.ts', 'getUser').mockReturnValue(true);
+      console.log(getUser);
+      // vi.spyOn('getUser', 'getUser').mockReturnValue(true);
+
       const received = checkUserAuthorization(user);
 
       expect(received).toStrictEqual(expected);

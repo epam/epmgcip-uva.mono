@@ -15,7 +15,6 @@ import {
   VOLUNTEERS_ROUTE,
 } from 'src/constants';
 import { IState, IUser, UserRole } from 'src/types';
-import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import translation from 'src/translations/Russian.json';
 import { useState } from 'react';
 import { getClassesList } from 'src/utils/getClassesList';
@@ -69,7 +68,7 @@ export const Menu = () => {
         >
           {translation.volunteersList}
         </Link>
-        {checkUserAuthorization(editor) === UserRole.Admin && (
+        {editor.role === UserRole.Admin && (
           <Link
             onClick={() => handleChangePage(MANAGE_USERS_ROUTE)}
             className={getMenuLinkClasses(currentRoute === MANAGE_USERS_ROUTE)}

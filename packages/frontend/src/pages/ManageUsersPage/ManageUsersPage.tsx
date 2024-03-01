@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UsersBlock } from './components/UsersBlock/UsersBlock';
 import { Dispatch } from '@reduxjs/toolkit';
 import { addUsersToList } from 'src/redux/actions';
-import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { getAllUsers } from 'src/utils/getAllUsers';
 import { getSearch } from 'src/utils/getSearch';
 
@@ -17,16 +16,15 @@ export const ManageUsersPage = () => {
   const dispatch: Dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUsersList = useSelector((state: IState) => state.usersList);
+  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const editor = useSelector((state: IState) => state.editor);
   const [isLoading, setIsLoading] = useState(currentUsersList.length === 0);
   const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
-    if (!checkUserAuthorization(editor)) {
-      navigate(ROOT_ROUTE);
-    }
+    editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
 
-    if (checkUserAuthorization(editor) === UserRole.Coordinator) {
+    if (editor.role === UserRole.Coordinator) {
       navigate(EVENTS_ROUTE);
     }
 
@@ -43,7 +41,8 @@ export const ManageUsersPage = () => {
   };
 
   return (
-    checkUserAuthorization(editor) === UserRole.Admin && (
+    isEditorHasPermissions &&
+    editor.role === UserRole.Admin && (
       <div className={css.manageUsersWrapper}>
         <div className={css.manageUsersTitleWrapper}>
           <div className={css.manageUsersTitle}>{translation.users}</div>

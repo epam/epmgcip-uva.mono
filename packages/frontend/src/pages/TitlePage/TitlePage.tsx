@@ -7,7 +7,12 @@ import { IUser } from 'src/types';
 import { useDispatch } from 'react-redux';
 import { TelegramLoginButton } from 'src/components';
 import { setEditor } from 'src/redux/actions';
-import { ADMIN_MOCK, COORDINATOR_MOCK } from 'src/mocks';
+import {
+  ADMIN_ACTIVE_MOCK,
+  ADMIN_INACTIVE_MOCK,
+  COORDINATOR_ACTIVE_MOCK,
+  COORDINATOR_INACTIVE_MOCK,
+} from 'src/mocks';
 import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { showNotification } from 'src/utils/showNotification';
 import { getUser } from 'src/utils/getUser';
@@ -40,20 +45,20 @@ export const TitlePage = () => {
           usePic={true}
         />
         <Button
-          onClick={() => handleSetUser(ADMIN_MOCK.telegramName)}
+          onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}
           className={css.setUserButton}
         >
           Админ
         </Button>
         <Button
-          onClick={() => handleSetUser(COORDINATOR_MOCK.telegramName)}
+          onClick={() => handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)}
           className={css.setUserButton}
         >
           Координатор
         </Button>
         <Button
           onClick={() =>
-            handleSetUser(ADMIN_MOCK.telegramName)
+            handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)
           }
           className={css.setUserButton}
         >
@@ -61,7 +66,7 @@ export const TitlePage = () => {
         </Button>
         <Button
           onClick={() =>
-            handleSetUser(COORDINATOR_MOCK.telegramName)
+            handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
           }
           className={css.setUserButton}
         >
