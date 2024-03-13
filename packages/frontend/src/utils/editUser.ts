@@ -25,6 +25,13 @@ export const editUser = async (
 
   try {
     if (updatedFields.telegramName) {
+      const dublicate = await getUser(updatedFields.telegramName);
+
+      if (dublicate) {
+        showNotification(NOTIFICATIONS(updatedFields.telegramName).USER_EXISTS, 6000);
+        return false;
+      }
+
       await setDoc(doc(usersRef, updatedFields.telegramName), {
         ...user,
         ...updatedFields,
