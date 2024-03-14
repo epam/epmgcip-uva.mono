@@ -177,6 +177,7 @@ export const EditUserPage = () => {
             value={name}
             setChange={setName}
             labelText={translation.name}
+            required
             isValidationError={isStartEditing && !!validationErrors.name}
             errorMessage={validationErrors.name}
           />
@@ -184,6 +185,7 @@ export const EditUserPage = () => {
             value={telegramName}
             setChange={setTelegramName}
             labelText={translation.telegramName}
+            required
             isValidationError={
               isStartEditing && !!validationErrors.telegramName
             }
@@ -194,6 +196,7 @@ export const EditUserPage = () => {
             setChange={setRole}
             options={USER_ROLES}
             labelText={translation.role}
+            required
             placeholder={translation.choice}
             selectClassName={!role ? css.selectPlaceholder : undefined}
             isValidationError={isStartEditing && !!validationErrors.role}
@@ -204,6 +207,7 @@ export const EditUserPage = () => {
             setChange={setStatus}
             options={USER_STATUSES}
             labelText={translation.status}
+            required
           />
           <div className={css.buttonsPanel}>
             <Button

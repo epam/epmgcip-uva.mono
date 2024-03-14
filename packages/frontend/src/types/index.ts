@@ -4,7 +4,7 @@ export interface IUser {
   telegramName: string;
   role: UserRole;
   status: UserStatus;
-  telegramId?: string;
+  telegramId?: number;
   createdAt?: string;
   createdBy?: string;
   updatedAt?: string;
@@ -36,4 +36,9 @@ export enum UserStatus {
 
 export interface IValidationError {
   [key: string]: string;
+}
+
+export enum ScrollDirection {
+  Up = 'up',
+  Down = 'down',
 }

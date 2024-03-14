@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import css from './TitlePage.module.sass';
 import UVC from 'src/assets/uvc-logo.png';
 import { EVENTS_ROUTE, NOTIFICATIONS } from 'src/constants';
-import { Button } from 'src/components';
+import { Button, Loader } from 'src/components';
 import { IUser } from 'src/types';
 import { useDispatch } from 'react-redux';
 import { TelegramLoginButton } from 'src/components';
@@ -16,21 +16,30 @@ import {
 import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { showNotification } from 'src/utils/showNotification';
 import { getUser } from 'src/utils/getUser';
+import { useState } from 'react';
+import { editUser } from 'src/utils/editUser';
 
 export const TitlePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSetUser = (telegramName: string) => {
+  const handleSetUser = (telegramName: string, telegramId?: number) => {
+    setIsLoading(() => true);
     getUser(telegramName).then((user: IUser | undefined) => {
-      if (checkUserAuthorization(user)) {
-        dispatch(setEditor(user as IUser));
-        navigate(EVENTS_ROUTE)
+      if (user && checkUserAuthorization(user)) {
+        if (telegramId && user && !user.telegramId) {
+          user.telegramId = telegramId;
+          editUser(telegramName, { telegramId });
+        }
+
+        dispatch(setEditor(user));
+        navigate(EVENTS_ROUTE);
       } else {
-        showNotification(NOTIFICATIONS().USER_DOES_NOT_HAVE_ACCESS, 6000)
+        setIsLoading(() => false);
+        showNotification(NOTIFICATIONS().USER_DOES_NOT_HAVE_ACCESS, 6000);
       }
-  
-    })
+    });
   };
 
   return (
@@ -39,39 +48,45 @@ export const TitlePage = () => {
         <img className={css.titleLogo} src={UVC} />
       </div>
       <div className={css.telegramWidget}>
-        <TelegramLoginButton
-          botName="SerozhsTestBot"
-          dataOnauth={(user) => handleSetUser(`@${user.username}`)}
-          usePic={true}
-        />
-        <Button
-          onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}
-          className={css.setUserButton}
-        >
-          Админ
-        </Button>
-        <Button
-          onClick={() => handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)}
-          className={css.setUserButton}
-        >
-          Координатор
-        </Button>
-        <Button
-          onClick={() =>
-            handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)
-          }
-          className={css.setUserButton}
-        >
-          Админ неактив
-        </Button>
-        <Button
-          onClick={() =>
-            handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
-          }
-          className={css.setUserButton}
-        >
-          Координатор неактив
-        </Button>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <TelegramLoginButton
+              botName='SerozhsTestBot'
+              dataOnauth={(user) => handleSetUser(`@${user.username}`, user.id)}
+              usePic={true}
+            />
+            <Button
+              onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}
+              className={css.setUserButton}
+            >
+              Админ
+            </Button>
+            <Button
+              onClick={() =>
+                handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)
+              }
+              className={css.setUserButton}
+            >
+              Координатор
+            </Button>
+            <Button
+              onClick={() => handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)}
+              className={css.setUserButton}
+            >
+              Админ неактив
+            </Button>
+            <Button
+              onClick={() =>
+                handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
+              }
+              className={css.setUserButton}
+            >
+              Координатор неактив
+            </Button>
+          </>
+        )}
       </div>
     </>
   );

@@ -7,6 +7,9 @@ import translation from 'src/translations/Russian.json';
 
 interface UserCardProps extends IUser {}
 
+const maxNameLength = 38;
+const maxTelegramNameLength = 18;
+
 export const UserCard = ({
   name,
   telegramName,
@@ -14,6 +17,8 @@ export const UserCard = ({
   status,
 }: UserCardProps) => {
   const navigate = useNavigate();
+  const isLongName = name.split(' ').some((namePart) => namePart.length > maxNameLength);
+  const isLongTelegramName = telegramName.length > maxTelegramNameLength;
 
   const handleEditUser = () => {
     navigate(`/users/edit/${telegramName}`);
@@ -22,9 +27,15 @@ export const UserCard = ({
   return (
     <div className={css.userCardWrapper}>
       <div className={css.userContainer}>
-        <div className={css.userName}>{name}</div>
+        <div className={css.userName}>
+          {isLongName ? `${name.slice(0, maxNameLength)}...` : name}
+        </div>
         <div className={css.userInfo}>
-          <div>{telegramName}</div>
+          <div>
+            {isLongTelegramName
+              ? `${telegramName.slice(0, maxTelegramNameLength)}...`
+              : telegramName}
+          </div>
           <Dot />
           <div>{translation[role]}</div>
           <Dot />
