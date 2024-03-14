@@ -26,13 +26,12 @@ export const TitlePage = () => {
 
   const handleSetUser = (telegramName: string, telegramId?: number) => {
     setIsLoading(() => true);
-    getUser(telegramName).then((user: IUser | undefined) => {
+    getUser(telegramName, telegramId).then((user: IUser | undefined) => {
       if (user && checkUserAuthorization(user)) {
         if (telegramId && user && !user.telegramId) {
           user.telegramId = telegramId;
-          editUser(telegramName, { telegramId });
+          editUser(telegramName, { telegramId }, false);
         }
-
         dispatch(setEditor(user));
         navigate(EVENTS_ROUTE);
       } else {
