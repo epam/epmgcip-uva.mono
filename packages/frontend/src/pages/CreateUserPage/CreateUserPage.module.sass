@@ -11,7 +11,7 @@
 
     .createUserTitle
         @extend .H3
-        color: colors.$gray-dark
+        color: colors.$gray-600
         margin-bottom: 18px
 
     .createUserForm
@@ -22,12 +22,12 @@
         .createUserValidationError
             @extend .T3
             align-self: flex-start
-            color: colors.$orange
+            color: colors.$red
             margin: 0
 
         .selectPlaceholder
             @extend .T1
-            color: colors.$gray
+            color: colors.$gray-200
 
         .buttonsPanel
             width: 100%
@@ -47,18 +47,18 @@
                 align-items: center
 
             .backButton
-                color: colors.$violet
+                color: colors.$purple
                 background-color: colors.$white
-                border: 1px solid colors.$violet
+                border: 1px solid colors.$purple
 
                 &:hover
                     color: colors.$white
-                    background-color: colors.$blue-light
+                    background-color: colors.$blue
                     border: none
 
             .submitButton
                 color: colors.$white
-                background-color: colors.$blue-light
+                background-color: colors.$blue
 
                 &:hover
-                    background-color: colors.$blue-lightest
+                    background-color: colors.$blue-light

@@ -11,11 +11,11 @@
 
     .editUserTitle
         @extend .H3
-        color: colors.$gray-dark
+        color: colors.$gray-600
         margin-bottom: 4px
 
     .deleteUserButton
-        color: colors.$orange
+        color: colors.$red
         align-self: center
         margin-bottom: 14px
 
@@ -26,7 +26,7 @@
 
         .selectPlaceholder
             @extend .T1
-            color: colors.$gray
+            color: colors.$gray-200
 
         .buttonsPanel
             width: 100%
@@ -46,40 +46,40 @@
                 align-items: center
 
             .backButton
-                color: colors.$violet
+                color: colors.$purple
                 background-color: colors.$white
-                border: 1px solid colors.$violet
+                border: 1px solid colors.$purple
 
                 &:hover
                     color: colors.$white
-                    background-color: colors.$blue-light
+                    background-color: colors.$blue
                     border: none
 
             .submitButton
                 color: colors.$white
-                background-color: colors.$blue-light
+                background-color: colors.$blue
 
                 &:hover
-                    background-color: colors.$blue-lightest
+                    background-color: colors.$blue-light
 
                 &:disabled,
                 &[disabled]
                     cursor: auto 
-                    background-color: colors.$gray-light
+                    background-color: colors.$gray-200
 
 .modalCancelButton
-    color: colors.$violet
+    color: colors.$purple
     background-color: colors.$white
-    border: 1px solid colors.$violet
+    border: 1px solid colors.$purple
 
     &:hover
         color: colors.$white
-        background-color: colors.$blue-light
+        background-color: colors.$blue
         border: none
 
 .modalUserDeleteButton
-    background-color: colors.$orange
+    background-color: colors.$red
     color: colors.$white
 
     &:hover
-        background-color: colors.$blue-lightest
+        background-color: colors.$blue-light

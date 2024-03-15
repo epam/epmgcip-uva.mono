@@ -27,7 +27,7 @@ export const TitlePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const isDevelopment = DEVELOPMENT_ENVIRONMENT_URL;
+  const isDevelopment = DEVELOPMENT_ENVIRONMENT_URL === window.location.href;
 
   const handleSetUser = (telegramName: string, telegramId?: number) => {
     setIsLoading(() => true);

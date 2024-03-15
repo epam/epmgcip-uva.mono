@@ -19,6 +19,7 @@ export const EventTimeDuration = ({
     <>
       <div className={css.eventTimeDurationTitle}>
         {translation.eventTimeDuration}
+        <span className={css.inputRequired}> *</span>
       </div>
       <div className={css.eventTimeDurationContent}>
         <div>
