@@ -1,0 +1,59 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.createEventWrapper
+    padding: 24px
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+
+    .createEventTitle
+        @extend .H3
+        color: colors.$gray-dark
+        margin-bottom: 18px
+
+    .createEventForm
+        display: flex
+        flex-direction: column
+        align-items: center
+
+        .selectPlaceholder
+            @extend .T1
+            color: colors.$gray
+        
+        .buttonsPanel
+            width: 100%
+            margin-top: 18px
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            gap: 18px
+            padding-bottom: 24px
+
+            .createEventButton
+                @extend .H6
+                width: 147px
+                height: 48px
+                box-sizing: border-box
+                border-radius: 8px
+                justify-content: center
+                align-items: center
+
+            .backButton
+                color: colors.$violet
+                background-color: colors.$white
+                border: 1px solid colors.$violet
+
+                &:hover
+                    color: colors.$white
+                    background-color: colors.$blue-light
+                    border: none
+
+            .submitButton
+                color: colors.$white
+                background-color: colors.$blue-light
+
+                &:hover
+                    background-color: colors.$blue-lightest

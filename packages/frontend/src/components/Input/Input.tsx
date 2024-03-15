@@ -2,9 +2,15 @@ import { getClassesList } from 'src/utils/getClassesList';
 import css from './Input.module.sass';
 import translation from 'src/translations/Russian.json';
 
+type InputChange = (value: string) => {
+  type: string;
+  payload: string;
+}
+
 interface InputProps {
   value: string;
-  setChange: React.Dispatch<React.SetStateAction<string>>;
+  setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
+  type?: 'text' | 'number' | 'date' | 'search' | 'time';
   labelText?: string;
   minLength?: number;
   maxLength?: number;
@@ -19,6 +25,7 @@ interface InputProps {
 export const Input = ({
   value,
   setChange,
+  type = 'text',
   labelText,
   required = false,
   minLength,
@@ -46,7 +53,7 @@ export const Input = ({
         </div>
       )}
       <input
-        type='text'
+        type={type}
         placeholder={placeholder || translation.input}
         minLength={minLength}
         maxLength={maxLength}

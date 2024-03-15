@@ -8,7 +8,12 @@ import translation from 'src/translations/Russian.json';
 import { useDispatch, useSelector } from 'react-redux';
 import { UsersBlock } from './components/UsersBlock/UsersBlock';
 import { Dispatch } from '@reduxjs/toolkit';
-import { addUsersToList } from 'src/redux/actions';
+import {
+  addUsersToList,
+  setManageUsersScrollDirection,
+  setManageUsersScrollSize,
+  setManageUsersSearchInput,
+} from 'src/redux/actions';
 import { getAllUsers } from 'src/utils/getAllUsers';
 import { getSearch } from 'src/utils/getSearch';
 
@@ -35,12 +40,23 @@ export const ManageUsersPage = () => {
   const dispatch: Dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUsersList = useSelector((state: IState) => state.usersList);
-  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const editor = useSelector((state: IState) => state.editor);
+  const searchInput = useSelector(
+    (state: IState) => state.manageUsersPage.userSearchInput
+  );
+  const setSearchInput = (inputString: string) =>
+    dispatch(setManageUsersSearchInput(inputString));
+  const savedScrollSize = useSelector(
+    (state: IState) => state.manageUsersPage.scrollSize
+  );
+  const savedScrollDirection = useSelector(
+    (state: IState) => state.manageUsersPage.scrollDirection
+  );
+
+  const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const [isLoading, setIsLoading] = useState(currentUsersList.length === 0);
-  const [searchInput, setSearchInput] = useState('');
-  const [scrollSize, setScrollSize] = useState(window.scrollY);
-  const [scrollDirection, setScrollDirection] = useState(ScrollDirection.Down);
+  const [scrollSize, setScrollSize] = useState(savedScrollSize);
+  const [scrollDirection, setScrollDirection] = useState(savedScrollDirection);
   const [isShowTitleWrapper, setIsShowTitleWrapper] = useState(true);
 
   useEffect(() => {
@@ -58,6 +74,10 @@ export const ManageUsersPage = () => {
     }
   }, [dispatch, editor, isLoading, navigate]);
 
+  useEffect(() => {
+    setTimeout(() => window.scrollTo(0, savedScrollSize), 0);
+  }, []);
+
   const handleCreateUser = () => {
     navigate(CREATE_USER_ROUTE);
   };
@@ -70,11 +90,13 @@ export const ManageUsersPage = () => {
     );
 
     return () => {
+      dispatch(setManageUsersScrollSize(scrollSize));
+      dispatch(setManageUsersScrollDirection(scrollDirection));
       removeEventListener('scroll', () =>
         handleScrollDirection(scrollSize, setScrollDirection, setScrollSize)
       );
     };
-  }, [scrollDirection, scrollSize]);
+  }, [dispatch, scrollDirection, scrollSize]);
 
   return (
     isEditorHasPermissions &&
@@ -82,10 +104,7 @@ export const ManageUsersPage = () => {
       <div className={css.manageUsersWrapper}>
         <div className={css.manageUsersPanelWrapper}>
           {isShowTitleWrapper && (
-            <div
-              className={css.manageUsersTitleWrapper}
-              style={{ display: isShowTitleWrapper ? 'flex' : 'none' }}
-            >
+            <div className={css.manageUsersTitleWrapper}>
               <div className={css.manageUsersTitle}>{translation.users}</div>
               <Button className={css.addUserButton} onClick={handleCreateUser}>
                 {translation.add}
@@ -95,6 +114,7 @@ export const ManageUsersPage = () => {
           <Input
             value={searchInput}
             setChange={setSearchInput}
+            type='search'
             placeholder={translation.userSearchPlaceholder}
             labelClassName={css.manageUsersSearchLabel}
             inputClassName={css.manageUsersSearchInput}
