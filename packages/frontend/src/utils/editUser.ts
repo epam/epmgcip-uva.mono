@@ -13,13 +13,15 @@ import { NOTIFICATIONS } from 'src/constants';
 
 export const editUser = async (
   telegramName: string,
-  updatedFields: Partial<IUser>
+  updatedFields: Partial<IUser>,
+  isShowNotification = true,
 ): Promise<boolean> => {
   const user = await getUser(telegramName);
   const usersRef = collection(firebaseDb, 'users');
 
   if (!user) {
-    showNotification(NOTIFICATIONS(telegramName).USER_DOES_NOT_EXIST, 6000);
+    isShowNotification &&
+      showNotification(NOTIFICATIONS(telegramName).USER_DOES_NOT_EXIST, 6000);
     return false;
   }
 
@@ -28,7 +30,11 @@ export const editUser = async (
       const dublicate = await getUser(updatedFields.telegramName);
 
       if (dublicate) {
-        showNotification(NOTIFICATIONS(updatedFields.telegramName).USER_EXISTS, 6000);
+        isShowNotification &&
+          showNotification(
+            NOTIFICATIONS(updatedFields.telegramName).USER_EXISTS,
+            6000
+          );
         return false;
       }
 
@@ -41,11 +47,13 @@ export const editUser = async (
       await updateDoc(doc(usersRef, telegramName), { ...updatedFields });
     }
 
-    showNotification(NOTIFICATIONS(telegramName).USER_UPDATED, 3000);
+    isShowNotification &&
+      showNotification(NOTIFICATIONS(telegramName).USER_UPDATED, 3000);
 
     return true;
   } catch {
-    showNotification(NOTIFICATIONS(telegramName).USER_UPDATE_ERROR, 3000);
+    isShowNotification &&
+      showNotification(NOTIFICATIONS(telegramName).USER_UPDATE_ERROR, 3000);
 
     return false;
   }

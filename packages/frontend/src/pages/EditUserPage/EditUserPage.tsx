@@ -35,7 +35,7 @@ export const EditUserPage = () => {
   const editableUser =
     usersList.find((user) => user.telegramName === userTelegramName) ||
     EMPTY_USER;
-  const undatedUserIndex = usersList.findIndex(
+  const updatedUserIndex = usersList.findIndex(
     (user) => user.telegramName === userTelegramName
   );
 
@@ -87,7 +87,7 @@ export const EditUserPage = () => {
         if (result) {
           const updatedUser: IUser = { ...editableUser, ...updatedFields };
           const updatedUsersList: IUser[] = [...usersList];
-          updatedUsersList[undatedUserIndex] = { ...updatedUser };
+          updatedUsersList[updatedUserIndex] = { ...updatedUser };
 
           dispatch(updateUsersList(updatedUsersList));
         }
@@ -97,11 +97,12 @@ export const EditUserPage = () => {
     }
   };
 
-  const switchDeleteModal = () => setIsDelete((previousValue) => !previousValue);
+  const switchDeleteModal = () =>
+    setIsDelete((previousValue) => !previousValue);
 
   const handleDeleteUser = () => {
     const updatedUsersList: IUser[] = [...usersList];
-    updatedUsersList.splice(undatedUserIndex, 1);
+    updatedUsersList.splice(updatedUserIndex, 1);
 
     dispatch(updateUsersList(updatedUsersList));
     setIsSaving(() => true);
@@ -157,9 +158,11 @@ export const EditUserPage = () => {
     editor.role === UserRole.Admin && (
       <div className={css.editUserWrapper}>
         <div className={css.editUserTitle}>{translation.editUser}</div>
-        <Button className={css.deleteUserButton} onClick={switchDeleteModal}>
-          {translation.delete}
-        </Button>
+        {editor.telegramName !== userTelegramName && (
+          <Button className={css.deleteUserButton} onClick={switchDeleteModal}>
+            {translation.delete}
+          </Button>
+        )}
         {isDelete && (
           <Modal
             cancelButtonMessage={translation.back}
