@@ -4,6 +4,7 @@ import UVC from 'src/assets/uvc-logo.png';
 import {
   DEVELOPMENT_ENVIRONMENT_URL,
   EVENTS_ROUTE,
+  LOCAL_OR_TEST_ENVIRONMENTS,
   NOTIFICATIONS,
 } from 'src/constants';
 import { Button, Loader } from 'src/components';
@@ -23,11 +24,17 @@ import { getUser } from 'src/utils/getUser';
 import { useState } from 'react';
 import { editUser } from 'src/utils/editUser';
 
+const checkIsLocalOrTestEnv = (currentUrl: string) =>
+  LOCAL_OR_TEST_ENVIRONMENTS.some(
+    (url) =>
+      currentUrl.includes(url) && currentUrl !== DEVELOPMENT_ENVIRONMENT_URL
+  );
+
 export const TitlePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const isDevelopment = DEVELOPMENT_ENVIRONMENT_URL === window.location.href;
+  const isLocalOrTestEnv = checkIsLocalOrTestEnv(window.location.href);
 
   const handleSetUser = (telegramName: string, telegramId?: number) => {
     setIsLoading(() => true);
@@ -56,7 +63,7 @@ export const TitlePage = () => {
           <Loader />
         ) : (
           <>
-            {isDevelopment ? (
+            {isLocalOrTestEnv ? (
               <>
                 <Button
                   onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}

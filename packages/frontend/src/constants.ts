@@ -45,7 +45,8 @@ export const EMPTY_USER = {
   status: UserStatus.Inactive,
 };
 
-export const DEVELOPMENT_ENVIRONMENT_URL = 'http://localhost:5173/';
+export const DEVELOPMENT_ENVIRONMENT_URL = 'https://epmgcip-uva-develop.web.app/';
+export const LOCAL_OR_TEST_ENVIRONMENTS = ['localhost', 'epmgcip-uva-develop'];
 
 export const VOLUNTEER_GENDER = [
   { name: translation.men, value: Gender.Men },
