@@ -1,5 +1,13 @@
-import { IUser } from 'src/types';
-import { ADD_USERS_TO_LIST, SET_SHOW_MENU, SET_EDITOR, UPDATE_USERS_LIST } from './types';
+import { IUser, ScrollDirection } from 'src/types';
+import {
+  ADD_USERS_TO_LIST,
+  SET_SHOW_MENU,
+  SET_EDITOR,
+  UPDATE_USERS_LIST,
+  SET_USER_SEARCH_INPUT,
+  SET_MANAGE_USERS_SCROLL_SIZE,
+  SET_MANAGE_USERS_SCROLL_DIRECTION,
+} from './types';
 
 export const setEditor = (editor: IUser) => ({
   type: SET_EDITOR,
@@ -21,3 +29,17 @@ export const updateUsersList = (users: IUser[]) => ({
   payload: users,
 });
 
+export const setManageUsersSearchInput = (searchInput: string) => ({
+  type: SET_USER_SEARCH_INPUT,
+  payload: searchInput,
+});
+
+export const setManageUsersScrollSize = (scrollSize: number) => ({
+  type: SET_MANAGE_USERS_SCROLL_SIZE,
+  payload: scrollSize,
+})
+
+export const setManageUsersScrollDirection = (scrollDirection: ScrollDirection) => ({
+  type: SET_MANAGE_USERS_SCROLL_DIRECTION,
+  payload: scrollDirection,
+})

@@ -1,7 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import css from './TitlePage.module.sass';
 import UVC from 'src/assets/uvc-logo.png';
-import { EVENTS_ROUTE, NOTIFICATIONS } from 'src/constants';
+import {
+  DEVELOPMENT_ENVIRONMENT_URL,
+  EVENTS_ROUTE,
+  LOCAL_OR_TEST_ENVIRONMENTS,
+  NOTIFICATIONS,
+} from 'src/constants';
 import { Button, Loader } from 'src/components';
 import { IUser } from 'src/types';
 import { useDispatch } from 'react-redux';
@@ -19,10 +24,17 @@ import { getUser } from 'src/utils/getUser';
 import { useState } from 'react';
 import { editUser } from 'src/utils/editUser';
 
+const checkIsLocalOrTestEnv = (currentUrl: string) =>
+  LOCAL_OR_TEST_ENVIRONMENTS.some(
+    (url) =>
+      currentUrl.includes(url) && currentUrl !== DEVELOPMENT_ENVIRONMENT_URL
+  );
+
 export const TitlePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const isLocalOrTestEnv = checkIsLocalOrTestEnv(window.location.href);
 
   const handleSetUser = (telegramName: string, telegramId?: number) => {
     setIsLoading(() => true);
@@ -51,39 +63,48 @@ export const TitlePage = () => {
           <Loader />
         ) : (
           <>
-            <TelegramLoginButton
-              botName='SerozhsTestBot'
-              dataOnauth={(user) => handleSetUser(`@${user.username}`, user.id)}
-              usePic={true}
-            />
-            <Button
-              onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}
-              className={css.setUserButton}
-            >
-              Админ
-            </Button>
-            <Button
-              onClick={() =>
-                handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)
-              }
-              className={css.setUserButton}
-            >
-              Координатор
-            </Button>
-            <Button
-              onClick={() => handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)}
-              className={css.setUserButton}
-            >
-              Админ неактив
-            </Button>
-            <Button
-              onClick={() =>
-                handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
-              }
-              className={css.setUserButton}
-            >
-              Координатор неактив
-            </Button>
+            {isLocalOrTestEnv ? (
+              <>
+                <Button
+                  onClick={() => handleSetUser(ADMIN_ACTIVE_MOCK.telegramName)}
+                  className={css.setUserButton}
+                >
+                  Админ
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)
+                  }
+                  className={css.setUserButton}
+                >
+                  Координатор
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)
+                  }
+                  className={css.setUserButton}
+                >
+                  Админ неактив
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
+                  }
+                  className={css.setUserButton}
+                >
+                  Координатор неактив
+                </Button>
+              </>
+            ) : (
+              <TelegramLoginButton
+                botName='SerozhsTestBot'
+                dataOnauth={(user) =>
+                  handleSetUser(`@${user.username}`, user.id)
+                }
+                usePic={true}
+              />
+            )}
           </>
         )}
       </div>

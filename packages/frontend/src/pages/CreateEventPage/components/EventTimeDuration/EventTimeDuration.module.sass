@@ -1,0 +1,23 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+        
+.eventTimeDurationTitle
+    @extend .H6
+    align-self: flex-start
+
+    .inputRequired
+        color: colors.$red
+
+.eventTimeDurationContent
+    display: grid
+    grid-template-columns: 40% 40%
+    gap: 20px
+    justify-content: space-between
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+
+    .eventTimeDurationColumnTitle
+        @extend .T2
+
+    .eventTimeDurationInput
+        width: 100%

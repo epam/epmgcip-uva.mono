@@ -1,7 +1,7 @@
 @use 'src/style/colors'
 @import 'src/style/typography'
 
-.editUserWrapper
+.createEventWrapper
     padding: 24px
     width: 100%
     height: calc(100vh - 46px)
@@ -9,17 +9,12 @@
     display: flex
     flex-direction: column
 
-    .editUserTitle
+    .createEventTitle
         @extend .H3
         color: colors.$gray-600
-        margin-bottom: 4px
+        margin-bottom: 18px
 
-    .deleteUserButton
-        color: colors.$red
-        align-self: center
-        margin-bottom: 14px
-
-    .editUserForm
+    .createEventForm
         display: flex
         flex-direction: column
         align-items: center
@@ -27,16 +22,17 @@
         .selectPlaceholder
             @extend .T1
             color: colors.$gray-200
-
+        
         .buttonsPanel
             width: 100%
-            margin-top: 12px
+            margin-top: 18px
             display: flex
             flex-direction: row
             justify-content: space-between
             gap: 18px
+            padding-bottom: 24px
 
-            .editUserButton
+            .createEventButton
                 @extend .H6
                 width: 147px
                 height: 48px
@@ -61,25 +57,3 @@
 
                 &:hover
                     background-color: colors.$blue-light
-
-                &:disabled,
-                &[disabled]
-                    cursor: auto 
-                    background-color: colors.$gray-200
-
-.modalCancelButton
-    color: colors.$purple
-    background-color: colors.$white
-    border: 1px solid colors.$purple
-
-    &:hover
-        color: colors.$white
-        background-color: colors.$blue
-        border: none
-
-.modalUserDeleteButton
-    background-color: colors.$red
-    color: colors.$white
-
-    &:hover
-        background-color: colors.$blue-light

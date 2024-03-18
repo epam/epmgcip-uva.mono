@@ -1,4 +1,4 @@
-import { UserRole, UserStatus } from './types';
+import { EventStatus, Gender, Language, UserRole, UserStatus } from './types';
 import translation from 'src/translations/Russian.json';
 
 export const ROOT_ROUTE = '/';
@@ -44,3 +44,24 @@ export const EMPTY_USER = {
   role: UserRole.Coordinator,
   status: UserStatus.Inactive,
 };
+
+export const DEVELOPMENT_ENVIRONMENT_URL = 'https://epmgcip-uva-develop.web.app/';
+export const LOCAL_OR_TEST_ENVIRONMENTS = ['localhost', 'epmgcip-uva-develop'];
+
+export const VOLUNTEER_GENDER = [
+  { name: translation.men, value: Gender.Men },
+  { name: translation.women, value: Gender.Women },
+  { name: translation.any, value: Gender.Any },
+];
+
+export const LANGUAGE = [
+  { name: translation.russian, value: Language.Russian },
+  { name: translation.uzbek, value: Language.Uzbek },
+  { name: translation.english, value: Language.English },
+  { name: translation.qoraqalpoq, value: Language.Qoraqalpoq },
+]
+
+export const EVENT_STATUS = [
+  { name: translation.active, value: EventStatus.Active },
+  { name: translation.draft, value: EventStatus.Draft },
+]
