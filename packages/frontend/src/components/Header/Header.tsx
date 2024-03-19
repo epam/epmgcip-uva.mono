@@ -9,13 +9,16 @@ import translation from 'src/translations/Russian.json';
 import { ROOT_ROUTE } from 'src/constants';
 
 interface HeaderProps {
-  editorName: string;
+  editorName?: string;
 }
+
+const maxNameLength = 25;
 
 export const Header = ({ editorName }: HeaderProps) => {
   const dispatch: Dispatch = useDispatch();
   const currentRoute = window.location.pathname;
-  const isMenuEnabled = currentRoute !== ROOT_ROUTE
+  const isMenuEnabled = currentRoute !== ROOT_ROUTE;
+  const isLongName = editorName && editorName.length > maxNameLength;
 
   const handleShowMenu = () => {
     if (isMenuEnabled) {
@@ -26,8 +29,16 @@ export const Header = ({ editorName }: HeaderProps) => {
   return (
     <div className={css.headerWrapper}>
       <img className={css.headerLogo} src={LogoSvg} />
-      <div className={css.editorName}>{editorName || translation.login}</div>
-      <Button onClick={handleShowMenu} className={css.headerMenuButton} disabled={!isMenuEnabled}>
+      <div className={css.editorName}>
+        {isLongName
+          ? `${editorName?.slice(0, maxNameLength)}...`
+          : editorName || translation.login}
+      </div>
+      <Button
+        onClick={handleShowMenu}
+        className={css.headerMenuButton}
+        disabled={!isMenuEnabled}
+      >
         <img className={css.headerLogo} src={MenuSvg} alt='Open Menu Button' />
       </Button>
     </div>

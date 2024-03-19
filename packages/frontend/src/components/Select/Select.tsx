@@ -1,16 +1,16 @@
 import { getClassesList } from 'src/utils/getClassesList';
 import css from './Select.module.sass';
-
-interface IOption {
-  name: string;
-  value: string;
-}
+import { useEffect, useRef, useState } from 'react';
+import ArrowSvg from './assets/arrow.svg';
+import { IOption } from 'src/types';
+import { isValueSelected, setMultipleValue, showCurrentValues } from './utils';
 
 interface SelectProps<T> {
-  value: string;
+  value: T;
   setChange: React.Dispatch<React.SetStateAction<T>>;
   options: IOption[];
   labelText: string;
+  multiple?: boolean;
   required?: boolean;
   placeholder?: string;
   labelClassName?: string;
@@ -20,46 +20,97 @@ interface SelectProps<T> {
 }
 
 export const Select = <T,>({
-  value,
+  value: currentValue,
   setChange,
   options,
   labelText,
+  multiple = false,
   required = false,
-  placeholder,
+  placeholder = '',
   labelClassName,
   selectClassName,
   isValidationError,
   errorMessage,
 }: SelectProps<T>) => {
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const currentSelector = useRef<HTMLLabelElement>(null);
   const labelClasses = getClassesList(css.label, labelClassName);
   const selectClasses = getClassesList(
     css.select,
     selectClassName,
     isValidationError ? css.selectError : undefined
   );
+  const arrowClasses = getClassesList(
+    css.selectArrow,
+    isSelectOpen ? css.selectMenuOpen : undefined
+  );
+  const getOptionClasses = (value: T) =>
+    getClassesList(
+      css.option,
+      isValueSelected(currentValue, value)
+        ? css.selectedOption
+        : css.activeOption
+    );
+
+  const handleSetChange = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    value: T
+  ) => {
+    event.stopPropagation();
+    multiple
+      ? setChange((previousValue) => setMultipleValue(previousValue, value))
+      : setChange(value);
+    !multiple && setIsSelectOpen(!isSelectOpen);
+  };
+
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (
+        currentSelector &&
+        currentSelector.current &&
+        target &&
+        !currentSelector.current.contains(target as Node)
+      ) {
+        setIsSelectOpen(() => false);
+      }
+    };
+
+    document.addEventListener('click', clickHandler);
+    return () => {
+      document.removeEventListener('click', clickHandler);
+    };
+  }, []);
 
   return (
-    <label className={labelClasses}>
+    <label className={labelClasses} ref={currentSelector}>
       <div>
         {labelText}
         {required && <span className={css.selectRequired}> *</span>}
       </div>
-      <select
-        value={value}
-        onChange={(e) => setChange(e.target.value as T)}
+      <div
         className={selectClasses}
+        tabIndex={0}
+        onClick={() => setIsSelectOpen(!isSelectOpen)}
       >
-        {placeholder && (
-          <option disabled={true} value=''>
-            {placeholder}
-          </option>
+        {showCurrentValues(options, currentValue, multiple, placeholder)}
+        <img className={arrowClasses} src={ArrowSvg} />
+      </div>
+      <div className={css.selectMenuWrapper}>
+        {isSelectOpen && (
+          <div className={css.selectMenu}>
+            {options.map(({ name, value }) => (
+              <div
+                key={value}
+                onClick={(e) => handleSetChange(e, value as T)}
+                tabIndex={0}
+                className={getOptionClasses(value as T)}
+              >
+                {name}
+              </div>
+            ))}
+          </div>
         )}
-        {options.map(({ name, value }) => (
-          <option key={value} value={value}>
-            {name}
-          </option>
-        ))}
-      </select>
+      </div>
       {isValidationError && (
         <p className={css.validationError}>
           {isValidationError && errorMessage}

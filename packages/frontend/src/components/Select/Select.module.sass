@@ -22,15 +22,53 @@
     box-sizing: border-box
     margin-top: 8px
     appearance: none
-    background-image: url("./assets/arrow.svg")
-    background-repeat: no-repeat
-    background-position: right 21px top 50%
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    cursor: pointer
 
     &:active
         opacity: 0.75
 
-.select select
-    display: none
+.selectArrow
+    transition: transform ease-in-out 0.2s
+
+.selectMenuOpen
+    transform: rotate(180deg)
+
+.selectMenuWrapper
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+    position: relative 
+
+.selectMenu
+  padding: 8px 0
+  width: 100%
+  box-sizing: border-box
+  background-color: colors.$white
+  cursor: pointer
+  position: absolute
+  z-index: 1
+  top: 3px
+  left: 0
+  border: 1px solid colors.$gray-200
+  border-radius: 8px
+  color: colors.$blue-dark
+  transition: all 0s ease-out
+  display: flex
+  flex-direction: column
+  gap: 0
+
+.option
+    padding: 8px 16px
+
+.optionActive
+    background-color: colors.$white
+    color: inherit
+
+.selectedOption
+    background-color: colors.$blue-light
+    color: colors.$white
 
 .selectError
     border-color: colors.$red

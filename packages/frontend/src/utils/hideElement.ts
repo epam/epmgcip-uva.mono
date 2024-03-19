@@ -6,5 +6,6 @@ export const hideElement = (element: HTMLElement, message?: string, debounce?: n
   
     element.style.opacity = '0';
     element.style.zIndex = '-1';  
+    element.style.pointerEvents = 'none';
   }, debounce ?? 0)
 };

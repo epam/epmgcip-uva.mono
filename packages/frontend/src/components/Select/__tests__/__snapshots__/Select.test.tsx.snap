@@ -8,20 +8,18 @@ exports[`Testing: Select > should render 1`] = `
     <div>
       Test Label
     </div>
-    <select
+    <div
       class="_select_1e72f6"
+      tabindex="0"
     >
-      <option
-        value="value_1"
-      >
-        Name 1
-      </option>
-      <option
-        value="value_2"
-      >
-        Name 2
-      </option>
-    </select>
+      <img
+        class="_selectArrow_1e72f6"
+        src="/packages/frontend/src/components/Select/assets/arrow.svg"
+      />
+    </div>
+    <div
+      class="_selectMenuWrapper_1e72f6"
+    />
   </label>
 </div>
 `;

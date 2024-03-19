@@ -86,3 +86,8 @@ export interface IEvent {
   endDate?: string;
   telegramChannelLink?: string;
 }
+
+export interface IOption {
+  name: string;
+  value: string;
+}
