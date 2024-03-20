@@ -9,7 +9,6 @@ import { render, screen } from '@testing-library/react';
 import { Notification } from 'src/components';
 import { showElement } from '../showElement';
 import { hideElement } from '../hideElement';
-import { getUser } from '../getUser';
 
 const mainClassMock = 'main-class-test';
 const usersMock = [
@@ -141,10 +140,6 @@ describe('Testing: utils', () => {
   `(
     'checkUserAuthorization should return $expected when user: $user',
     async ({ user, expected }) => {
-      // vi.spyOn('src/utils/getUser.ts', 'getUser').mockReturnValue(true);
-      console.log(getUser);
-      // vi.spyOn('getUser', 'getUser').mockReturnValue(true);
-
       const received = checkUserAuthorization(user);
 
       expect(received).toStrictEqual(expected);

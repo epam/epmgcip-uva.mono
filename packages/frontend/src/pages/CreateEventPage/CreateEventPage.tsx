@@ -31,7 +31,7 @@ export const CreateEventPage = () => {
   const [eventDuration, setEventDuration] = useState('');
   const [eventRegistrationDate, setEventRegistrationDate] = useState('');
   const [gender, setGender] = useState('');
-  const [eventLanguage, setEventLanguage] = useState('');
+  const [eventLanguage, setEventLanguage] = useState<string[]>([]);
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
@@ -93,7 +93,6 @@ export const CreateEventPage = () => {
             setChange={setEventEndDate}
             type='date'
             labelText={translation.eventEndDate}
-            required
           />
           <Input
             value={eventDuration}
@@ -123,9 +122,10 @@ export const CreateEventPage = () => {
             setChange={setEventLanguage}
             options={LANGUAGE}
             labelText={translation.language}
+            multiple
             required
             placeholder={translation.choice}
-            selectClassName={!eventLanguage ? css.selectPlaceholder : undefined}
+            selectClassName={eventLanguage.length === 0 ? css.selectPlaceholder : undefined}
           />
           <Input
             value={volunteersQuantity}

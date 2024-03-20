@@ -5,4 +5,5 @@ export const showElement = (element: HTMLElement, message?: string) => {
 
   element.style.opacity = '1';
   element.style.zIndex = '100';
+  element.style.pointerEvents = 'all';
 };
