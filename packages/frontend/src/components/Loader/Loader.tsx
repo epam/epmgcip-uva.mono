@@ -7,7 +7,7 @@ interface LoaderProps {
 }
 
 export const Loader = ({ size, className }: LoaderProps) => {
-  const loadersClasses = getClassesList(css.loader, className);
+  const loaderClasses = getClassesList(css.loader, className);
 
-  return <div className={loadersClasses} style={{ width: size, height: size }}></div>;
+  return <div className={loaderClasses} style={{ width: size, height: size }}></div>;
 };

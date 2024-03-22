@@ -5,7 +5,7 @@ import translation from 'src/translations/Russian.json';
 type InputChange = (value: string) => {
   type: string;
   payload: string;
-}
+};
 
 interface InputProps {
   value: string;
@@ -21,6 +21,8 @@ interface InputProps {
   isValidationError?: boolean;
   errorMessage?: string;
 }
+
+const validateDigitalValue = (value: string) => /^\d+$/.test(value);
 
 export const Input = ({
   value,
@@ -44,6 +46,14 @@ export const Input = ({
     isValidationError ? css.inputError : undefined
   );
 
+  const handleSetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === 'number' && !validateDigitalValue(e.target.value)) {
+      return;
+    }
+
+    setChange(e.target.value)
+  }
+
   return (
     <label className={labelClasses}>
       {labelText && (
@@ -59,7 +69,7 @@ export const Input = ({
         maxLength={maxLength}
         className={inputClasses}
         value={value}
-        onChange={(e) => setChange(e.target.value)}
+        onChange={(e) => handleSetChange(e)}
       />
       {isValidationError && (
         <p className={css.validationError}>

@@ -3,7 +3,7 @@ import css from './Menu.module.sass';
 import CloseSvg from 'src/assets/cross.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
-import { setMenu, setEditor } from 'src/redux/actions';
+import { setMenu, setEditor, setManageUsersSearchInput } from 'src/redux/actions';
 import { Link } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -35,12 +35,17 @@ export const Menu = () => {
     dispatch(setMenu(false));
   };
   const handleChangePage = (route: string) => {
+    if (route !== MANAGE_USERS_ROUTE) {
+      dispatch(setManageUsersSearchInput(''));
+    }
+
     navigate(route);
     handleCloseMenu();
   };
   const handleLogout = () => {
     switchLogoutModal();
     dispatch(setEditor({} as IUser));
+    dispatch(setManageUsersSearchInput(''));
     handleChangePage(ROOT_ROUTE);
   };
 

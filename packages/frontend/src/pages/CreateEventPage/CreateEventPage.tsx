@@ -14,6 +14,7 @@ import translation from 'src/translations/Russian.json';
 import { Button, Input, Loader, Select } from 'src/components';
 import { EventStatusDescription } from './components/EventStatusDescription/EventStatusDescription';
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
+import { Slider } from 'src/components/Slider/Slider';
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
@@ -31,10 +32,13 @@ export const CreateEventPage = () => {
   const [eventDuration, setEventDuration] = useState('');
   const [eventRegistrationDate, setEventRegistrationDate] = useState('');
   const [gender, setGender] = useState('');
+  const [minVolunteersAge, setMinVolunteersAge] = useState(16);
+  const [maxVolunteersAge, setMaxVolunteersAge] = useState(61);
   const [eventLanguage, setEventLanguage] = useState<string[]>([]);
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
+  console.log(volunteersQuantity)
 
   const handleCreateEvent = () => {
     navigate(EVENTS_ROUTE);
@@ -116,6 +120,15 @@ export const CreateEventPage = () => {
             required
             placeholder={translation.choice}
             selectClassName={!gender ? css.selectPlaceholder : undefined}
+          />
+          <Slider
+            min={16}
+            max={61}
+            minValue={minVolunteersAge}
+            setMinValue={setMinVolunteersAge}
+            maxValue={maxVolunteersAge}
+            setMaxValue={setMaxVolunteersAge}
+            labelText={translation.age}
           />
           <Select
             value={eventLanguage}
