@@ -22,7 +22,8 @@ interface InputProps {
   errorMessage?: string;
 }
 
-const validateDigitalValue = (value: string) => /^\d+$/.test(value);
+const positiveIntegerRegex =/^\d+$/;
+const validateDigitalValue = (value: string) => positiveIntegerRegex.test(value);
 
 export const Input = ({
   value,

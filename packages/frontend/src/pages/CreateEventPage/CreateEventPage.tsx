@@ -38,7 +38,6 @@ export const CreateEventPage = () => {
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
-  console.log(volunteersQuantity)
 
   const handleCreateEvent = () => {
     navigate(EVENTS_ROUTE);
