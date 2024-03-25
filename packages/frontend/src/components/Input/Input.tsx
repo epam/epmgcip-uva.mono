@@ -12,6 +12,8 @@ interface InputProps {
   setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
   type?: 'text' | 'number' | 'date' | 'search' | 'time';
   labelText?: string;
+  min?: string | number;
+  max?: string | number;
   minLength?: number;
   maxLength?: number;
   required?: boolean;
@@ -30,9 +32,11 @@ export const Input = ({
   setChange,
   type = 'text',
   labelText,
-  required = false,
+  min,
+  max,
   minLength,
   maxLength,
+  required = false,
   placeholder,
   labelClassName,
   inputClassName,
@@ -66,6 +70,8 @@ export const Input = ({
       <input
         type={type}
         placeholder={placeholder || translation.input}
+        min={min}
+        max={max}
         minLength={minLength}
         maxLength={maxLength}
         className={inputClasses}

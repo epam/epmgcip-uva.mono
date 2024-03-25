@@ -83,6 +83,7 @@ export const CreateEventPage = () => {
             setChange={setEventStartDate}
             type='date'
             labelText={translation.eventStartDate}
+            max={eventEndDate}
             required
           />
           <EventTimeDuration
@@ -96,6 +97,7 @@ export const CreateEventPage = () => {
             setChange={setEventEndDate}
             type='date'
             labelText={translation.eventEndDate}
+            min={eventStartDate}
           />
           <Input
             value={eventDuration}
@@ -109,6 +111,7 @@ export const CreateEventPage = () => {
             setChange={setEventRegistrationDate}
             type='date'
             labelText={translation.registrationPeriod}
+            max={eventStartDate}
             required
           />
           <Select

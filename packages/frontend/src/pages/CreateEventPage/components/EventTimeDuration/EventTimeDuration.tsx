@@ -22,7 +22,7 @@ export const EventTimeDuration = ({
         <span className={css.inputRequired}> *</span>
       </div>
       <div className={css.eventTimeDurationContent}>
-        <div>
+        <div className={css.eventTimeDurationContainer}>
           <div className={css.eventTimeDurationColumnTitle}>
             {translation.beginning}
           </div>
@@ -30,11 +30,12 @@ export const EventTimeDuration = ({
             value={eventStartTime}
             setChange={setEventStartTime}
             type='time'
+            max={eventEndTime}
             required
             inputClassName={css.eventTimeDurationInput}
           />
         </div>
-        <div>
+        <div className={css.eventTimeDurationContainer}>
           <div className={css.eventTimeDurationColumnTitle}>
             {translation.ending}
           </div>
@@ -42,6 +43,7 @@ export const EventTimeDuration = ({
             value={eventEndTime}
             setChange={setEventEndTime}
             type='time'
+            min={eventStartTime}
             required
             inputClassName={css.eventTimeDurationInput}
           />
