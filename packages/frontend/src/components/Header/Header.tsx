@@ -5,7 +5,6 @@ import { Button } from 'src/components';
 import { setMenu } from 'src/redux/actions';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
-import translation from 'src/translations/Russian.json';
 import { ROOT_ROUTE } from 'src/constants';
 
 interface HeaderProps {
@@ -32,7 +31,7 @@ export const Header = ({ editorName }: HeaderProps) => {
       <div className={css.editorName}>
         {isLongName
           ? `${editorName?.slice(0, maxNameLength)}...`
-          : editorName || translation.login}
+          : editorName || ''}
       </div>
       <Button
         onClick={handleShowMenu}

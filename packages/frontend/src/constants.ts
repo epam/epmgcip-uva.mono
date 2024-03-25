@@ -21,10 +21,10 @@ export const USER_STATUSES = [
 
 export const DEFAULT_NOTIFICATION = 'Default Notification Message';
 export const NOTIFICATIONS = (value?: string) => ({
-  USER_EXISTS: `Извините, пользователь c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитель с администратору`,
+  USER_EXISTS: `Извините, пользователь c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь с администратору`,
   USER_CREATED: `Пользователь ${value} успешно создан`,
   USER_CREATION_ERROR: `Ошибка при создании пользователя ${value}`,
-  USER_DOES_NOT_EXIST: `Извините, пользователь c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитель с администратору`,
+  USER_DOES_NOT_EXIST: `Извините, пользователь c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитесь с администратору`,
   USER_UPDATED: `Пользователь ${value} успешно изменен`,
   USER_UPDATE_ERROR: `Ошибка при изменении пользователя ${value}`,
   USER_DELETED: `Пользователь ${value} успешно удален`,

@@ -5,13 +5,15 @@ import translation from 'src/translations/Russian.json';
 type InputChange = (value: string) => {
   type: string;
   payload: string;
-}
+};
 
 interface InputProps {
   value: string;
   setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
   type?: 'text' | 'number' | 'date' | 'search' | 'time';
   labelText?: string;
+  min?: string | number;
+  max?: string | number;
   minLength?: number;
   maxLength?: number;
   required?: boolean;
@@ -22,14 +24,19 @@ interface InputProps {
   errorMessage?: string;
 }
 
+const positiveIntegerRegex =/^\d+$/;
+const validateDigitalValue = (value: string) => positiveIntegerRegex.test(value);
+
 export const Input = ({
   value,
   setChange,
   type = 'text',
   labelText,
-  required = false,
+  min,
+  max,
   minLength,
   maxLength,
+  required = false,
   placeholder,
   labelClassName,
   inputClassName,
@@ -44,6 +51,14 @@ export const Input = ({
     isValidationError ? css.inputError : undefined
   );
 
+  const handleSetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (type === 'number' && !validateDigitalValue(e.target.value)) {
+      return;
+    }
+
+    setChange(e.target.value)
+  }
+
   return (
     <label className={labelClasses}>
       {labelText && (
@@ -55,11 +70,13 @@ export const Input = ({
       <input
         type={type}
         placeholder={placeholder || translation.input}
+        min={min}
+        max={max}
         minLength={minLength}
         maxLength={maxLength}
         className={inputClasses}
         value={value}
-        onChange={(e) => setChange(e.target.value)}
+        onChange={(e) => handleSetChange(e)}
       />
       {isValidationError && (
         <p className={css.validationError}>

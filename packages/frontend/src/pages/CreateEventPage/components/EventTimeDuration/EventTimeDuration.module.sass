@@ -9,15 +9,18 @@
         color: colors.$red
 
 .eventTimeDurationContent
-    display: grid
-    grid-template-columns: 40% 40%
+    display: flex
+    flex-direction: row
     gap: 20px
     justify-content: space-between
     width: calc(100vw - 48px)
     max-width: calc(768px - 48px)
 
-    .eventTimeDurationColumnTitle
-        @extend .T2
-
-    .eventTimeDurationInput
+    .eventTimeDurationContainer
         width: 100%
+
+        .eventTimeDurationColumnTitle
+            @extend .T2
+
+        .eventTimeDurationInput
+            width: 100%
