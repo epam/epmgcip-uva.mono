@@ -8,7 +8,7 @@ import translation from 'src/translations/Russian.json';
 interface UserCardProps extends IUser {}
 
 const maxNameLength = 38;
-const maxTelegramNameLength = 18;
+const maxTelegramNameLength = 10;
 
 export const UserCard = ({
   name,
