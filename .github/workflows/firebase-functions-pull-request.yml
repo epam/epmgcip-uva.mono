@@ -1,13 +1,14 @@
-name: Deploy develop branch to Firebase Functions on merge
+name: Quality Gates for Firebase Functions on PR
 "on":
-  push:
+  pull_request:
     branches:
+      - main
       - develop
     paths:
       - "packages/functions/**"
       - ".github/workflows/firebase-functions-*.yml"
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,12 +23,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@v13.5.2
-        with:
-          args: deploy --only functions
-        env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPMGCIP_UVA_DEVELOP }}
+      - name: Install dependencies & build functions
+        run: yarn install --frozen-lockfile && yarn build:functions

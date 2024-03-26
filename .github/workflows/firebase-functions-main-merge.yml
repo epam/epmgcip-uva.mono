@@ -1,8 +1,8 @@
-name: Deploy develop branch to Firebase Functions on merge
+name: Deploy main branch to Firebase Functions on merge
 "on":
   push:
     branches:
-      - develop
+      - main
     paths:
       - "packages/functions/**"
       - ".github/workflows/firebase-functions-*.yml"
@@ -30,4 +30,4 @@ jobs:
         with:
           args: deploy --only functions
         env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPMGCIP_UVA_DEVELOP }}
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPMGCIP_UVA }}
