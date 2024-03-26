@@ -12,9 +12,10 @@
         "serve": "firebase serve --only functions",
         "serve:emulate": "firebase emulators:start --only functions,firestore",
         "watch:serve": "run-p build:watch serve",
-        "clear:build:watch:serve": "run-s clear build watch:serve",
+        "watch:serve:emulate": "run-p build:watch serve:emulate",
+        "clear:build:watch:serve": "run-s clear build:watch watch:serve",
         "shell": "yarn run build && firebase functions:shell",
-        "start": "yarn run clear:build:watch:serve",
+        "start": "yarn run watch:serve:emulate",
         "logs": "firebase functions:log"
     },
     "devDependencies": {
