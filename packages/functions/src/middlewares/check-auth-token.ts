@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { logger } from "firebase-functions/v1";
+import {type NextFunction, type Request, type Response} from "express";
+import {logger} from "firebase-functions/v1";
 
 // @ts-expect-error No return need because of next()
 export const checkAuthToken = (
@@ -13,7 +13,7 @@ export const checkAuthToken = (
   if (!token || !token.startsWith("Bearer ") || !validateToken(token)) {
     logger.error(message);
 
-    return res.status(401).json({ message });
+    return res.status(401).json({message});
   }
 
   next();

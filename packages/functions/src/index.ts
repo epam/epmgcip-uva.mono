@@ -1,6 +1,6 @@
 import express from "express";
 import * as functions from "firebase-functions";
-import { checkAuthToken } from "./middlewares/check-auth-token";
+import {checkAuthToken} from "./middlewares/check-auth-token";
 import authRouter from "./resources/auth/auth.router";
 
 const app = express();
