@@ -10,7 +10,7 @@ type InputChange = (value: string) => {
 interface InputProps {
   value: string;
   setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
-  type?: 'text' | 'number' | 'date' | 'search' | 'time';
+  type?: 'text' | 'number' | 'search' | 'time';
   labelText?: string;
   min?: string | number;
   max?: string | number;

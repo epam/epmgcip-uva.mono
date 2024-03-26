@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: DatePopup > should render 1`] = `
+<div>
+  <div
+    class="_datePopupWrapper_253547"
+  >
+    <div
+      class="_datePopupYear_253547"
+    >
+      2020
+    </div>
+    <div
+      class="_dateControlsBlock_cabf3b"
+    >
+      <button
+        class="_button_6e8901 _dateControlsBlockButton_cabf3b"
+      >
+        Предыдущий
+      </button>
+      <span
+        class="_dateControlsMonth_cabf3b"
+      >
+        Ноябрь
+      </span>
+      <button
+        class="_button_6e8901 _dateControlsBlockButton_cabf3b"
+      >
+        Следующий
+      </button>
+    </div>
+    <div
+      class="_datePopupContainer_253547"
+    >
+      <span
+        class="_weekCode_253547"
+      >
+        Пн
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Вт
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Ср
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Чт
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Пт
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Сб
+      </span>
+      <span
+        class="_weekCode_253547"
+      >
+        Вс
+      </span>
+      <div>
+        Days Items
+      </div>
+    </div>
+  </div>
+</div>
+`;

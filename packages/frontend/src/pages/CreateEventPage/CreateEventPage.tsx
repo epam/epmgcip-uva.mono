@@ -6,7 +6,7 @@ import {
   ROOT_ROUTE,
   VOLUNTEER_GENDER,
 } from 'src/constants';
-import { EventStatus, IState } from 'src/types';
+import { EventStatus, Gender, IEvent, IState, Language } from 'src/types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import css from './CreateEventPage.module.sass';
@@ -15,6 +15,9 @@ import { Button, Input, Loader, Select } from 'src/components';
 import { EventStatusDescription } from './components/EventStatusDescription/EventStatusDescription';
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
 import { Slider } from 'src/components/Slider/Slider';
+import { ImageLoader } from 'src/components/ImageLoader/ImageLoader';
+import { v4 as uuidv4 } from 'uuid';
+import { DatePicker } from 'src/components/DatePicker/DatePicker';
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
@@ -22,6 +25,7 @@ export const CreateEventPage = () => {
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
+  const [image, setImage] = useState<File | null>(null);
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [eventPlace, setEventPlace] = useState('');
@@ -34,7 +38,7 @@ export const CreateEventPage = () => {
   const [gender, setGender] = useState('');
   const [minVolunteersAge, setMinVolunteersAge] = useState(16);
   const [maxVolunteersAge, setMaxVolunteersAge] = useState(61);
-  const [eventLanguage, setEventLanguage] = useState<string[]>([]);
+  const [eventLanguage, setEventLanguage] = useState<Language[]>([]);
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
@@ -48,6 +52,29 @@ export const CreateEventPage = () => {
 
     setIsCreating(() => true);
 
+    const newEvent: IEvent = {
+      id: uuidv4(),
+      name: eventName,
+      description: eventDescription,
+      place: eventPlace,
+      startDate: eventStartDate,
+      startTime: eventStartTime,
+      endTime: eventEndTime,
+      duration: eventDuration,
+      registrationDate: eventRegistrationDate,
+      gender: gender as Gender,
+      ageMin: minVolunteersAge,
+      ageMax: maxVolunteersAge,
+      language: eventLanguage,
+      volunteersQuantity: volunteersQuantity,
+      status: eventStatus,
+      image: image as File,
+      endDate: eventEndDate,
+      telegramChannelLink,
+    };
+
+    console.log(newEvent);
+
     handleCreateEvent();
   };
 
@@ -60,31 +87,36 @@ export const CreateEventPage = () => {
       <div className={css.createEventWrapper}>
         <div className={css.createEventTitle}>{translation.createEvent}</div>
         <form className={css.createEventForm} onSubmit={handleSubmit}>
+          <ImageLoader setImage={setImage} />
           <Input
             value={eventName}
             setChange={setEventName}
             labelText={translation.title}
             required
+            labelClassName={css.createEventPadding}
           />
           <Input
             value={eventDescription}
             setChange={setEventDescription}
             labelText={translation.description}
             required
+            labelClassName={css.createEventPadding}
           />
           <Input
             value={eventPlace}
             setChange={setEventPlace}
             labelText={translation.place}
             required
+            labelClassName={css.createEventPadding}
           />
-          <Input
+          <DatePicker
             value={eventStartDate}
             setChange={setEventStartDate}
-            type='date'
             labelText={translation.eventStartDate}
             max={eventEndDate}
             required
+            labelClassName={css.createEventPadding}
+            datePickerClassName={!eventStartDate ? css.selectPlaceholder : undefined}
           />
           <EventTimeDuration
             eventStartTime={eventStartTime}
@@ -92,12 +124,14 @@ export const CreateEventPage = () => {
             eventEndTime={eventEndTime}
             setEventEndTime={setEventEndTime}
           />
-          <Input
+          <DatePicker
             value={eventEndDate}
             setChange={setEventEndDate}
-            type='date'
             labelText={translation.eventEndDate}
             min={eventStartDate}
+            required
+            labelClassName={css.createEventPadding}
+            datePickerClassName={!eventEndDate ? css.selectPlaceholder : undefined}
           />
           <Input
             value={eventDuration}
@@ -105,14 +139,16 @@ export const CreateEventPage = () => {
             type='number'
             labelText={translation.timeDuration}
             required
+            labelClassName={css.createEventPadding}
           />
-          <Input
+          <DatePicker
             value={eventRegistrationDate}
             setChange={setEventRegistrationDate}
-            type='date'
             labelText={translation.registrationPeriod}
             max={eventStartDate}
             required
+            labelClassName={css.createEventPadding}
+            datePickerClassName={!eventRegistrationDate ? css.selectPlaceholder : undefined}
           />
           <Select
             value={gender}
@@ -148,12 +184,14 @@ export const CreateEventPage = () => {
             type='number'
             labelText={translation.volunteersQuantity}
             required
+            labelClassName={css.createEventPadding}
           />
           <Input
             value={telegramChannelLink}
             setChange={setTelegramChannelLink}
             type='text'
             labelText={translation.telegramChannelLink}
+            labelClassName={css.createEventPadding}
           />
           <Select
             value={eventStatus}
@@ -161,6 +199,7 @@ export const CreateEventPage = () => {
             options={EVENT_STATUS}
             labelText={translation.status}
             required
+            labelClassName={css.createEventPadding}
           />
           <EventStatusDescription />
           <div className={css.buttonsPanel}>
@@ -171,7 +210,6 @@ export const CreateEventPage = () => {
               {translation.back}
             </Button>
             <Button
-              onClick={() => null}
               className={`${css.createEventButton} ${css.submitButton}`}
               id='create-event-submit'
             >

@@ -220,7 +220,6 @@ export const EditUserPage = () => {
               {translation.back}
             </Button>
             <Button
-              onClick={() => null}
               className={`${css.editUserButton} ${css.submitButton}`}
               id='update-user-submit'
               disabled={isSaving || !isEditing}

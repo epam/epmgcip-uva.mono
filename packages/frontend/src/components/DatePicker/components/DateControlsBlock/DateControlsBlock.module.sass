@@ -1,0 +1,23 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.dateControlsBlock
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 5px 0
+
+    .dateControlsBlockButton
+        @extend .T1
+        background-color: colors.$blue-light
+        color: colors.$white
+        border: 0
+        border-radius: 5px
+        padding: 10px 16px
+        cursor: pointer
+
+        &:hover
+            opacity: 0.75
+
+    .dateControlsMonth
+        @extend .T1

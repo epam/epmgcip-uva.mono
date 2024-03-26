@@ -2,8 +2,8 @@ import { getClassesList } from 'src/utils/getClassesList';
 import css from './Button.module.sass';
 
 interface ButtonProps {
-  children: JSX.Element | string;
-  onClick: () => void;
+  children: JSX.Element | string | number;
+  onClick?: () => void;
   className?: string;
   id?: string;
   disabled?: boolean;

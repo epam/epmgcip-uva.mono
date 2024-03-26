@@ -24,7 +24,7 @@ export interface IState {
     userSearchInput: string;
     scrollSize: number;
     scrollDirection: ScrollDirection;
-  }
+  };
   loading: boolean;
   error: null | string;
 }
@@ -56,14 +56,14 @@ export enum EventStatus {
 export enum Gender {
   Men = 'men',
   Women = 'women',
-  Any = 'any'
+  Any = 'any',
 }
 
 export enum Language {
   Russian = 'russian',
   Uzbek = 'uzbek',
   English = 'english',
-  Qoraqalpoq = 'qoraqalpoq'
+  Qoraqalpoq = 'qoraqalpoq',
 }
 
 export interface IEvent {
@@ -77,12 +77,12 @@ export interface IEvent {
   duration: string;
   registrationDate: string;
   gender: Gender;
-  ageMin: string;
-  ageMax: string;
-  language: string;
+  ageMin: number;
+  ageMax: number;
+  language: Language[];
   volunteersQuantity: string;
   status: EventStatus;
-  imageUrl: string;
+  image: File;
   endDate?: string;
   telegramChannelLink?: string;
 }
@@ -90,4 +90,26 @@ export interface IEvent {
 export interface IOption {
   name: string;
   value: string;
+}
+
+export enum ImageType {
+  Webp = 'image/webp',
+  Jpeg = 'image/jpeg',
+  Jpg = 'image/jpg',
+  Png = 'image/png',
+}
+
+export enum Month {
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
 }

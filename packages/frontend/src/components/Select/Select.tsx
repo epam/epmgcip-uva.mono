@@ -1,9 +1,10 @@
 import { getClassesList } from 'src/utils/getClassesList';
 import css from './Select.module.sass';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ArrowSvg from './assets/arrow.svg';
 import { IOption } from 'src/types';
 import { isValueSelected, setMultipleValue, showCurrentValues } from './utils';
+import { useClickOutside } from 'src/hooks/useClickOutside';
 
 interface SelectProps<T> {
   value: T;
@@ -63,23 +64,7 @@ export const Select = <T,>({
     !multiple && setIsSelectOpen(!isSelectOpen);
   };
 
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (
-        currentSelector &&
-        currentSelector.current &&
-        target &&
-        !currentSelector.current.contains(target as Node)
-      ) {
-        setIsSelectOpen(() => false);
-      }
-    };
-
-    document.addEventListener('click', clickHandler);
-    return () => {
-      document.removeEventListener('click', clickHandler);
-    };
-  }, []);
+  useClickOutside(currentSelector, () => setIsSelectOpen(false))
 
   return (
     <label className={labelClasses} ref={currentSelector}>

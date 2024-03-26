@@ -1,0 +1,31 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.dateItem,
+.emptyDateItem
+    @extend .T1
+    border: 0
+    background-color: transparent
+    outline: none
+    padding: 8px 6px
+    border-radius: 5px
+
+.dateItem
+    cursor: pointer
+    justify-content: center
+
+    &:hover
+       background-color: colors.$blue-light
+       color: colors.$white
+
+    &:disabled
+        background-color: colors.$white
+        color: colors.$gray-200
+
+        &:hover
+            color: colors.$gray-200
+            cursor: not-allowed
+
+.selected
+    background-color: colors.$blue-light
+    color: colors.$white

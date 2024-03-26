@@ -143,7 +143,6 @@ export const CreateUserPage = () => {
               {translation.back}
             </Button>
             <Button
-              onClick={() => null}
               className={`${css.createUserButton} ${css.submitButton}`}
               id='create-user-submit'
               disabled={isCreating}
