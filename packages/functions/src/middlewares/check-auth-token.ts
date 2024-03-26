@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { logger } from "firebase-functions/v1";
 
-// @ts-ignore
+// @ts-expect-error No return need because of next()
 export const checkAuthToken = (
   req: Request,
   res: Response,
@@ -23,7 +23,7 @@ const validateToken = (token: string) => {
   const accessToken = token.split(" ")[1];
   try {
     // TODO: Verify the JWT token
-    return true;
+    return accessToken && true;
   } catch (error) {
     return false;
   }

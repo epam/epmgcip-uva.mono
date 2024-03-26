@@ -1,6 +1,6 @@
-import express from "express";
+import { Router } from "express";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/auth", (req, res) =>
   res.status(200).json({
