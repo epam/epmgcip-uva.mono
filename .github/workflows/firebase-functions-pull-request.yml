@@ -1,4 +1,4 @@
-name: Quality Gates for Firebase Functions on PR
+name: Lint & Build Firebase Functions on PR
 "on":
   pull_request:
     branches:
@@ -23,5 +23,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
 
-      - name: Install dependencies & build functions
-        run: yarn install --frozen-lockfile && yarn build:functions
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint functions
+        run: yarn workspace:functions:lint
+
+      - name: Build functions
+        run: yarn build:functions

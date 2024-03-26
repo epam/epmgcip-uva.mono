@@ -14,6 +14,7 @@
     "scripts": {
         "workspace:functions:build": "yarn workspace uva-functions build",
         "workspace:functions:start": "yarn workspace uva-functions start",
+        "workspace:functions:lint": "yarn workspace uva-functions lint",
         "workspace:frontend:build": "yarn workspace uva-frontend build",
         "workspace:frontend:start": "yarn workspace uva-frontend dev",
         "workspace:frontend:lint": "yarn workspace uva-frontend lint",
