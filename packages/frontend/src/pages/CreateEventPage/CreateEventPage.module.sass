@@ -2,7 +2,6 @@
 @import 'src/style/typography'
 
 .createEventWrapper
-    padding: 24px
     width: 100%
     height: calc(100vh - 46px)
     box-sizing: border-box
@@ -12,7 +11,7 @@
     .createEventTitle
         @extend .H3
         color: colors.$gray-600
-        margin-bottom: 18px
+        padding: 18px 24px 24px
 
     .createEventForm
         display: flex
@@ -24,7 +23,8 @@
             color: colors.$gray-200
         
         .buttonsPanel
-            width: 100%
+            width: calc(100vw - 48px)
+            max-width: calc(768px - 48px)
             margin-top: 18px
             display: flex
             flex-direction: row
@@ -57,3 +57,7 @@
 
                 &:hover
                     background-color: colors.$blue-light
+
+.createEventPadding
+    padding-left: 24px
+    padding-right: 24px

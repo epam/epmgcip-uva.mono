@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: DatePicker > should render 1`] = `
+<div>
+  <div
+    class="_datePickerWrapper_67f961"
+  >
+    <label
+      class="_label_67f961"
+    >
+      <div
+        class="_datePicker_67f961"
+      >
+        Ввод
+        <img
+          class="_pickerCalendar_67f961"
+          src="/packages/frontend/src/components/DatePicker/assets/calendar.svg"
+        />
+      </div>
+    </label>
+  </div>
+</div>
+`;

@@ -1,4 +1,12 @@
-import { EventStatus, Gender, Language, UserRole, UserStatus } from './types';
+import {
+  EventStatus,
+  Gender,
+  ImageType,
+  Language,
+  Month,
+  UserRole,
+  UserStatus,
+} from './types';
 import translation from 'src/translations/Russian.json';
 
 export const ROOT_ROUTE = '/';
@@ -30,6 +38,10 @@ export const NOTIFICATIONS = (value?: string) => ({
   USER_DELETED: `Пользователь ${value} успешно удален`,
   USER_DELETE_ERROR: `Ошибка при удалении пользователя ${value}`,
   USER_DOES_NOT_HAVE_ACCESS: translation.userDoesNotHaveAccess,
+  IMAGE_TOO_BIG:
+    'Извините, загрузка изображения невозможна. Размер не должен превышать 10MB',
+  IMAGE_WRONG_TYPE:
+    'Извините, загрузка изображения невозможна. Разрешены следующие форматы изображений: png, jpg, jpeg, webp',
 });
 
 export const DELETE_USER_QUESTION = (value: string) =>
@@ -45,7 +57,8 @@ export const EMPTY_USER = {
   status: UserStatus.Inactive,
 };
 
-export const DEVELOPMENT_ENVIRONMENT_URL = 'https://epmgcip-uva-develop.web.app/';
+export const DEVELOPMENT_ENVIRONMENT_URL =
+  'https://epmgcip-uva-develop.web.app/';
 export const LOCAL_OR_TEST_ENVIRONMENTS = ['localhost', 'epmgcip-uva-develop'];
 
 export const VOLUNTEER_GENDER = [
@@ -59,9 +72,45 @@ export const LANGUAGE = [
   { name: translation.uzbek, value: Language.Uzbek },
   { name: translation.english, value: Language.English },
   { name: translation.qoraqalpoq, value: Language.Qoraqalpoq },
-]
+];
 
 export const EVENT_STATUS = [
   { name: translation.active, value: EventStatus.Active },
   { name: translation.draft, value: EventStatus.Draft },
-]
+];
+
+export const IMAGE_TYPE = [
+  ImageType.Jpeg,
+  ImageType.Jpg,
+  ImageType.Png,
+  ImageType.Webp,
+];
+
+// export const MONTHS = {
+//   [Month.January]: translation.january,
+//   [Month.February]: translation.february,
+//   [Month.March]: translation.march,
+//   [Month.April]: translation.april,
+//   [Month.May]: translation.may,
+//   [Month.June]: translation.june,
+//   [Month.July]: translation.july,
+//   [Month.August ]: translation.august,
+//   [Month.September]: translation.september,
+//   [Month.October]: translation.october,
+//   [Month.November]: translation.november,
+//   [Month.December]: translation.december,
+// };
+export const MONTHS = [
+  { name: translation.january, value: Month.January },
+  { name: translation.february, value: Month.February },
+  { name: translation.march, value: Month.March },
+  { name: translation.april, value: Month.April },
+  { name: translation.may, value: Month.May },
+  { name: translation.june, value: Month.June },
+  { name: translation.july, value: Month.July },
+  { name: translation.august, value: Month.August },
+  { name: translation.september, value: Month.September },
+  { name: translation.october, value: Month.October },
+  { name: translation.november, value: Month.November },
+  { name: translation.december, value: Month.December },
+];

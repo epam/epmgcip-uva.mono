@@ -1,0 +1,49 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.datePickerWrapper
+    position: relative
+    display: flex
+    flex-direction: column
+    align-items: center
+
+.label
+    @extend .H6
+    display: flex
+    flex-direction: column
+    margin-bottom: 18px
+
+.datePickerRequired
+    color: colors.$red
+
+.datePicker
+    @extend .T1
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+    height: 48px
+    border: 1px solid colors.$gray-200
+    border-radius: 8px
+    background-color: colors.$white
+    padding: 12px
+    box-sizing: border-box
+    margin-top: 8px
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    cursor: pointer
+
+    &::placeholder
+        color: colors.$gray-200
+
+.pickerCalendar
+    width: 14px
+
+.datePickerError
+    border-color: colors.$red
+
+.validationError
+    @extend .T3
+    align-self: flex-start
+    color: colors.$red
+    margin-top: 2px
+    margin-bottom: 0
