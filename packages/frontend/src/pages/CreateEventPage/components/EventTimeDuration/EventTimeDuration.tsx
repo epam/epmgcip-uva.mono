@@ -7,6 +7,10 @@ interface EventTimeDurationProps {
   setEventStartTime: React.Dispatch<React.SetStateAction<string>>;
   eventEndTime: string;
   setEventEndTime: React.Dispatch<React.SetStateAction<string>>;
+  isValidationErrorForStart?: boolean;
+  errorMessageForStart?: string;
+  isValidationErrorForEnd?: boolean;
+  errorMessageForEnd?: string;
 }
 
 export const EventTimeDuration = ({
@@ -14,6 +18,10 @@ export const EventTimeDuration = ({
   setEventStartTime,
   eventEndTime,
   setEventEndTime,
+  isValidationErrorForStart,
+  errorMessageForStart,
+  isValidationErrorForEnd,
+  errorMessageForEnd,
 }: EventTimeDurationProps) => {
   return (
     <>
@@ -30,9 +38,10 @@ export const EventTimeDuration = ({
             value={eventStartTime}
             setChange={setEventStartTime}
             type='time'
-            max={eventEndTime}
             required
             inputClassName={css.eventTimeDurationInput}
+            isValidationError={isValidationErrorForStart}
+            errorMessage={errorMessageForStart}
           />
         </div>
         <div className={css.eventTimeDurationContainer}>
@@ -43,9 +52,10 @@ export const EventTimeDuration = ({
             value={eventEndTime}
             setChange={setEventEndTime}
             type='time'
-            min={eventStartTime}
             required
             inputClassName={css.eventTimeDurationInput}
+            isValidationError={isValidationErrorForEnd}
+            errorMessage={errorMessageForEnd}
           />
         </div>
       </div>

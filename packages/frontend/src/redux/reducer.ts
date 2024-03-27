@@ -1,4 +1,4 @@
-import { IAction, IState, IUser, ScrollDirection } from 'src/types';
+import { IAction, IEvent, IState, IUser, ScrollDirection } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
   SET_SHOW_MENU,
@@ -7,11 +7,13 @@ import {
   SET_USER_SEARCH_INPUT,
   SET_MANAGE_USERS_SCROLL_SIZE,
   SET_MANAGE_USERS_SCROLL_DIRECTION,
+  ADD_EVENTS_TO_LIST,
 } from './types';
 
 const initialState: IState = {
   editor: {} as IUser,
   usersList: [] as IUser[],
+  eventsList: [] as IEvent[],
   manageUsersPage: {
     userSearchInput: '',
     scrollDirection: ScrollDirection.Down,
@@ -45,6 +47,11 @@ const rootReducer = (state = initialState, action: IAction) => {
       return {
         ...state,
         usersList: [...action.payload],
+      };
+    case ADD_EVENTS_TO_LIST:
+      return {
+        ...state,
+        eventsList: [...action.payload, ...state.eventsList],
       };
     case SET_USER_SEARCH_INPUT:
       return {

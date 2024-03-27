@@ -42,6 +42,9 @@ export const NOTIFICATIONS = (value?: string) => ({
     'Извините, загрузка изображения невозможна. Размер не должен превышать 10MB',
   IMAGE_WRONG_TYPE:
     'Извините, загрузка изображения невозможна. Разрешены следующие форматы изображений: png, jpg, jpeg, webp',
+  EVENT_EXISTS: `Извините, событие c id ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь с администратору`,
+  EVENT_CREATED: `Событие ${value} успешно создано`,
+  EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
 });
 
 export const DELETE_USER_QUESTION = (value: string) =>

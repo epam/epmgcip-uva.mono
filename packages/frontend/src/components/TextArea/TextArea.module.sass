@@ -10,11 +10,12 @@
 .inputRequired
     color: colors.$red
 
-.input
+.textArea
     @extend .T1
+    font-family: Inter
     width: calc(100vw - 48px)
     max-width: calc(768px - 48px)
-    height: 48px
+    height: 148px
     border: 1px solid colors.$gray-200
     border-radius: 8px
     background-color: colors.$white
@@ -24,10 +25,6 @@
 
     &::placeholder
         color: colors.$gray-200
-
-    &[type='time']
-        color: black
-        text-align: left
 
 .inputError
     border-color: colors.$red

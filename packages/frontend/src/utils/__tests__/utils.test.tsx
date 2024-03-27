@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getClassesList } from '../getClassesList';
 import { getSearch } from '../getSearch';
 import { IUser, UserRole, UserStatus } from 'src/types';
-import { validateValues } from '../validateValues';
+import { validateUserValues } from '../validateUserValues';
 import translation from 'src/translations/Russian.json';
 import { checkUserAuthorization } from '../checkUserAuthorization';
 import { render, screen } from '@testing-library/react';
@@ -96,9 +96,9 @@ describe('Testing: utils', () => {
     ${{ role: filledFieldsMock.role }}                 | ${{ telegramName: translation.enterTelegramName, name: translation.enterName }}
     ${{ ...filledFieldsMock, name: veryLongNameMock }} | ${{ name: translation.nameTooLong }}
   `(
-    'validateValues should return correct result for inputValues: $inputValues',
+    'validateUserValues should return correct result for inputValues: $inputValues',
     ({ inputValues, expected }) => {
-      const received = validateValues(inputValues);
+      const received = validateUserValues(inputValues);
 
       expect(received).toStrictEqual(expected);
     }
@@ -121,9 +121,9 @@ describe('Testing: utils', () => {
     ${{ telegramName: '@test(' }}             | ${{ telegramName: translation.telegramNameIncorrect }}
     ${{ telegramName: '@test)' }}             | ${{ telegramName: translation.telegramNameIncorrect }}
   `(
-    'validateValues (telegramName) should return correct result for inputValues: $inputValues',
+    'validateUserValues (telegramName) should return correct result for inputValues: $inputValues',
     ({ inputValues, expected }) => {
-      const received = validateValues({ ...filledFieldsMock, ...inputValues });
+      const received = validateUserValues({ ...filledFieldsMock, ...inputValues });
 
       expect(received).toStrictEqual(expected);
     }

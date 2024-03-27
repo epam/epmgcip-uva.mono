@@ -24,7 +24,7 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { updateUsersList } from 'src/redux/actions';
 import { editUser } from 'src/utils/editUser';
 import { deleteUser } from 'src/utils/deleteUser';
-import { validateValues } from 'src/utils/validateValues';
+import { validateUserValues } from 'src/utils/validateUserValues';
 
 export const EditUserPage = () => {
   const navigate = useNavigate();
@@ -133,7 +133,7 @@ export const EditUserPage = () => {
     }
 
     setValidationErrors(
-      validateValues({
+      validateUserValues({
         name,
         telegramName,
         role,
