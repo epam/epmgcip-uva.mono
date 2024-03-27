@@ -2,7 +2,7 @@ import {Router} from "express";
 
 const router = Router();
 
-router.post("/auth", (req, res) =>
+router.post("/", (req, res) =>
   res.status(200).json({
     status: "auth endpoint",
   })
