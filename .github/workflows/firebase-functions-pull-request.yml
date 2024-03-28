@@ -1,0 +1,33 @@
+name: Lint & Build Firebase Functions on PR
+"on":
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - "packages/functions/**"
+      - ".github/workflows/firebase-functions-*.yml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint functions
+        run: yarn workspace:functions:lint
+
+      - name: Build functions
+        run: yarn build:functions

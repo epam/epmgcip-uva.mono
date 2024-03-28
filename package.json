@@ -13,7 +13,8 @@
     },
     "scripts": {
         "workspace:functions:build": "yarn workspace uva-functions build",
-        "workspace:functions:start:": "yarn workspace uva-functions start",
+        "workspace:functions:start": "yarn workspace uva-functions start",
+        "workspace:functions:lint": "yarn workspace uva-functions lint",
         "workspace:frontend:build": "yarn workspace uva-frontend build",
         "workspace:frontend:start": "yarn workspace uva-frontend dev",
         "workspace:frontend:lint": "yarn workspace uva-frontend lint",
@@ -23,6 +24,7 @@
         "build:frontend": "yarn workspace:frontend:build",
         "deploy:functions": "firebase deploy --only functions",
         "deploy:frontend": "firebase deploy --only hosting",
+        "be:dev": "yarn workspace:functions:start",
         "web:dev": "yarn workspace:frontend:start",
         "test": "yarn vitest"
     },

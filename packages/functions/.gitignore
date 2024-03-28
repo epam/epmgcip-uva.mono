@@ -1,29 +1,12 @@
-## Compiled JavaScript files
-**/*.js
-**/*.js.map
+# Compiled JavaScript files
+build/**/*.js
+build/**/*.js.map
 
-# Typescript v1 declaration files
+# TypeScript v1 declaration files
 typings/
 
+# Node.js dependency directory
 node_modules/
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-firebase-debug.log*
-
-# Firebase cache
-.firebase/
-
-# Firebase config
-
-# Uncomment this if you'd like others to create their own Firebase project.
-# For a team working on the same Firebase project(s), it is recommended to leave
-# it commented so all members can deploy to the same project(s) in .firebaserc.
-# .firebaserc
 
 # Runtime data
 pids
@@ -71,4 +54,4 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+.env    

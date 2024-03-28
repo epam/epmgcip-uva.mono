@@ -1,20 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-      "module": "commonjs",
-      "noImplicitReturns": true,
-      "noUnusedLocals": false,
-      "outDir": "build",
-      "sourceMap": true,
-      "strict": true,
-      "target": "es2017",
-      "esModuleInterop": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "resolveJsonModule": true
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "outDir": "build",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
   "compileOnSave": true,
-  "include": [
-      "src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }
