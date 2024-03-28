@@ -22,7 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Dispatch } from '@reduxjs/toolkit';
 import { addUsersToList } from 'src/redux/actions';
 import { createUser } from 'src/utils/createUser';
-import { validateValues } from 'src/utils/validateValues';
+import { validateUserValues } from 'src/utils/validateUserValues';
 
 export const CreateUserPage = () => {
   const navigate = useNavigate();
@@ -35,10 +35,8 @@ export const CreateUserPage = () => {
   const [telegramName, setTelegramName] = useState<string>('');
   const [role, setRole] = useState('');
   const [status, setStatus] = useState<UserStatus>(UserStatus.Active);
-  const [validationErrors, setValidationErrors] = useState<IValidationError>(
-    {}
-  );
-  const [isStartSubmitting, setIsStartSubmitting] = useState(false);
+  const [validation, setValidation] = useState<IValidationError>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
 
   const handleCreateUser = () => {
@@ -47,9 +45,9 @@ export const CreateUserPage = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    setIsStartSubmitting(() => true);
+    setIsSubmitting(() => true);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validation).length === 0) {
       const currentDate = new Date().toString();
       const newUser: IUser = {
         name,
@@ -83,8 +81,8 @@ export const CreateUserPage = () => {
       setTelegramName((previousValue) => `@${previousValue}`);
     }
 
-    setValidationErrors(
-      validateValues({
+    setValidation(
+      validateUserValues({
         name,
         telegramName,
         role,
@@ -104,8 +102,8 @@ export const CreateUserPage = () => {
             setChange={setName}
             labelText={translation.name}
             required
-            isValidationError={isStartSubmitting && !!validationErrors.name}
-            errorMessage={validationErrors.name}
+            isValidationError={isSubmitting && !!validation.name}
+            errorMessage={validation.name}
           />
           <Input
             value={telegramName}
@@ -113,9 +111,9 @@ export const CreateUserPage = () => {
             labelText={translation.telegramName}
             required
             isValidationError={
-              isStartSubmitting && !!validationErrors.telegramName
+              isSubmitting && !!validation.telegramName
             }
-            errorMessage={validationErrors.telegramName}
+            errorMessage={validation.telegramName}
           />
           <Select
             value={role}
@@ -125,8 +123,8 @@ export const CreateUserPage = () => {
             required
             placeholder={translation.choice}
             selectClassName={!role ? css.selectPlaceholder : undefined}
-            isValidationError={isStartSubmitting && !!validationErrors.role}
-            errorMessage={validationErrors.role}
+            isValidationError={isSubmitting && !!validation.role}
+            errorMessage={validation.role}
           />
           <Select
             value={status}

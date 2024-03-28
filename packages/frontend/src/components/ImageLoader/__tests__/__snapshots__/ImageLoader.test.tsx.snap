@@ -3,21 +3,25 @@
 exports[`Testing: ImageLoader > should render 1`] = `
 <div>
   <div
-    class="_imageLoader_d597d1"
+    class="_imageLoaderWrapper_d597d1"
   >
-    <label
-      class="_imageLoaderContainer_d597d1"
+    <div
+      class="_imageLoader_d597d1"
     >
-      <img
-        class="_downloadButton_d597d1"
-        src="/packages/frontend/src/components/ImageLoader/assets/camera.svg"
-        width="19"
-      />
-      <input
-        class="_imageLoaderInput_d597d1"
-        type="file"
-      />
-    </label>
+      <label
+        class="_imageLoaderContainer_d597d1"
+      >
+        <img
+          class="_downloadButton_d597d1"
+          src="/packages/frontend/src/components/ImageLoader/assets/camera.svg"
+          width="19"
+        />
+        <input
+          class="_imageLoaderInput_d597d1"
+          type="file"
+        />
+      </label>
+    </div>
   </div>
 </div>
 `;

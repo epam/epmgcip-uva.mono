@@ -1,4 +1,4 @@
-import { IUser, ScrollDirection } from 'src/types';
+import { IEvent, IUser, ScrollDirection } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
   SET_SHOW_MENU,
@@ -7,6 +7,7 @@ import {
   SET_USER_SEARCH_INPUT,
   SET_MANAGE_USERS_SCROLL_SIZE,
   SET_MANAGE_USERS_SCROLL_DIRECTION,
+  ADD_EVENTS_TO_LIST,
 } from './types';
 
 export const setEditor = (editor: IUser) => ({
@@ -43,3 +44,8 @@ export const setManageUsersScrollDirection = (scrollDirection: ScrollDirection) 
   type: SET_MANAGE_USERS_SCROLL_DIRECTION,
   payload: scrollDirection,
 })
+
+export const addEventsToList = (events: IEvent[]) => ({
+  type: ADD_EVENTS_TO_LIST,
+  payload: events,
+});

@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: TextArea > should render 1`] = `
+<div>
+  <label
+    class="_label_6eef19"
+  >
+    <div>
+      Test Label
+    </div>
+    <textarea
+      class="_textArea_6eef19"
+      placeholder="Ввод"
+    >
+      Test Value
+    </textarea>
+  </label>
+</div>
+`;

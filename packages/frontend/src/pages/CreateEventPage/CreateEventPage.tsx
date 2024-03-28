@@ -6,9 +6,16 @@ import {
   ROOT_ROUTE,
   VOLUNTEER_GENDER,
 } from 'src/constants';
-import { EventStatus, Gender, IEvent, IState, Language } from 'src/types';
+import {
+  EventStatus,
+  Gender,
+  IEvent,
+  IState,
+  IValidationError,
+  Language,
+} from 'src/types';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import css from './CreateEventPage.module.sass';
 import translation from 'src/translations/Russian.json';
 import { Button, Input, Loader, Select } from 'src/components';
@@ -18,12 +25,20 @@ import { Slider } from 'src/components/Slider/Slider';
 import { ImageLoader } from 'src/components/ImageLoader/ImageLoader';
 import { v4 as uuidv4 } from 'uuid';
 import { DatePicker } from 'src/components/DatePicker/DatePicker';
+import { TextArea } from 'src/components/TextArea/TextArea';
+import { createEvent } from 'src/utils/createEvent';
+import { Dispatch } from '@reduxjs/toolkit';
+import { addEventsToList } from 'src/redux/actions';
+import { validatEventValues } from 'src/utils/validateEventValues';
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
+  const dispatch: Dispatch = useDispatch();
   const editor = useSelector((state: IState) => state.editor);
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validation, setValidation] = useState<IValidationError>({});
 
   const [image, setImage] = useState<File | null>(null);
   const [eventName, setEventName] = useState('');
@@ -50,57 +65,107 @@ export const CreateEventPage = () => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    setIsCreating(() => true);
+    setIsSubmitting(() => true);
 
-    const newEvent: IEvent = {
-      id: uuidv4(),
-      name: eventName,
-      description: eventDescription,
-      place: eventPlace,
-      startDate: eventStartDate,
-      startTime: eventStartTime,
-      endTime: eventEndTime,
-      duration: eventDuration,
-      registrationDate: eventRegistrationDate,
-      gender: gender as Gender,
-      ageMin: minVolunteersAge,
-      ageMax: maxVolunteersAge,
-      language: eventLanguage,
-      volunteersQuantity: volunteersQuantity,
-      status: eventStatus,
-      image: image as File,
-      endDate: eventEndDate,
-      telegramChannelLink,
-    };
+    if (Object.keys(validation).length === 0) {
+      const eventId = uuidv4();
+      const newEvent: IEvent = {
+        id: eventId,
+        name: eventName,
+        description: eventDescription,
+        place: eventPlace,
+        startDate: eventStartDate,
+        startTime: eventStartTime,
+        endTime: eventEndTime,
+        duration: eventDuration,
+        registrationDate: eventRegistrationDate,
+        gender: gender as Gender,
+        ageMin: minVolunteersAge,
+        ageMax: maxVolunteersAge,
+        language: eventLanguage,
+        volunteersQuantity: volunteersQuantity,
+        status: eventStatus,
+        image: `${
+          import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
+        }/public/${eventId}`,
+        endDate: eventEndDate,
+        telegramChannelLink,
+      };
 
-    console.log(newEvent);
+      setIsCreating(() => true);
 
-    handleCreateEvent();
+      createEvent(newEvent, image as File).then((result) => {
+        if (result) {
+          dispatch(addEventsToList([newEvent]));
+        }
+        handleCreateEvent();
+      });
+    }
   };
 
   useEffect(() => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
-  }, [editor, navigate]);
+
+    setValidation(
+      validatEventValues({
+        name: eventName,
+        description: eventDescription,
+        place: eventPlace,
+        startDate: eventStartDate,
+        startTime: eventStartTime,
+        endTime: eventEndTime,
+        duration: eventDuration,
+        registrationDate: eventRegistrationDate,
+        gender: gender as Gender,
+        language: eventLanguage.join(''),
+        volunteersQuantity: volunteersQuantity,
+        image: image ? image.name : '',
+      })
+    );
+  }, [
+    editor,
+    navigate,
+    eventName,
+    eventDescription,
+    eventStartDate,
+    image,
+    eventPlace,
+    eventStartTime,
+    eventEndTime,
+    eventDuration,
+    eventRegistrationDate,
+    gender,
+    eventLanguage,
+    volunteersQuantity,
+  ]);
 
   return (
     isEditorHasPermissions && (
       <div className={css.createEventWrapper}>
         <div className={css.createEventTitle}>{translation.createEvent}</div>
         <form className={css.createEventForm} onSubmit={handleSubmit}>
-          <ImageLoader setImage={setImage} />
+          <ImageLoader
+            setImage={setImage}
+            isValidationError={isSubmitting && !!validation.image}
+            errorMessage={validation.image}
+          />
           <Input
             value={eventName}
             setChange={setEventName}
             labelText={translation.title}
             required
             labelClassName={css.createEventPadding}
+            isValidationError={isSubmitting && !!validation.name}
+            errorMessage={validation.name}
           />
-          <Input
+          <TextArea
             value={eventDescription}
             setChange={setEventDescription}
             labelText={translation.description}
             required
             labelClassName={css.createEventPadding}
+            isValidationError={isSubmitting && !!validation.description}
+            errorMessage={validation.description}
           />
           <Input
             value={eventPlace}
@@ -108,6 +173,8 @@ export const CreateEventPage = () => {
             labelText={translation.place}
             required
             labelClassName={css.createEventPadding}
+            isValidationError={isSubmitting && !!validation.place}
+            errorMessage={validation.place}
           />
           <DatePicker
             value={eventStartDate}
@@ -116,22 +183,31 @@ export const CreateEventPage = () => {
             max={eventEndDate}
             required
             labelClassName={css.createEventPadding}
-            datePickerClassName={!eventStartDate ? css.selectPlaceholder : undefined}
+            datePickerClassName={
+              !eventStartDate ? css.selectPlaceholder : undefined
+            }
+            isValidationError={isSubmitting && !!validation.startDate}
+            errorMessage={validation.startDate}
           />
           <EventTimeDuration
             eventStartTime={eventStartTime}
             setEventStartTime={setEventStartTime}
             eventEndTime={eventEndTime}
             setEventEndTime={setEventEndTime}
+            isValidationErrorForStart={isSubmitting && !!validation.startTime}
+            errorMessageForStart={validation.startTime}
+            isValidationErrorForEnd={isSubmitting && !!validation.endTime}
+            errorMessageForEnd={validation.endTime}
           />
           <DatePicker
             value={eventEndDate}
             setChange={setEventEndDate}
             labelText={translation.eventEndDate}
             min={eventStartDate}
-            required
             labelClassName={css.createEventPadding}
-            datePickerClassName={!eventEndDate ? css.selectPlaceholder : undefined}
+            datePickerClassName={
+              !eventEndDate ? css.selectPlaceholder : undefined
+            }
           />
           <Input
             value={eventDuration}
@@ -140,6 +216,8 @@ export const CreateEventPage = () => {
             labelText={translation.timeDuration}
             required
             labelClassName={css.createEventPadding}
+            isValidationError={isSubmitting && !!validation.duration}
+            errorMessage={validation.duration}
           />
           <DatePicker
             value={eventRegistrationDate}
@@ -148,7 +226,11 @@ export const CreateEventPage = () => {
             max={eventStartDate}
             required
             labelClassName={css.createEventPadding}
-            datePickerClassName={!eventRegistrationDate ? css.selectPlaceholder : undefined}
+            datePickerClassName={
+              !eventRegistrationDate ? css.selectPlaceholder : undefined
+            }
+            isValidationError={isSubmitting && !!validation.registrationDate}
+            errorMessage={validation.registrationDate}
           />
           <Select
             value={gender}
@@ -158,6 +240,8 @@ export const CreateEventPage = () => {
             required
             placeholder={translation.choice}
             selectClassName={!gender ? css.selectPlaceholder : undefined}
+            isValidationError={isSubmitting && !!validation.gender}
+            errorMessage={validation.gender}
           />
           <Slider
             min={16}
@@ -176,7 +260,11 @@ export const CreateEventPage = () => {
             multiple
             required
             placeholder={translation.choice}
-            selectClassName={eventLanguage.length === 0 ? css.selectPlaceholder : undefined}
+            selectClassName={
+              eventLanguage.length === 0 ? css.selectPlaceholder : undefined
+            }
+            isValidationError={isSubmitting && !!validation.language}
+            errorMessage={validation.language}
           />
           <Input
             value={volunteersQuantity}
@@ -185,6 +273,8 @@ export const CreateEventPage = () => {
             labelText={translation.volunteersQuantity}
             required
             labelClassName={css.createEventPadding}
+            isValidationError={isSubmitting && !!validation.volunteersQuantity}
+            errorMessage={validation.volunteersQuantity}
           />
           <Input
             value={telegramChannelLink}

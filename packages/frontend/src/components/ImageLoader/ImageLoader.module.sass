@@ -1,34 +1,44 @@
 @use 'src/style/colors'
 @import 'src/style/typography'
 
-.imageLoader
+.imageLoaderWrapper
     width: 100%
-    height: 180px
-    background-color: colors.$gray-200
     margin-bottom: 18px
 
-    .imageLoaderContainer
-        display: flex
-        flex-direction: row
-        justify-content: end
-        align-items: flex-end
-        height: 100%
+    .imageLoader
+        width: 100%
+        height: 180px
+        background-color: colors.$gray-200
 
-        .downloadButton
-            position: absolute
-            z-index: 1
-            background-color: colors.$white
-            border-radius: 8px
-            border: 1px solid colors.$blue-dark
-            padding: 15px 14px
-            margin: 8px 20px
-            cursor: pointer
-
-        .imageLoaderInput
-            display: none
-
-        .imagePreview
-            width: 100%
+        .imageLoaderContainer
+            display: flex
+            flex-direction: row
+            justify-content: end
+            align-items: flex-end
             height: 100%
-            object-fit: cover
 
+            .downloadButton
+                position: absolute
+                z-index: 1
+                background-color: colors.$white
+                border-radius: 8px
+                border: 1px solid colors.$blue-dark
+                padding: 15px 14px
+                margin: 8px 20px
+                cursor: pointer
+
+            .imageLoaderInput
+                display: none
+
+            .imagePreview
+                width: 100%
+                height: 100%
+                object-fit: cover
+
+.validationError
+    @extend .T3
+    align-self: flex-start
+    color: colors.$red
+    margin-top: 2px
+    margin-bottom: 0
+    padding: 0 24px

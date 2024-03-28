@@ -1,55 +1,41 @@
 import { getClassesList } from 'src/utils/getClassesList';
-import css from './Input.module.sass';
+import css from './TextArea.module.sass';
 import translation from 'src/translations/Russian.json';
 
-type InputChange = (value: string) => {
-  type: string;
-  payload: string;
-};
-
-interface InputProps {
+interface TextAreaProps {
   value: string;
-  setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
-  type?: 'text' | 'number' | 'search' | 'time';
+  setChange: React.Dispatch<React.SetStateAction<string>>;
   labelText?: string;
   required?: boolean;
   placeholder?: string;
   labelClassName?: string;
-  inputClassName?: string;
+  textAreaClassName?: string;
   isValidationError?: boolean;
   errorMessage?: string;
 }
 
-const positiveIntegerRegex =/^\d+$/;
-const validateDigitalValue = (value: string) => positiveIntegerRegex.test(value);
-
-export const Input = ({
+export const TextArea = ({
   value,
   setChange,
-  type = 'text',
   labelText,
   required = false,
   placeholder,
   labelClassName,
-  inputClassName,
+  textAreaClassName,
   isValidationError,
   errorMessage,
-}: InputProps) => {
+}: TextAreaProps) => {
   const labelClasses = getClassesList(css.label, labelClassName);
 
-  const inputClasses = getClassesList(
-    css.input,
-    inputClassName,
+  const textAreaClasses = getClassesList(
+    css.textArea,
+    textAreaClassName,
     isValidationError ? css.inputError : undefined
   );
 
-  const handleSetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (type === 'number' && !validateDigitalValue(e.target.value) && e.target.value !== '') {
-      return;
-    }
-
-    setChange(e.target.value)
-  }
+  const handleSetChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setChange(e.target.value);
+  };
 
   return (
     <label className={labelClasses}>
@@ -59,10 +45,9 @@ export const Input = ({
           {required && <span className={css.inputRequired}> *</span>}
         </div>
       )}
-      <input
-        type={type}
+      <textarea
         placeholder={placeholder || translation.input}
-        className={inputClasses}
+        className={textAreaClasses}
         value={value}
         onChange={(e) => handleSetChange(e)}
       />

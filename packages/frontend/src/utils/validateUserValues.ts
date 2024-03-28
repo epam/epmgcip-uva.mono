@@ -1,7 +1,7 @@
 import { IValidationError } from 'src/types';
 import translation from 'src/translations/Russian.json';
 
-export const validateValues = (inputValues: IValidationError) => {
+export const validateUserValues = (inputValues: IValidationError) => {
   const errors = {} as IValidationError;
   const telegramNameRegex = /\B@[a-zA-Z0-9_]+/g;
 
