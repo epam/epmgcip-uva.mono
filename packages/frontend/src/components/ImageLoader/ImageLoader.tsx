@@ -7,12 +7,18 @@ import { IMAGE_TYPE, NOTIFICATIONS } from 'src/constants';
 
 interface ImageLoaderProps {
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
+  isValidationError?: boolean;
+  errorMessage?: string;
 }
 
 const convertBytesToMegabytes = (value: number) =>
   Number((value / (1024 * 1024)).toFixed(4));
 
-export const ImageLoader = ({ setImage }: ImageLoaderProps) => {
+export const ImageLoader = ({
+  setImage,
+  isValidationError,
+  errorMessage,
+}: ImageLoaderProps) => {
   const imageLoaderClasses = getClassesList(css.imageLoader);
   const [preview, setPreview] = useState<string>('');
 
@@ -25,7 +31,7 @@ export const ImageLoader = ({ setImage }: ImageLoaderProps) => {
         return;
       }
 
-      if (!IMAGE_TYPE.some(type => type === imageFile.type)) {
+      if (!IMAGE_TYPE.some((type) => type === imageFile.type)) {
         showNotification(NOTIFICATIONS().IMAGE_WRONG_TYPE, 6000);
         return;
       }
@@ -36,22 +42,29 @@ export const ImageLoader = ({ setImage }: ImageLoaderProps) => {
   };
 
   return (
-    <div className={imageLoaderClasses}>
-      <label className={css.imageLoaderContainer}>
-        <img className={css.downloadButton} width={19} src={CameraSvg} />
-        <input
-          className={css.imageLoaderInput}
-          type='file'
-          onChange={(e) => handleSetImage(e)}
-        />
-        {preview && (
-          <img
-            className={css.imagePreview}
-            src={preview}
-            alt='Your Image Preview'
+    <div className={css.imageLoaderWrapper}>
+      <div className={imageLoaderClasses}>
+        <label className={css.imageLoaderContainer}>
+          <img className={css.downloadButton} width={19} src={CameraSvg} />
+          <input
+            className={css.imageLoaderInput}
+            type='file'
+            onChange={(e) => handleSetImage(e)}
           />
-        )}
-      </label>
+          {preview && (
+            <img
+              className={css.imagePreview}
+              src={preview}
+              alt='Your Image Preview'
+            />
+          )}
+        </label>
+      </div>
+      {isValidationError && (
+        <p className={css.validationError}>
+          {isValidationError && errorMessage}
+        </p>
+      )}
     </div>
   );
 };

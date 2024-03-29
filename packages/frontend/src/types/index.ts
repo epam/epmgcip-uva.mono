@@ -16,38 +16,6 @@ export enum ScrollDirection {
   Down = 'down',
 }
 
-export interface IState {
-  editor: IUser;
-  isMenu: boolean;
-  usersList: IUser[];
-  manageUsersPage: {
-    userSearchInput: string;
-    scrollSize: number;
-    scrollDirection: ScrollDirection;
-  };
-  loading: boolean;
-  error: null | string;
-}
-
-export interface IAction {
-  type: string;
-  payload: never;
-}
-
-export enum UserRole {
-  Admin = 'admin',
-  Coordinator = 'coordinator',
-}
-
-export enum UserStatus {
-  Active = 'active',
-  Inactive = 'inactive',
-}
-
-export interface IValidationError {
-  [key: string]: string;
-}
-
 export enum EventStatus {
   Draft = 'draft',
   Active = 'active',
@@ -82,9 +50,42 @@ export interface IEvent {
   language: Language[];
   volunteersQuantity: string;
   status: EventStatus;
-  image: File;
+  image: string;
   endDate?: string;
   telegramChannelLink?: string;
+}
+
+export interface IState {
+  editor: IUser;
+  isMenu: boolean;
+  usersList: IUser[];
+  eventsList: IEvent[];
+  manageUsersPage: {
+    userSearchInput: string;
+    scrollSize: number;
+    scrollDirection: ScrollDirection;
+  };
+  loading: boolean;
+  error: null | string;
+}
+
+export interface IAction {
+  type: string;
+  payload: never;
+}
+
+export enum UserRole {
+  Admin = 'admin',
+  Coordinator = 'coordinator',
+}
+
+export enum UserStatus {
+  Active = 'active',
+  Inactive = 'inactive',
+}
+
+export interface IValidationError {
+  [key: string]: string;
 }
 
 export interface IOption {
