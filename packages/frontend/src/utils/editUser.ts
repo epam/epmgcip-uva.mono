@@ -8,13 +8,13 @@ import {
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { showNotification } from './showNotification';
-import { getUser } from './getUser';
+import { getUser, getUserDocId } from './getUser';
 import { NOTIFICATIONS } from 'src/constants';
 
 export const editUser = async (
   telegramName: string,
   updatedFields: Partial<IUser>,
-  isShowNotification = true,
+  isShowNotification = true
 ): Promise<boolean> => {
   const user = await getUser(telegramName);
   const usersRef = collection(firebaseDb, 'users');
@@ -27,9 +27,9 @@ export const editUser = async (
 
   try {
     if (updatedFields.telegramName) {
-      const dublicate = await getUser(updatedFields.telegramName);
+      const duplicate = await getUser(getUserDocId(updatedFields.telegramName));
 
-      if (dublicate) {
+      if (duplicate) {
         isShowNotification &&
           showNotification(
             NOTIFICATIONS(updatedFields.telegramName).USER_EXISTS,
@@ -38,7 +38,7 @@ export const editUser = async (
         return false;
       }
 
-      await setDoc(doc(usersRef, updatedFields.telegramName), {
+      await setDoc(doc(usersRef, getUserDocId(updatedFields.telegramName)), {
         ...user,
         ...updatedFields,
       });
