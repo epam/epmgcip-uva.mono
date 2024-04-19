@@ -1,21 +1,22 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { editUser } from './editUser';
 
-export const getUser = async (telegramName: string, telegramId?: number) => {
-  const docRef = doc(firebaseDb, 'users', telegramName);
-  const docSnap = await getDoc(docRef);
+export const getUserDocId = (telegramName: string) => telegramName.toLowerCase();
 
-  if (docSnap.exists()) {
-    return docSnap.data() as IUser;
+/**
+ * Get user by lowercase telegram name.
+ * if not found and telegramId is provided, try to find by telegramId and update telegramName.
+ */
+export const getUser = async (telegramName: string, telegramId?: number) => {
+  const docId = getUserDocId(telegramName);
+
+  const docRef = doc(firebaseDb, 'users', docId);
+  const user = await getDoc(docRef);
+
+  if (user.exists()) {
+    return user.data() as IUser;
   }
 
   if (telegramId) {
@@ -27,7 +28,7 @@ export const getUser = async (telegramName: string, telegramId?: number) => {
     const querySnapshot = await getDocs(queryForUserById);
 
     if (querySnapshot.size === 1) {
-      querySnapshot.forEach((docSnap) => {
+      querySnapshot.forEach(docSnap => {
         const user = docSnap.data() as IUser;
 
         editUser(user.telegramName, { telegramName }, false);

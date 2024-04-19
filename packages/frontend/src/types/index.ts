@@ -2,6 +2,7 @@ export interface IUser {
   id: string;
   name: string;
   telegramName: string;
+  telegramNameLowCase: string;
   role: UserRole;
   status: UserStatus;
   telegramId?: number;

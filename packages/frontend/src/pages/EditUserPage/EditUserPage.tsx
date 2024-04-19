@@ -1,13 +1,8 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Input, Loader, Modal, Select } from 'src/components';
-import css from './EditUserPage.module.sass';
-import {
-  IState,
-  IUser,
-  IValidationError,
-  UserRole,
-  UserStatus,
-} from 'src/types';
 import {
   DELETE_USER_QUESTION,
   EMPTY_USER,
@@ -17,14 +12,19 @@ import {
   USER_ROLES,
   USER_STATUSES,
 } from 'src/constants';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import translation from 'src/translations/Russian.json';
-import { Dispatch } from '@reduxjs/toolkit';
 import { updateUsersList } from 'src/redux/actions';
-import { editUser } from 'src/utils/editUser';
+import translation from 'src/translations/Russian.json';
+import {
+  IState,
+  IUser,
+  IValidationError,
+  UserRole,
+  UserStatus,
+} from 'src/types';
 import { deleteUser } from 'src/utils/deleteUser';
+import { editUser } from 'src/utils/editUser';
 import { validateUserValues } from 'src/utils/validateUserValues';
+import css from './EditUserPage.module.sass';
 
 export const EditUserPage = () => {
   const navigate = useNavigate();
@@ -85,7 +85,13 @@ export const EditUserPage = () => {
 
       editUser(editableTelegramName, updatedFields).then((result) => {
         if (result) {
-          const updatedUser: IUser = { ...editableUser, ...updatedFields };
+          const updatedUser: IUser = {
+             ...editableUser, 
+             ...updatedFields, 
+             telegramNameLowCase: updatedFields.telegramName ?
+                                  updatedFields.telegramName.toLowerCase() :
+                                  editableUser.telegramName.toLowerCase() 
+            };
           const updatedUsersList: IUser[] = [...usersList];
           updatedUsersList[updatedUserIndex] = { ...updatedUser };
 

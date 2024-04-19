@@ -52,6 +52,7 @@ export const CreateUserPage = () => {
       const newUser: IUser = {
         name,
         telegramName,
+        telegramNameLowCase: telegramName.toLowerCase(),
         role: role as UserRole,
         status,
         id: uuidv4(),

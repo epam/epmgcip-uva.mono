@@ -2,7 +2,7 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { showNotification } from './showNotification';
-import { getUser } from './getUser';
+import { getUser, getUserDocId } from './getUser';
 import { NOTIFICATIONS } from 'src/constants';
 
 export const createUser = async (newUser: IUser): Promise<boolean> => {
@@ -15,7 +15,7 @@ export const createUser = async (newUser: IUser): Promise<boolean> => {
   }
 
   try {
-    await setDoc(doc(usersRef, newUser.telegramName), newUser);
+    await setDoc(doc(usersRef, getUserDocId(newUser.telegramName)), newUser);
 
     showNotification(NOTIFICATIONS(newUser.telegramName).USER_CREATED, 3000);
 
