@@ -7,7 +7,9 @@ name: Deploy to Firebase Hosting on PR to main branch
     branches:
       - main
     paths:
-      - '!**/packages/functions/**'
+      - 'packages/frontend/**'
+      - 'packages/shared/**'
+      - '.github/workflows/firebase-main-*.yml'
 env:
   VITE_FIREBASE_API_KEY: ${{secrets.FIREBASE_PRODUCTION_API_KEY}}
   VITE_FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_PRODUCTION_AUTH_DOMAIN}}
