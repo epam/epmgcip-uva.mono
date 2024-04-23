@@ -1,21 +1,23 @@
-import css from './ManageUsersPage.module.sass';
-import { Button, Input, Loader } from 'src/components';
-import { useNavigate } from 'react-router-dom';
-import { CREATE_USER_ROUTE, EVENTS_ROUTE, ROOT_ROUTE } from 'src/constants';
-import { IState, ScrollDirection, UserRole } from 'src/types';
-import { useEffect, useState } from 'react';
-import translation from 'src/translations/Russian.json';
-import { useDispatch, useSelector } from 'react-redux';
-import { UsersBlock } from './components/UsersBlock/UsersBlock';
 import { Dispatch } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Input, Loader } from 'src/components';
+import { Toolbar } from 'src/components/Toolbar/Toolbar';
+import { CREATE_USER_ROUTE, EVENTS_ROUTE, ROOT_ROUTE } from 'src/constants';
 import {
   addUsersToList,
   setManageUsersScrollDirection,
   setManageUsersScrollSize,
   setManageUsersSearchInput,
 } from 'src/redux/actions';
+import translation from 'src/translations/Russian.json';
+import { IState, ScrollDirection, UserRole } from 'src/types';
 import { getAllUsers } from 'src/utils/getAllUsers';
 import { getSearch } from 'src/utils/getSearch';
+import css from './ManageUsersPage.module.sass';
+import { UsersBlock } from './components/UsersBlock/UsersBlock';
+import { PageWrapper } from 'src/components/PageWrapper/PageWrapper';
 
 const minScrollSize = 75;
 
@@ -24,10 +26,7 @@ const handleScrollDirection = (
   setScrollDirection: React.Dispatch<React.SetStateAction<ScrollDirection>>,
   setScrollSize: React.Dispatch<React.SetStateAction<number>>
 ) => {
-  if (
-    scrollSize !== window.scrollY &&
-    Math.abs(window.scrollY - scrollSize) > minScrollSize
-  ) {
+  if (scrollSize !== window.scrollY && Math.abs(window.scrollY - scrollSize) > minScrollSize) {
     window.scrollY > scrollSize
       ? setScrollDirection(ScrollDirection.Up)
       : setScrollDirection(ScrollDirection.Down);
@@ -41,14 +40,9 @@ export const ManageUsersPage = () => {
   const navigate = useNavigate();
   const currentUsersList = useSelector((state: IState) => state.usersList);
   const editor = useSelector((state: IState) => state.editor);
-  const searchInput = useSelector(
-    (state: IState) => state.manageUsersPage.userSearchInput
-  );
-  const setSearchInput = (inputString: string) =>
-    dispatch(setManageUsersSearchInput(inputString));
-  const savedScrollSize = useSelector(
-    (state: IState) => state.manageUsersPage.scrollSize
-  );
+  const searchInput = useSelector((state: IState) => state.manageUsersPage.userSearchInput);
+  const setSearchInput = (inputString: string) => dispatch(setManageUsersSearchInput(inputString));
+  const savedScrollSize = useSelector((state: IState) => state.manageUsersPage.scrollSize);
   const savedScrollDirection = useSelector(
     (state: IState) => state.manageUsersPage.scrollDirection
   );
@@ -67,7 +61,7 @@ export const ManageUsersPage = () => {
     }
 
     if (isLoading) {
-      getAllUsers().then((result) => {
+      getAllUsers().then(result => {
         setIsLoading(false);
         dispatch(addUsersToList(result));
       });
@@ -98,37 +92,38 @@ export const ManageUsersPage = () => {
     };
   }, [dispatch, scrollDirection, scrollSize]);
 
+  if (!isEditorHasPermissions || editor.role !== UserRole.Admin) {
+    return null;
+  }
+
   return (
-    isEditorHasPermissions &&
-    editor.role === UserRole.Admin && (
-      <div className={css.manageUsersWrapper}>
-        <div className={css.manageUsersPanelWrapper}>
+    <PageWrapper
+      toolbar={
+        <>
           {isShowTitleWrapper && (
-            <div className={css.manageUsersTitleWrapper}>
-              <div className={css.manageUsersTitle}>{translation.users}</div>
-              <Button className={css.addUserButton} onClick={handleCreateUser}>
-                {translation.add}
-              </Button>
-            </div>
+            <Toolbar
+              title={translation.users}
+              buttonText={translation.add}
+              onClick={handleCreateUser}
+            />
           )}
           <Input
             value={searchInput}
             setChange={setSearchInput}
-            type='search'
+            type="search"
             placeholder={translation.userSearchPlaceholder}
             labelClassName={css.manageUsersSearchLabel}
             inputClassName={css.manageUsersSearchInput}
           />
-        </div>
-        {isLoading ? (
+        </>
+      }
+      page={
+        isLoading ? (
           <Loader className={css.manageUsersLoader} />
         ) : (
-          <UsersBlock
-            users={getSearch(currentUsersList, searchInput)}
-            isSearch={!!searchInput}
-          />
-        )}
-      </div>
-    )
+          <UsersBlock users={getSearch(currentUsersList, searchInput)} isSearch={!!searchInput} />
+        )
+      }
+    />
   );
 };

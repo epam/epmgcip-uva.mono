@@ -1,0 +1,21 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.pageWrapper
+    padding: 16px
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+    align-items: center
+
+    .pagePanelWrapper
+        position: fixed
+        width: 100%
+        max-width: 768px
+        top: 46px
+        box-sizing: border-box
+        padding: 16px 16px 8px 16px
+        background-color: colors.$white
+        border-bottom: 1px solid colors.$gray-200
