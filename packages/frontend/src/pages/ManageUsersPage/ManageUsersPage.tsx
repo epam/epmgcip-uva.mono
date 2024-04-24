@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Input, Loader } from 'src/components';
-import { Toolbar } from 'src/components/Toolbar/Toolbar';
+import { Toolbar } from 'src/components';
 import { CREATE_USER_ROUTE, EVENTS_ROUTE, ROOT_ROUTE } from 'src/constants';
 import {
   addUsersToList,
@@ -17,7 +17,7 @@ import { getAllUsers } from 'src/utils/getAllUsers';
 import { getSearch } from 'src/utils/getSearch';
 import css from './ManageUsersPage.module.sass';
 import { UsersBlock } from './components/UsersBlock/UsersBlock';
-import { PageWrapper } from 'src/components/PageWrapper/PageWrapper';
+import { PageWrapper } from 'src/components';
 
 const minScrollSize = 75;
 

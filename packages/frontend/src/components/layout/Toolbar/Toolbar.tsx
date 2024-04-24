@@ -1,4 +1,4 @@
-import { Button } from '../Button/Button';
+import { Button } from '../../elements/Button/Button';
 import css from './Toolbar.module.sass';
 
 interface ToolbarProps {

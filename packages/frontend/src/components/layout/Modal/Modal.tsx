@@ -1,6 +1,6 @@
 import css from './Modal.module.sass';
-import { Button } from '../Button/Button';
-import { Loader } from '../Loader/Loader';
+import { Button } from '../../elements/Button/Button';
+import { Loader } from '../../elements/Loader/Loader';
 import { getClassesList } from 'src/utils/getClassesList';
 
 interface ModalProps {
@@ -35,11 +35,7 @@ export const Modal = ({
           <Button onClick={handleClose} className={cancelClassNames}>
             {cancelButtonMessage}
           </Button>
-          <Button
-            onClick={handleSubmit}
-            className={submitClassNames}
-            disabled={isLoading}
-          >
+          <Button onClick={handleSubmit} className={submitClassNames} disabled={isLoading}>
             {isLoading ? <Loader size={'12px'} /> : submitButtonMessage}
           </Button>
         </div>
