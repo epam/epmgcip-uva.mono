@@ -3,7 +3,7 @@ import { firebaseDb } from 'src/main';
 import { IEvent } from 'src/types';
 import { showNotification } from './showNotification';
 import { NOTIFICATIONS } from 'src/constants';
-import { getEvent } from './getEvent';
+import { getEvent, getEventNameInLanguage } from './getEvent';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export const createEvent = async (newEvent: IEvent, image: File): Promise<boolean> => {
@@ -16,17 +16,20 @@ export const createEvent = async (newEvent: IEvent, image: File): Promise<boolea
   }
 
   const storage = getStorage();
-  const storageRef = ref(storage, `${import.meta.env.VITE_FIREBASE_STORAGE_BUCKET}/public/${newEvent.id}`);
+  const storageRef = ref(
+    storage,
+    `${import.meta.env.VITE_FIREBASE_STORAGE_BUCKET}/public/${newEvent.id}`
+  );
 
   try {
     await uploadBytes(storageRef, image);
     await setDoc(doc(eventsRef, newEvent.id), newEvent);
 
-    showNotification(NOTIFICATIONS(newEvent.name).EVENT_CREATED, 3000);
+    showNotification(NOTIFICATIONS(getEventNameInLanguage(newEvent)).EVENT_CREATED, 3000);
 
     return true;
   } catch {
-    showNotification(NOTIFICATIONS(newEvent.name).EVENT_CREATION_ERROR, 3000);
+    showNotification(NOTIFICATIONS(getEventNameInLanguage(newEvent)).EVENT_CREATION_ERROR, 3000);
 
     return false;
   }

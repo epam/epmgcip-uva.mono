@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing: Line > should render 1`] = `
+<div>
+  <span
+    class="_line_5e3be7"
+  />
+</div>
+`;

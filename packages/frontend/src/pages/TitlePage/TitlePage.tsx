@@ -4,7 +4,8 @@ import UVC from 'src/assets/uvc-logo.png';
 import {
   DEVELOPMENT_ENVIRONMENT_URL,
   EVENTS_ROUTE,
-  LOCAL_OR_TEST_ENVIRONMENTS,
+  LOCAL_ENVIRONMENT,
+  TEST_ENVIRONMENTS,
   NOTIFICATIONS,
 } from 'src/constants';
 import { Button, Loader } from 'src/components';
@@ -21,20 +22,35 @@ import {
 import { checkUserAuthorization } from 'src/utils/checkUserAuthorization';
 import { showNotification } from 'src/utils/showNotification';
 import { getUser } from 'src/utils/getUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { editUser } from 'src/utils/editUser';
 
-const checkIsLocalOrTestEnv = (currentUrl: string) =>
-  LOCAL_OR_TEST_ENVIRONMENTS.some(
-    (url) =>
-      currentUrl.includes(url) && currentUrl !== DEVELOPMENT_ENVIRONMENT_URL
+const checkIsLocalEnv = (currentUrl: string) =>
+  LOCAL_ENVIRONMENT.some(
+    url => currentUrl.includes(url) && currentUrl !== DEVELOPMENT_ENVIRONMENT_URL
+  );
+
+const checkIsTestOrLocalEnv = (currentUrl: string) =>
+  [...TEST_ENVIRONMENTS, ...LOCAL_ENVIRONMENT].some(
+    url => currentUrl.includes(url) && currentUrl !== DEVELOPMENT_ENVIRONMENT_URL
   );
 
 export const TitlePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const isLocalEnv = checkIsLocalEnv(window.location.href);
+    if (isLocalEnv) {
+      // to save time on login every page refresh
+      // handleSetUser(ADMIN_ACTIVE_MOCK.telegramName);
+      dispatch(setEditor(ADMIN_ACTIVE_MOCK));
+      navigate(EVENTS_ROUTE);
+    }
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const isLocalOrTestEnv = checkIsLocalOrTestEnv(window.location.href);
+
+  const isLocalOrTestEnv = checkIsTestOrLocalEnv(window.location.href);
 
   const handleSetUser = (telegramName: string, telegramId?: number) => {
     setIsLoading(() => true);
@@ -72,25 +88,19 @@ export const TitlePage = () => {
                   Админ
                 </Button>
                 <Button
-                  onClick={() =>
-                    handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)
-                  }
+                  onClick={() => handleSetUser(COORDINATOR_ACTIVE_MOCK.telegramName)}
                   className={css.setUserButton}
                 >
                   Координатор
                 </Button>
                 <Button
-                  onClick={() =>
-                    handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)
-                  }
+                  onClick={() => handleSetUser(ADMIN_INACTIVE_MOCK.telegramName)}
                   className={css.setUserButton}
                 >
                   Админ неактив
                 </Button>
                 <Button
-                  onClick={() =>
-                    handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)
-                  }
+                  onClick={() => handleSetUser(COORDINATOR_INACTIVE_MOCK.telegramName)}
                   className={css.setUserButton}
                 >
                   Координатор неактив
@@ -98,10 +108,8 @@ export const TitlePage = () => {
               </>
             ) : (
               <TelegramLoginButton
-                botName='SerozhsTestBot'
-                dataOnauth={(user) =>
-                  handleSetUser(`@${user.username}`, user.id)
-                }
+                botName="SerozhsTestBot"
+                dataOnauth={user => handleSetUser(`@${user.username}`, user.id)}
                 usePic={true}
               />
             )}

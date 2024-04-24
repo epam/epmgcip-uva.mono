@@ -7,9 +7,11 @@ type InputChange = (value: string) => {
   payload: string;
 };
 
+export type OnInputChange = React.Dispatch<React.SetStateAction<string>> | InputChange;
+
 interface InputProps {
   value: string;
-  setChange: React.Dispatch<React.SetStateAction<string>> | InputChange;
+  setChange: OnInputChange;
   type?: 'text' | 'number' | 'search' | 'time';
   labelText?: string;
   required?: boolean;
@@ -20,7 +22,7 @@ interface InputProps {
   errorMessage?: string;
 }
 
-const positiveIntegerRegex =/^\d+$/;
+const positiveIntegerRegex = /^\d+$/;
 const validateDigitalValue = (value: string) => positiveIntegerRegex.test(value);
 
 export const Input = ({
@@ -48,8 +50,8 @@ export const Input = ({
       return;
     }
 
-    setChange(e.target.value)
-  }
+    setChange(e.target.value);
+  };
 
   return (
     <label className={labelClasses}>
@@ -64,12 +66,10 @@ export const Input = ({
         placeholder={placeholder || translation.input}
         className={inputClasses}
         value={value}
-        onChange={(e) => handleSetChange(e)}
+        onChange={e => handleSetChange(e)}
       />
       {isValidationError && (
-        <p className={css.validationError}>
-          {isValidationError && errorMessage}
-        </p>
+        <p className={css.validationError}>{isValidationError && errorMessage}</p>
       )}
     </label>
   );

@@ -52,7 +52,8 @@ export const EMPTY_USER = {
 };
 
 export const DEVELOPMENT_ENVIRONMENT_URL = 'https://epmgcip-uva-develop.web.app/';
-export const LOCAL_OR_TEST_ENVIRONMENTS = ['localhost', 'epmgcip-uva-develop'];
+export const LOCAL_ENVIRONMENT = ['localhost'];
+export const TEST_ENVIRONMENTS = ['epmgcip-uva-develop'];
 
 export const VOLUNTEER_GENDER = [
   { name: translation.men, value: Gender.Men },
