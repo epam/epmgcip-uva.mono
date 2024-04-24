@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import css from './ManageEventsPage.module.sass';
 import LogoSvg from 'src/assets/logo.svg';
 import translation from 'src/translations/Russian.json';
-import { Toolbar } from 'src/components/Toolbar/Toolbar';
-import { PageWrapper } from 'src/components/PageWrapper/PageWrapper';
+import { Toolbar } from 'src/components';
+import { PageWrapper } from 'src/components';
 
 export const ManageEventsPage = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { Button } from 'src/components/Button/Button';
+import { Button } from 'src/components';
 import css from './DateItem.module.sass';
 import { getClassesList } from 'src/utils/getClassesList';
 
@@ -20,10 +20,7 @@ export const DateItem = ({
   }
 
   const displayDate = dateObject.getDate();
-  const dateItemClasses = getClassesList(
-    css.dateItem,
-    isSelected ? css.selected : undefined
-  );
+  const dateItemClasses = getClassesList(css.dateItem, isSelected ? css.selected : undefined);
 
   return (
     <Button onClick={onClick} className={dateItemClasses} disabled={isDisabled}>
