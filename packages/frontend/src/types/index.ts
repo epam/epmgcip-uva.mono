@@ -1,3 +1,5 @@
+import { AtLeastOne } from './utiliy';
+
 export interface IUser {
   id: string;
   name: string;
@@ -35,11 +37,37 @@ export enum Language {
   Qoraqalpoq = 'qoraqalpoq',
 }
 
-export interface IEvent {
-  id: string;
+export const languages: Language[] = [
+  Language.Russian,
+  Language.Uzbek,
+  Language.English,
+  Language.Qoraqalpoq,
+];
+
+export const languagesShort: Record<Language, string> = {
+  [Language.Russian]: 'Рус',
+  [Language.Uzbek]: 'Uzb',
+  [Language.English]: 'Eng',
+  [Language.Qoraqalpoq]: 'Kaa',
+};
+
+export interface EventLanguageSpecificFields {
+  type: Language;
   name: string;
   description: string;
   place: string;
+}
+
+export interface EventLanguageSpecificData {
+  [Language.Russian]: EventLanguageSpecificFields;
+  [Language.Uzbek]: EventLanguageSpecificFields;
+  [Language.English]: EventLanguageSpecificFields;
+  [Language.Qoraqalpoq]: EventLanguageSpecificFields;
+}
+
+export interface IEvent {
+  id: string;
+  languageSpecificData: AtLeastOne<EventLanguageSpecificData>;
   startDate: string;
   startTime: string;
   endTime: string;
@@ -48,7 +76,6 @@ export interface IEvent {
   gender: Gender;
   ageMin: number;
   ageMax: number;
-  language: Language[];
   volunteersQuantity: string;
   status: EventStatus;
   image: string;

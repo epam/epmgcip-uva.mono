@@ -1,22 +1,29 @@
-import { useNavigate } from 'react-router-dom';
-import { EVENTS_ROUTE, EVENT_STATUS, LANGUAGE, ROOT_ROUTE, VOLUNTEER_GENDER } from 'src/constants';
-import { EventStatus, Gender, IEvent, IState, IValidationError, Language } from 'src/types';
-import { useEffect, useState } from 'react';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import css from './CreateEventPage.module.sass';
+import { useNavigate } from 'react-router-dom';
+import { Button, DatePicker, ImageLoader, Input, Loader, Select, Slider } from 'src/components';
+import { EVENTS_ROUTE, EVENT_STATUS, LANGUAGE, ROOT_ROUTE, VOLUNTEER_GENDER } from 'src/constants';
+import { addEventsToList } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
-import { Button, Input, Loader, Select } from 'src/components';
+import {
+  EventStatus,
+  Gender,
+  IEvent,
+  IState,
+  IValidationError,
+  Language,
+  languages,
+} from 'src/types';
+import { createEvent } from 'src/utils/createEvent';
+import { validateEventValues } from 'src/utils/validateEventValues';
+import { v4 as uuidv4 } from 'uuid';
+import css from './CreateEventPage.module.sass';
 import { EventStatusDescription } from './components/EventStatusDescription/EventStatusDescription';
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
-import { Slider } from 'src/components';
-import { ImageLoader } from 'src/components';
-import { v4 as uuidv4 } from 'uuid';
-import { DatePicker } from 'src/components';
-import { TextArea } from 'src/components';
-import { createEvent } from 'src/utils/createEvent';
-import { Dispatch } from '@reduxjs/toolkit';
-import { addEventsToList } from 'src/redux/actions';
-import { validatEventValues } from 'src/utils/validateEventValues';
+import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
+import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
+import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
@@ -28,9 +35,10 @@ export const CreateEventPage = () => {
   const [validation, setValidation] = useState<IValidationError>({});
 
   const [image, setImage] = useState<File | null>(null);
-  const [eventName, setEventName] = useState('');
-  const [eventDescription, setEventDescription] = useState('');
-  const [eventPlace, setEventPlace] = useState('');
+  const [languageSpecificData, dispatchLanguageSpecificData] = useReducer(
+    languageSpecificDataReducer,
+    { [Language.Russian]: getEmptyLanguageData(Language.Russian) }
+  );
   const [eventStartDate, setEventStartDate] = useState('');
   const [eventEndDate, setEventEndDate] = useState('');
   const [eventStartTime, setEventStartTime] = useState('');
@@ -58,9 +66,7 @@ export const CreateEventPage = () => {
       const eventId = uuidv4();
       const newEvent: IEvent = {
         id: eventId,
-        name: eventName,
-        description: eventDescription,
-        place: eventPlace,
+        languageSpecificData,
         startDate: eventStartDate,
         startTime: eventStartTime,
         endTime: eventEndTime,
@@ -69,7 +75,6 @@ export const CreateEventPage = () => {
         gender: gender as Gender,
         ageMin: minVolunteersAge,
         ageMax: maxVolunteersAge,
-        language: eventLanguage,
         volunteersQuantity: volunteersQuantity,
         status: eventStatus,
         image: `${import.meta.env.VITE_FIREBASE_STORAGE_BUCKET}/public/${eventId}`,
@@ -92,10 +97,11 @@ export const CreateEventPage = () => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
 
     setValidation(
-      validatEventValues({
-        name: eventName,
-        description: eventDescription,
-        place: eventPlace,
+      // todo: rewrite it for name, description, place - should be at least one language
+      validateEventValues({
+        // name: eventName,
+        // description: eventDescription,
+        // place: eventPlace,
         startDate: eventStartDate,
         startTime: eventStartTime,
         endTime: eventEndTime,
@@ -110,11 +116,11 @@ export const CreateEventPage = () => {
   }, [
     editor,
     navigate,
-    eventName,
-    eventDescription,
+    // eventName,
+    // eventDescription,
     eventStartDate,
     image,
-    eventPlace,
+    // eventPlace,
     eventStartTime,
     eventEndTime,
     eventDuration,
@@ -134,33 +140,24 @@ export const CreateEventPage = () => {
             isValidationError={isSubmitting && !!validation.image}
             errorMessage={validation.image}
           />
-          <Input
-            value={eventName}
-            setChange={setEventName}
-            labelText={translation.title}
-            required
-            labelClassName={css.createEventPadding}
-            isValidationError={isSubmitting && !!validation.name}
-            errorMessage={validation.name}
+          <LanguageButtons
+            languages={languages}
+            dispatch={dispatchLanguageSpecificData}
+            languageSpecificData={languageSpecificData}
           />
-          <TextArea
-            value={eventDescription}
-            setChange={setEventDescription}
-            labelText={translation.description}
-            required
-            labelClassName={css.createEventPadding}
-            isValidationError={isSubmitting && !!validation.description}
-            errorMessage={validation.description}
-          />
-          <Input
-            value={eventPlace}
-            setChange={setEventPlace}
-            labelText={translation.place}
-            required
-            labelClassName={css.createEventPadding}
-            isValidationError={isSubmitting && !!validation.place}
-            errorMessage={validation.place}
-          />
+          {Object.values(languageSpecificData).map((lang, index) => (
+            <LanguageSpecificFields
+              key={lang.type}
+              name={lang.name}
+              description={lang.description}
+              language={lang.type}
+              place={lang.place}
+              isLast={Object.keys(languageSpecificData).length === index + 1}
+              dispatch={dispatchLanguageSpecificData}
+              validation={validation}
+              isSubmitting={isSubmitting}
+            />
+          ))}
           <DatePicker
             value={eventStartDate}
             setChange={setEventStartDate}

@@ -1,0 +1,42 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.wrapper
+    background-color: colors.$gray-blue
+    width: 100%
+    display: flex
+    flex-direction: column
+    align-items: center
+
+.last
+    margin-bottom: 18px
+
+.title
+    @extend .H5
+    align-self: flex-start
+    padding: 0 24px
+
+.languageSpecificFieldsTitle
+    @extend .H6
+    align-self: flex-start
+    padding: 0 24px
+
+    .inputRequired
+        color: colors.$red
+
+.languageSpecificFieldsContent
+    display: flex
+    flex-direction: row
+    gap: 20px
+    justify-content: space-between
+    width: calc(100vw - 48px)
+    max-width: calc(768px - 48px)
+
+    .languageSpecificFieldsContainer
+        width: 100%
+
+        .languageSpecificFieldsColumnTitle
+            @extend .T2
+
+        .languageSpecificFieldsInput
+            width: 100%

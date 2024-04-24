@@ -10,7 +10,7 @@ const compareTimes = (firstValue: string, secondValue: string) => {
   return firstTime > secondTime;
 };
 
-export const validatEventValues = (inputValues: IValidationError) => {
+export const validateEventValues = (inputValues: IValidationError) => {
   const errors = {} as IValidationError;
 
   if (!inputValues.image) {
@@ -88,7 +88,6 @@ export const validatEventValues = (inputValues: IValidationError) => {
   if (!inputValues.language) {
     errors.language = translation.enterLanguage;
   }
-
 
   if (!inputValues.volunteersQuantity || Number(inputValues.volunteersQuantity) === 0) {
     errors.volunteersQuantity = translation.enterVolunteersQuantity;
