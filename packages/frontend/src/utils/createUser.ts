@@ -3,11 +3,11 @@ import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { showNotification } from './showNotification';
 import { getUser, getUserDocId } from './getUser';
-import { NOTIFICATIONS } from 'src/constants';
+import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
 
 export const createUser = async (newUser: IUser): Promise<boolean> => {
   const user = await getUser(newUser.telegramName);
-  const usersRef = collection(firebaseDb, 'users');
+  const usersRef = collection(firebaseDb, FirebaseCollection.Users);
 
   if (user) {
     showNotification(NOTIFICATIONS(newUser.telegramName).USER_EXISTS, 6000);

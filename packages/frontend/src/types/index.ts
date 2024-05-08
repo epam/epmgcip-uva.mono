@@ -93,6 +93,11 @@ export interface IState {
     scrollSize: number;
     scrollDirection: ScrollDirection;
   };
+  manageEventsPage: {
+    statusFilter: '' | EventStatus,
+    scrollDirection: ScrollDirection.Down,
+    scrollSize: 0,
+  },
   loading: boolean;
   error: null | string;
 }

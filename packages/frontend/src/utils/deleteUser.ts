@@ -2,13 +2,13 @@ import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { showNotification } from './showNotification';
 import { getUser } from './getUser';
-import { NOTIFICATIONS } from 'src/constants';
+import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
 
 export const deleteUser = async (
   telegramName: string,
 ): Promise<boolean> => {
   const user = await getUser(telegramName);
-  const usersRef = collection(firebaseDb, 'users');
+  const usersRef = collection(firebaseDb, FirebaseCollection.Users);
 
   if (!user) {
     showNotification(NOTIFICATIONS(telegramName).USER_DOES_NOT_EXIST, 6000);

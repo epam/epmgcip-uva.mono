@@ -2,13 +2,13 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { IEvent } from 'src/types';
 import { showNotification } from './showNotification';
-import { NOTIFICATIONS } from 'src/constants';
+import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
 import { getEvent, getEventNameInLanguage } from './getEvent';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export const createEvent = async (newEvent: IEvent, image: File): Promise<boolean> => {
   const event = await getEvent(newEvent.id);
-  const eventsRef = collection(firebaseDb, 'events');
+  const eventsRef = collection(firebaseDb, FirebaseCollection.Events);
 
   if (event) {
     showNotification(NOTIFICATIONS(newEvent.id).EVENT_EXISTS, 6000);

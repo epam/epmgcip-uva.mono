@@ -70,7 +70,7 @@ export const ManageUsersPage = () => {
 
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, savedScrollSize), 0);
-  }, []);
+  });
 
   const handleCreateUser = () => {
     navigate(CREATE_USER_ROUTE);
