@@ -1,0 +1,81 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.eventCard
+    display: flex
+    flex-direction: column
+    gap: 8px
+    background-color: colors.$white
+    border-radius: 8px
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1)
+
+    .eventCardImageWrapper
+        width: 100%
+        height: 122px
+        border-radius: 8px 8px 0px 0px
+        overflow: hidden
+        position: relative
+
+        .eventCardImage
+            width: 100%
+            height: 100%
+            object-fit: cover
+
+    .eventCardStatusBar
+        padding: 8px
+        display: flex
+        box-sizing: border-box
+        width: 100%
+        justify-content: space-between
+        position: absolute
+        top: 90px
+
+        .eventCardStatus,
+        .eventCardVolunteersQuantity
+            @extend .T3
+            font-weight: 600
+            padding: 0 6px
+            radius: 4px
+            color: colors.$green
+            display: flex
+            background-color: colors.$white
+            flex-direction: row
+            align-items: center
+            gap: 4px
+            border-radius: 4px
+
+        .eventCardVolunteersQuantity
+            color: colors.$purple
+
+    .eventCardInfo
+        padding: 0px 8px 8px 8px
+        display: flex
+        flex-direction: column
+        gap: 6px
+
+        .eventCardTitle
+            @extend .H6
+            margin: 0
+
+        .evenCardRegistration
+            @extend .T3
+            font-weight: 600
+            &._open
+                color: colors.$green
+            &._closed
+                color: colors.$gray-200
+
+        .eventCardAdditionalInfo
+            @extend .T3
+            color: colors.$purple
+            flex-direction: column
+            gap: 8px
+            display: flex
+
+            .eventCardIcon
+                width: 18px
+
+            .eventCardAdditionalInfoLine
+                display: flex
+                gap: 8px
+                align-items: center

@@ -1,5 +1,10 @@
+import { getClassesList } from 'src/utils/getClassesList';
 import css from './Dot.module.sass';
 
-export const Dot = () => {
-    return (<span className={css.dot}></span>)
+interface IDotProps {
+  color?: 'gray' | 'green';
 }
+
+export const Dot = ({ color }: IDotProps) => {
+  return <span className={getClassesList(css.dot, css[color ?? 'gray'])}></span>;
+};
