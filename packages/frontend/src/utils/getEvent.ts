@@ -14,6 +14,9 @@ export const getEvent = async (eventId: string) => {
 };
 
 export const getEventNameInLanguage = (event: IEvent, language?: Language): string | undefined => {
+  if (!event.languageSpecificData) {
+    return;
+  }
   if (language) {
     return event.languageSpecificData[language]?.name;
   }
@@ -23,7 +26,23 @@ export const getEventNameInLanguage = (event: IEvent, language?: Language): stri
   return Object.values(event.languageSpecificData)[0].name;
 };
 
+export const getEventPlaceInLanguage = (event: IEvent, language?: Language): string | undefined => {
+  if (!event.languageSpecificData) {
+    return;
+  }
+  if (language) {
+    return event.languageSpecificData[language]?.place;
+  }
+  if (Language.Russian in event.languageSpecificData) {
+    return event.languageSpecificData[Language.Russian]!.place;
+  }
+  return Object.values(event.languageSpecificData)[0].place;
+};
+
 export const getEventLanguageSpecificData = (event: IEvent, language?: Language) => {
+  if (!event.languageSpecificData) {
+    return;
+  }
   if (language) {
     return event.languageSpecificData[language];
   }

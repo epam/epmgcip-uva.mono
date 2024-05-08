@@ -8,6 +8,9 @@ import {
   SET_MANAGE_USERS_SCROLL_SIZE,
   SET_MANAGE_USERS_SCROLL_DIRECTION,
   ADD_EVENTS_TO_LIST,
+  SET_EVENT_STATUS_FILTER,
+  SET_MANAGE_EVENTS_SCROLL_SIZE,
+  SET_MANAGE_EVENTS_SCROLL_DIRECTION,
 } from './types';
 
 const initialState: IState = {
@@ -19,12 +22,17 @@ const initialState: IState = {
     scrollDirection: ScrollDirection.Down,
     scrollSize: 0,
   },
+  manageEventsPage: {
+    statusFilter: '',
+    scrollDirection: ScrollDirection.Down,
+    scrollSize: 0,
+  },
   isMenu: false,
   loading: false,
   error: null,
 };
 
-const rootReducer = (state = initialState, action: IAction) => {
+const rootReducer = (state = initialState, action: IAction): IState => {
   switch (action.type) {
     case SET_EDITOR:
       return {
@@ -61,6 +69,14 @@ const rootReducer = (state = initialState, action: IAction) => {
           userSearchInput: action.payload,
         },
       };
+    case SET_EVENT_STATUS_FILTER:
+      return {
+        ...state,
+        manageEventsPage: {
+          ...state.manageEventsPage,
+          statusFilter: action.payload,
+        },
+      };
     case SET_MANAGE_USERS_SCROLL_SIZE:
       return {
         ...state,
@@ -74,6 +90,22 @@ const rootReducer = (state = initialState, action: IAction) => {
         ...state,
         manageUsersPage: {
           ...state.manageUsersPage,
+          scrollDirection: action.payload,
+        },
+      };
+    case SET_MANAGE_EVENTS_SCROLL_SIZE:
+      return {
+        ...state,
+        manageEventsPage: {
+          ...state.manageEventsPage,
+          scrollSize: action.payload,
+        },
+      };
+    case SET_MANAGE_EVENTS_SCROLL_DIRECTION:
+      return {
+        ...state,
+        manageEventsPage: {
+          ...state.manageEventsPage,
           scrollDirection: action.payload,
         },
       };

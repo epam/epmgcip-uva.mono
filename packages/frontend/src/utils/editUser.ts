@@ -9,7 +9,7 @@ import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { showNotification } from './showNotification';
 import { getUser, getUserDocId } from './getUser';
-import { NOTIFICATIONS } from 'src/constants';
+import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
 
 export const editUser = async (
   telegramName: string,
@@ -18,7 +18,7 @@ export const editUser = async (
 ): Promise<boolean> => {
   const docId = getUserDocId(telegramName);
   const user = await getUser(docId);
-  const usersRef = collection(firebaseDb, 'users');
+  const usersRef = collection(firebaseDb, FirebaseCollection.Users);
 
   if (!user) {
     isShowNotification &&

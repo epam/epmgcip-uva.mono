@@ -19,6 +19,11 @@ export const USER_STATUSES = [
   { name: translation.inactive, value: UserStatus.Inactive },
 ];
 
+export enum FirebaseCollection {
+  Users = 'users',
+  Events = 'events',
+}
+
 export const DEFAULT_NOTIFICATION = 'Default Notification Message';
 export const NOTIFICATIONS = (value?: string) => ({
   USER_EXISTS: `Извините, пользователь c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,

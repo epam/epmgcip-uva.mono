@@ -2,6 +2,7 @@ import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firesto
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { editUser } from './editUser';
+import { FirebaseCollection } from 'src/constants';
 
 export const getUserDocId = (telegramName: string) => telegramName.toLowerCase();
 
@@ -12,7 +13,7 @@ export const getUserDocId = (telegramName: string) => telegramName.toLowerCase()
 export const getUser = async (telegramName: string, telegramId?: number) => {
   const docId = getUserDocId(telegramName);
 
-  const docRef = doc(firebaseDb, 'users', docId);
+  const docRef = doc(firebaseDb, FirebaseCollection.Users, docId);
   const user = await getDoc(docRef);
 
   if (user.exists()) {
@@ -21,7 +22,7 @@ export const getUser = async (telegramName: string, telegramId?: number) => {
 
   if (telegramId) {
     const queryForUserById = query(
-      collection(firebaseDb, 'users'),
+      collection(firebaseDb, FirebaseCollection.Users),
       where('telegramId', '==', telegramId)
     );
 

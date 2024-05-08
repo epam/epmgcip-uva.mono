@@ -3,13 +3,14 @@ import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { editUser } from './editUser';
 import { getUserDocId } from './getUser';
+import { FirebaseCollection } from 'src/constants';
 
 /** Get all users.
  *  If id is not is lowercase for some users, re-saves it with correct id.
  *  If field telegramNameLowCase is missing for some users, adds it
  */
 export const getAllUsers = async (): Promise<IUser[]> => {
-  const queryForUsers = query(collection(firebaseDb, 'users'), orderBy('createdAt', 'desc'));
+  const queryForUsers = query(collection(firebaseDb, FirebaseCollection.Users), orderBy('createdAt', 'desc'));
 
   const querySnapshot = await getDocs(queryForUsers);
   const allUsers: IUser[] = [];

@@ -36,13 +36,16 @@
             font-weight: 600
             padding: 0 6px
             radius: 4px
-            color: colors.$green
             display: flex
             background-color: colors.$white
             flex-direction: row
             align-items: center
             gap: 4px
             border-radius: 4px
+            &.active
+                color: colors.$green
+            &.draft
+                color: colors.$gray-200
 
         .eventCardVolunteersQuantity
             color: colors.$purple
