@@ -33,7 +33,11 @@ export const LanguageButtons = ({
             }
             className={
               css.toggleLanguageButton +
-              `${lang in languageSpecificData ? ` ${css.toggleLanguageButtonPressed}` : ''}`
+              `${
+                languageSpecificData && lang in languageSpecificData
+                  ? ` ${css.toggleLanguageButtonPressed}`
+                  : ''
+              }`
             }
           >
             {languagesShort[lang]}
