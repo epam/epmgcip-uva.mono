@@ -1,0 +1,53 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.filter
+    @extend .T3
+    display: flex
+    justify-content: flex-end
+    align-items: center
+    gap: 4px
+    color: colors.$purple-light
+    margin-top: 16px
+
+.filterMenuWrapper
+    position: relative
+    width: 100%
+
+.filterMenu
+    cursor: pointer
+
+    position: absolute
+
+    top: 3px
+    right: 0
+    width: 129px
+
+    padding: 8px 0
+
+    box-sizing: border-box
+    background-color: colors.$white
+    border-radius: 8px
+    color: colors.$blue-dark
+    box-shadow: 0px 4px 11.2px 0px #00000040
+
+    display: flex
+    flex-direction: column
+    gap: 0
+
+    transition: all 0s ease-out
+
+.option
+    padding: 8px 16px
+
+    &:hover
+        background-color: colors.$gray-blue
+        color: colors.$gray-600
+
+.optionActive
+    background-color: colors.$white
+    color: inherit
+
+.selectedOption
+    background-color: colors.$gray-blue
+    color: colors.$gray-600

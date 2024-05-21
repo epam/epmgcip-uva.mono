@@ -22,7 +22,11 @@ export enum ScrollDirection {
 export enum EventStatus {
   Draft = 'draft',
   Active = 'active',
+  Completed = 'completed',
+  Canceled = 'canceled',
 }
+
+export type FilterEventStatuses = EventStatus | 'all';
 
 export enum Gender {
   Men = 'men',
@@ -94,8 +98,9 @@ export interface IState {
     scrollDirection: ScrollDirection;
   };
   manageEventsPage: {
-    statusFilter: '' | EventStatus,
+    statusFilter: FilterEventStatuses,
     scrollDirection: ScrollDirection.Down,
+    page: 0,
     scrollSize: 0,
   },
   loading: boolean;
