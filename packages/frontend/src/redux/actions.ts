@@ -1,13 +1,16 @@
-import { IEvent, IUser, ScrollDirection } from 'src/types';
+import { FilterEventStatuses, IEvent, IUser, ScrollDirection } from 'src/types';
 import {
-  ADD_USERS_TO_LIST,
-  SET_SHOW_MENU,
-  SET_EDITOR,
-  UPDATE_USERS_LIST,
-  SET_USER_SEARCH_INPUT,
-  SET_MANAGE_USERS_SCROLL_SIZE,
-  SET_MANAGE_USERS_SCROLL_DIRECTION,
   ADD_EVENTS_TO_LIST,
+  ADD_USERS_TO_LIST,
+  SET_EDITOR,
+  SET_EVENTS,
+  SET_EVENT_PAGE,
+  SET_EVENT_STATUS_FILTER,
+  SET_MANAGE_USERS_SCROLL_DIRECTION,
+  SET_MANAGE_USERS_SCROLL_SIZE,
+  SET_SHOW_MENU,
+  SET_USER_SEARCH_INPUT,
+  UPDATE_USERS_LIST,
 } from './types';
 
 export const setEditor = (editor: IUser) => ({
@@ -20,6 +23,7 @@ export const setMenu = (menuState: boolean) => ({
   payload: menuState,
 });
 
+// USERTS
 export const addUsersToList = (users: IUser[]) => ({
   type: ADD_USERS_TO_LIST,
   payload: users,
@@ -45,7 +49,24 @@ export const setManageUsersScrollDirection = (scrollDirection: ScrollDirection) 
   payload: scrollDirection,
 })
 
+// EVENTS
+
 export const addEventsToList = (events: IEvent[]) => ({
   type: ADD_EVENTS_TO_LIST,
   payload: events,
+});
+
+export const saveEvents = (events: IEvent[]) => ({
+  type: SET_EVENTS,
+  payload: events,
+});
+
+export const setEventsPage = (page: number) => ({
+  type: SET_EVENT_PAGE,
+  payload: page,
+});
+
+export const setEventsStatusFilter = (statusFilter: FilterEventStatuses) => ({
+  type: SET_EVENT_STATUS_FILTER,
+  payload: statusFilter,
 });

@@ -11,6 +11,8 @@ import {
   SET_EVENT_STATUS_FILTER,
   SET_MANAGE_EVENTS_SCROLL_SIZE,
   SET_MANAGE_EVENTS_SCROLL_DIRECTION,
+  SET_EVENTS,
+  SET_EVENT_PAGE,
 } from './types';
 
 const initialState: IState = {
@@ -23,9 +25,10 @@ const initialState: IState = {
     scrollSize: 0,
   },
   manageEventsPage: {
-    statusFilter: '',
+    statusFilter: 'all' as const,
     scrollDirection: ScrollDirection.Down,
     scrollSize: 0,
+    page: 0,
   },
   isMenu: false,
   loading: false,
@@ -46,6 +49,7 @@ const rootReducer = (state = initialState, action: IAction): IState => {
         ...state,
         isMenu: action.payload,
       };
+    // USERS
     case ADD_USERS_TO_LIST:
       return {
         ...state,
@@ -56,25 +60,12 @@ const rootReducer = (state = initialState, action: IAction): IState => {
         ...state,
         usersList: [...action.payload],
       };
-    case ADD_EVENTS_TO_LIST:
-      return {
-        ...state,
-        eventsList: [...action.payload, ...state.eventsList],
-      };
     case SET_USER_SEARCH_INPUT:
       return {
         ...state,
         manageUsersPage: {
           ...state.manageUsersPage,
           userSearchInput: action.payload,
-        },
-      };
-    case SET_EVENT_STATUS_FILTER:
-      return {
-        ...state,
-        manageEventsPage: {
-          ...state.manageEventsPage,
-          statusFilter: action.payload,
         },
       };
     case SET_MANAGE_USERS_SCROLL_SIZE:
@@ -91,6 +82,34 @@ const rootReducer = (state = initialState, action: IAction): IState => {
         manageUsersPage: {
           ...state.manageUsersPage,
           scrollDirection: action.payload,
+        },
+      };
+    //EVENTS
+    case ADD_EVENTS_TO_LIST:
+      return {
+        ...state,
+        eventsList: [...action.payload, ...state.eventsList],
+      };
+    case SET_EVENTS:
+      return {
+        ...state,
+        eventsList: [...action.payload],
+      };
+    case SET_EVENT_STATUS_FILTER:
+      return {
+        ...state,
+        manageEventsPage: {
+          ...state.manageEventsPage,
+          statusFilter: action.payload,
+          page: state.manageEventsPage.statusFilter === action.payload ? state.manageEventsPage.page : 0,
+        },
+      };
+    case SET_EVENT_PAGE:
+      return {
+        ...state,
+        manageEventsPage: {
+          ...state.manageEventsPage,
+          page: action.payload,
         },
       };
     case SET_MANAGE_EVENTS_SCROLL_SIZE:
