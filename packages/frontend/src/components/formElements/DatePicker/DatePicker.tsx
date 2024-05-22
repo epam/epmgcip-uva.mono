@@ -46,30 +46,27 @@ export const DatePicker = ({
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-  const daysArray = useMemo(
-    () => getMonth(currentMonth, currentYear),
-    [currentMonth, currentYear]
-  );
+  const daysArray = useMemo(() => getMonth(currentMonth, currentYear), [currentMonth, currentYear]);
 
   const handleShowPopup = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
 
-    setShowPopup((previousValue) => !previousValue);
+    setShowPopup(previousValue => !previousValue);
   };
 
   const handleNavigateMonth = (navigateBy: number) => {
     if (currentMonth + navigateBy === 12) {
       setCurrentMonth(0);
-      setCurrentYear((currentState) => {
+      setCurrentYear(currentState => {
         return currentState + 1;
       });
     } else if (currentMonth + navigateBy === -1) {
       setCurrentMonth(11);
-      setCurrentYear((currentState) => {
+      setCurrentYear(currentState => {
         return currentState - 1;
       });
     } else {
-      setCurrentMonth((currentState) => {
+      setCurrentMonth(currentState => {
         return currentState + navigateBy;
       });
     }
@@ -92,7 +89,7 @@ export const DatePicker = ({
       setCurrentMonth(dateObject.getMonth());
       setCurrentYear(dateObject.getFullYear());
     }
-  }, []);
+  }, [value]);
 
   return (
     <div className={css.datePickerWrapper}>
@@ -103,14 +100,12 @@ export const DatePicker = ({
             {required && <span className={css.datePickerRequired}> *</span>}
           </div>
         )}
-        <div className={datePickerClasses} onClick={(e) => handleShowPopup(e)}>
+        <div className={datePickerClasses} onClick={e => handleShowPopup(e)}>
           {value || placeholder || translation.input}
           <img className={css.pickerCalendar} src={CalendarSvg} />
         </div>
         {isValidationError && (
-          <p className={css.validationError}>
-            {isValidationError && errorMessage}
-          </p>
+          <p className={css.validationError}>{isValidationError && errorMessage}</p>
         )}
       </label>
       {showPopup && (
@@ -127,7 +122,8 @@ export const DatePicker = ({
               onClick={() => (date ? handleSelectDate(date) : null)}
               isSelected={selectedDate === date}
               isDisabled={Boolean(
-                (date && min && date < getNormalizeDate(min)) || (date && max && date > getNormalizeDate(max))
+                (date && min && date < getNormalizeDate(min)) ||
+                  (date && max && date > getNormalizeDate(max))
               )}
             />
           ))}

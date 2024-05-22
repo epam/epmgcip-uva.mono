@@ -3,7 +3,7 @@
 exports[`Testing: Link > should render 1`] = `
 <div>
   <a
-    class="_link_04e8aa additionalTestClass"
+    class="_link_43716b additionalTestClass"
   >
     <div>
       Test Link
