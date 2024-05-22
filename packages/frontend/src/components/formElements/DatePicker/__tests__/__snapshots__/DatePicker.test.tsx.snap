@@ -3,18 +3,18 @@
 exports[`Testing: DatePicker > should render 1`] = `
 <div>
   <div
-    class="_datePickerWrapper_67f961"
+    class="_datePickerWrapper_9b2145"
   >
     <label
-      class="_label_67f961"
+      class="_label_9b2145"
     >
       <div
-        class="_datePicker_67f961"
+        class="_datePicker_9b2145"
       >
         Ввод
         <img
-          class="_pickerCalendar_67f961"
-          src="/packages/frontend/src/components/DatePicker/assets/calendar.svg"
+          class="_pickerCalendar_9b2145"
+          src="/packages/frontend/src/components/formElements/DatePicker/assets/calendar.svg"
         />
       </div>
     </label>

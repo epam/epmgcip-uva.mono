@@ -3,24 +3,24 @@
 exports[`Testing: Header > should render 1`] = `
 <div>
   <div
-    class="_headerWrapper_b11e5d"
+    class="_headerWrapper_687a61"
   >
     <img
-      class="_headerLogo_b11e5d"
+      class="_headerLogo_687a61"
       src="/packages/frontend/src/assets/logo.svg"
     />
     <div
-      class="_editorName_b11e5d"
+      class="_editorName_687a61"
     >
       Test User Name
     </div>
     <button
-      class="_button_6e8901 _headerMenuButton_b11e5d"
+      class="_button_2842f2 _headerMenuButton_687a61"
       disabled=""
     >
       <img
         alt="Open Menu Button"
-        class="_headerLogo_b11e5d"
+        class="_headerLogo_687a61"
         src="/packages/frontend/src/assets/menu.svg"
       />
     </button>

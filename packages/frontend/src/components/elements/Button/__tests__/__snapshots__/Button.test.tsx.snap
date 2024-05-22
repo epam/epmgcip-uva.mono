@@ -3,7 +3,7 @@
 exports[`Testing: Button > should render 1`] = `
 <div>
   <button
-    class="_button_6e8901 additionalTestClass"
+    class="_button_2842f2 additionalTestClass"
   >
     <div>
       Test Button

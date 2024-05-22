@@ -3,67 +3,67 @@
 exports[`Testing: DatePopup > should render 1`] = `
 <div>
   <div
-    class="_datePopupWrapper_253547"
+    class="_datePopupWrapper_512897"
   >
     <div
-      class="_datePopupYear_253547"
+      class="_datePopupYear_512897"
     >
       2020
     </div>
     <div
-      class="_dateControlsBlock_cabf3b"
+      class="_dateControlsBlock_865d1b"
     >
       <button
-        class="_button_6e8901 _dateControlsBlockButton_cabf3b"
+        class="_button_2842f2 _dateControlsBlockButton_865d1b"
       >
         Предыдущий
       </button>
       <span
-        class="_dateControlsMonth_cabf3b"
+        class="_dateControlsMonth_865d1b"
       >
         Ноябрь
       </span>
       <button
-        class="_button_6e8901 _dateControlsBlockButton_cabf3b"
+        class="_button_2842f2 _dateControlsBlockButton_865d1b"
       >
         Следующий
       </button>
     </div>
     <div
-      class="_datePopupContainer_253547"
+      class="_datePopupContainer_512897"
     >
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Пн
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Вт
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Ср
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Чт
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Пт
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Сб
       </span>
       <span
-        class="_weekCode_253547"
+        class="_weekCode_512897"
       >
         Вс
       </span>

@@ -3,13 +3,13 @@
 exports[`Testing: TextArea > should render 1`] = `
 <div>
   <label
-    class="_label_6eef19"
+    class="_label_6edfa1"
   >
     <div>
       Test Label
     </div>
     <textarea
-      class="_textArea_6eef19"
+      class="_textArea_6edfa1"
       placeholder="Ввод"
     >
       Test Value

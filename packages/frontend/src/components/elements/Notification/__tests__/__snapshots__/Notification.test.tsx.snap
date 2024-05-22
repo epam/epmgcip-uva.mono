@@ -3,7 +3,7 @@
 exports[`Testing: Notification > should render 1`] = `
 <div>
   <div
-    class="_notificationWrapper_3741e4"
+    class="_notificationWrapper_f1d0d5"
     data-testid="notification-test-id"
     id="notification"
   >

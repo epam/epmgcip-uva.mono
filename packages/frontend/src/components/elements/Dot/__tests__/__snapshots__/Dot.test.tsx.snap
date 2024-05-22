@@ -3,7 +3,7 @@
 exports[`Testing: Dot > should render 1`] = `
 <div>
   <span
-    class="_dot_5e3be7"
+    class="_dot_256c03 _gray_256c03"
   />
 </div>
 `;

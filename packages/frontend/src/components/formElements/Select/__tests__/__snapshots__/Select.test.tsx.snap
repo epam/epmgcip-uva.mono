@@ -3,22 +3,22 @@
 exports[`Testing: Select > should render 1`] = `
 <div>
   <label
-    class="_label_1e72f6"
+    class="_label_31ce93"
   >
     <div>
       Test Label
     </div>
     <div
-      class="_select_1e72f6"
+      class="_select_31ce93"
       tabindex="0"
     >
       <img
-        class="_selectArrow_1e72f6"
-        src="/packages/frontend/src/components/Select/assets/arrow.svg"
+        class="_selectArrow_31ce93"
+        src="/packages/frontend/src/components/formElements/Select/assets/arrow.svg"
       />
     </div>
     <div
-      class="_selectMenuWrapper_1e72f6"
+      class="_selectMenuWrapper_31ce93"
     />
   </label>
 </div>

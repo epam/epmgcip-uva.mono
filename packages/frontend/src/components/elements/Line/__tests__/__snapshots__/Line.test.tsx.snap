@@ -3,7 +3,7 @@
 exports[`Testing: Line > should render 1`] = `
 <div>
   <span
-    class="_line_5e3be7"
+    class="_line_d53aaf"
   />
 </div>
 `;

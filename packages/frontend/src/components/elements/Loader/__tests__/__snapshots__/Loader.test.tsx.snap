@@ -3,7 +3,7 @@
 exports[`Testing: Loader > should render 1`] = `
 <div>
   <div
-    class="_loader_ab8c53"
+    class="_loader_b24894"
   />
 </div>
 `;
