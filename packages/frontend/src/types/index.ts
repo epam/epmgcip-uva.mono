@@ -82,9 +82,12 @@ export interface IEvent {
   ageMax: number;
   volunteersQuantity: string;
   status: EventStatus;
-  image: string;
   endDate?: string;
   telegramChannelLink?: string;
+
+  image: string;
+  imageUrl?: string;
+
 }
 
 export interface IState {

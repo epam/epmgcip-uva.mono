@@ -15,7 +15,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
   return (
     <article className={css.eventCard}>
       <div className={css.eventCardImageWrapper}>
-        <img className={css.eventCardImage} src={event.image} />
+        <img className={css.eventCardImage} src={event.imageUrl} alt="Event image" />
         <div className={css.eventCardStatusBar}>
           <div
             className={getClassesList(
