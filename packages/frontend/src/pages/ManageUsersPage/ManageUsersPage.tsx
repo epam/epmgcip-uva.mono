@@ -68,9 +68,9 @@ export const ManageUsersPage = () => {
     }
   }, [dispatch, editor, isLoading, navigate]);
 
-  useEffect(() => {
-    setTimeout(() => window.scrollTo(0, savedScrollSize), 0);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => window.scrollTo(0, savedScrollSize), 0);
+  // }, [savedScrollSize]);
 
   const handleCreateUser = () => {
     navigate(CREATE_USER_ROUTE);

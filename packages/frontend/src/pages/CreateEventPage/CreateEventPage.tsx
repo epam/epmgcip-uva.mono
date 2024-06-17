@@ -1,6 +1,5 @@
-import { Dispatch } from '@reduxjs/toolkit';
 import { useEffect, useReducer, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, DatePicker, ImageLoader, Input, Loader, Select, Slider } from 'src/components';
 import {
@@ -12,7 +11,6 @@ import {
   STORAGE_IMAGES_PATH,
   VOLUNTEER_GENDER,
 } from 'src/constants';
-import { addEventsToList } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
 import {
   EventStatus,
@@ -35,7 +33,6 @@ import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/langu
 
 export const CreateEventPage = () => {
   const navigate = useNavigate();
-  const dispatch: Dispatch = useDispatch();
   const editor = useSelector((state: IState) => state.editor);
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -92,10 +89,7 @@ export const CreateEventPage = () => {
 
       setIsCreating(() => true);
 
-      createEvent(newEvent, image as File).then(result => {
-        if (result) {
-          dispatch(addEventsToList([newEvent]));
-        }
+      createEvent(newEvent, image as File).then(() => {
         handleCreateEvent();
       });
     }

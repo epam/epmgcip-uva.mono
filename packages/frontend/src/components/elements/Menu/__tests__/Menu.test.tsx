@@ -1,11 +1,11 @@
-import {  describe, expect, it, vi } from 'vitest';
+import { configureStore } from '@reduxjs/toolkit';
 import { render } from '@testing-library/react';
-import { Menu } from '../Menu';
 import { Provider } from 'react-redux';
 import { ADMIN_ACTIVE_MOCK } from 'src/mocks';
-import { configureStore } from '@reduxjs/toolkit';
-import { SET_EDITOR } from 'src/redux/types';
-import { IAction, IUser } from 'src/types';
+import { IAction, SET_EDITOR } from 'src/redux/types';
+import { IUser } from 'src/types';
+import { describe, expect, it, vi } from 'vitest';
+import { Menu } from '../Menu';
 
 const navigateMock = vi.fn();
 
@@ -17,7 +17,7 @@ const stateMock = {
   error: null,
 };
 
-const reducerMock = (( state = stateMock, action: IAction) => {
+const reducerMock = (state = stateMock, action: IAction) => {
   if (action.type === SET_EDITOR) {
     return {
       ...state,
@@ -26,7 +26,7 @@ const reducerMock = (( state = stateMock, action: IAction) => {
   }
 
   return state;
-})
+};
 
 const storeMock = configureStore({ reducer: reducerMock });
 

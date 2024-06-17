@@ -16,6 +16,8 @@ const firebaseApp = initializeApp({
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 });
 
+// todo: enable offline persistence and listen for the metadata update
+// https://firebase.google.com/docs/firestore/manage-data/enable-offline#web
 export const firebaseDb = getFirestore(firebaseApp);
 
 const container = document.getElementById('root');
@@ -24,8 +26,8 @@ if (container) {
   const root = createRoot(container);
 
   root.render(
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }

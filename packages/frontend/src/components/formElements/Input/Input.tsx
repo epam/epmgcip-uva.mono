@@ -1,13 +1,17 @@
 import { getClassesList } from 'src/utils/getClassesList';
 import css from './Input.module.sass';
 import translation from 'src/translations/Russian.json';
+import { IAction } from 'src/redux/types';
 
 type InputChange = (value: string) => {
   type: string;
   payload: string;
 };
 
-export type OnInputChange = React.Dispatch<React.SetStateAction<string>> | InputChange;
+export type OnInputChange =
+  | React.Dispatch<React.SetStateAction<string>>
+  | InputChange
+  | ((inputString: string) => IAction);
 
 interface InputProps {
   value: string;

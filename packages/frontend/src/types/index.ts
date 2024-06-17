@@ -90,29 +90,38 @@ export interface IEvent {
 
 }
 
+interface IData<T> {
+  // first data load was done
+  initialized: boolean;
+  // error occured during data load
+  error: boolean;
+  // data is currently loading
+  loading: boolean;
+  // reached last page of data
+  finished: boolean;
+  // all loaded data
+  data: T[];
+}
+
 export interface IState {
   editor: IUser;
   isMenu: boolean;
   usersList: IUser[];
-  eventsList: IEvent[];
   manageUsersPage: {
     userSearchInput: string;
     scrollSize: number;
     scrollDirection: ScrollDirection;
   };
   manageEventsPage: {
-    statusFilter: FilterEventStatuses,
-    scrollDirection: ScrollDirection.Down,
-    page: 0,
-    scrollSize: 0,
-  },
+    statusFilter: FilterEventStatuses;
+    scrollDirection: ScrollDirection;
+    limit: number;
+    scrollSize: number;
+
+    data: IData<IEvent>;
+  };
   loading: boolean;
   error: null | string;
-}
-
-export interface IAction {
-  type: string;
-  payload: never;
 }
 
 export enum UserRole {

@@ -1,24 +1,23 @@
-import { IAction, IEvent, IState, IUser, ScrollDirection } from 'src/types';
+import { IState, IUser, ScrollDirection } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
-  SET_SHOW_MENU,
+  IAction,
+  SAVE_EVENTS,
   SET_EDITOR,
-  UPDATE_USERS_LIST,
-  SET_USER_SEARCH_INPUT,
-  SET_MANAGE_USERS_SCROLL_SIZE,
-  SET_MANAGE_USERS_SCROLL_DIRECTION,
-  ADD_EVENTS_TO_LIST,
+  SET_EVENTS_LOADING,
   SET_EVENT_STATUS_FILTER,
-  SET_MANAGE_EVENTS_SCROLL_SIZE,
   SET_MANAGE_EVENTS_SCROLL_DIRECTION,
-  SET_EVENTS,
-  SET_EVENT_PAGE,
+  SET_MANAGE_EVENTS_SCROLL_SIZE,
+  SET_MANAGE_USERS_SCROLL_DIRECTION,
+  SET_MANAGE_USERS_SCROLL_SIZE,
+  SET_SHOW_MENU,
+  SET_USER_SEARCH_INPUT,
+  UPDATE_USERS_LIST
 } from './types';
 
 const initialState: IState = {
   editor: {} as IUser,
   usersList: [] as IUser[],
-  eventsList: [] as IEvent[],
   manageUsersPage: {
     userSearchInput: '',
     scrollDirection: ScrollDirection.Down,
@@ -28,7 +27,14 @@ const initialState: IState = {
     statusFilter: 'all' as const,
     scrollDirection: ScrollDirection.Down,
     scrollSize: 0,
-    page: 0,
+    limit: 20,
+    data: {
+      initialized: false,
+      error: false,
+      loading: true,
+      finished: false,
+      data: []
+    }
   },
   isMenu: false,
   loading: false,
@@ -85,31 +91,48 @@ const rootReducer = (state = initialState, action: IAction): IState => {
         },
       };
     //EVENTS
-    case ADD_EVENTS_TO_LIST:
+    case SET_EVENTS_LOADING:
       return {
-        ...state,
-        eventsList: [...action.payload, ...state.eventsList],
+        ...state, manageEventsPage: {
+          ...state.manageEventsPage,
+          data: {
+            ...state.manageEventsPage.data,
+            loading: action.payload,
+          }
+        }
       };
-    case SET_EVENTS:
+    case SAVE_EVENTS:
       return {
-        ...state,
-        eventsList: [...action.payload],
+        ...state, manageEventsPage: {
+          ...state.manageEventsPage,
+          data: {
+            ...state.manageEventsPage.data,
+            initialized: true,
+            data: action.payload.initialized ?
+              [...(state.manageEventsPage.data.data ?? []), ...action.payload.data]
+              : [...action.payload.data],
+            finished: action.payload.isLast,
+            error: action.payload.isError,
+            loading: false,
+          }
+        }
       };
     case SET_EVENT_STATUS_FILTER:
+      if (state.manageEventsPage.statusFilter === action.payload) {
+        return state;
+      }
       return {
         ...state,
         manageEventsPage: {
           ...state.manageEventsPage,
           statusFilter: action.payload,
-          page: state.manageEventsPage.statusFilter === action.payload ? state.manageEventsPage.page : 0,
-        },
-      };
-    case SET_EVENT_PAGE:
-      return {
-        ...state,
-        manageEventsPage: {
-          ...state.manageEventsPage,
-          page: action.payload,
+          data: {
+            initialized: false,
+            error: false,
+            loading: true,
+            finished: false,
+            data: []
+          }
         },
       };
     case SET_MANAGE_EVENTS_SCROLL_SIZE:
