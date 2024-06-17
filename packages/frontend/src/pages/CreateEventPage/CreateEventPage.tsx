@@ -3,7 +3,15 @@ import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, DatePicker, ImageLoader, Input, Loader, Select, Slider } from 'src/components';
-import { EVENTS_ROUTE, EVENT_STATUS, LANGUAGE, ROOT_ROUTE, VOLUNTEER_GENDER } from 'src/constants';
+import {
+  EVENTS_ROUTE,
+  EVENT_STATUS,
+  LANGUAGE,
+  ROOT_ROUTE,
+  STORAGE_BUCKET,
+  STORAGE_IMAGES_PATH,
+  VOLUNTEER_GENDER,
+} from 'src/constants';
 import { addEventsToList } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
 import {
@@ -77,7 +85,7 @@ export const CreateEventPage = () => {
         ageMax: maxVolunteersAge,
         volunteersQuantity: volunteersQuantity,
         status: eventStatus,
-        image: `${import.meta.env.VITE_FIREBASE_STORAGE_BUCKET}/public/${eventId}`,
+        image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
         endDate: eventEndDate,
         telegramChannelLink,
       };

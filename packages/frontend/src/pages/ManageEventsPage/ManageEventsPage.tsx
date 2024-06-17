@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LogoSvg from 'src/assets/logo.svg';
 import { PageWrapper, Toolbar } from 'src/components';
+import { Filter } from 'src/components/elements/Filter/Filter';
 import { CREATE_EVENT_ROUTE, ROOT_ROUTE } from 'src/constants';
 import {
   addEventsToList,
@@ -13,11 +14,10 @@ import {
 } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
 import { EventStatus, FilterEventStatuses, IEvent, IState } from 'src/types';
+import { CacheKey, cacheUtils } from 'src/utils/cache.utils';
 import { getEvents } from 'src/utils/getEvents';
 import css from './ManageEventsPage.module.sass';
 import { EventCard } from './components/EventCard/EventCard';
-import { CacheKey, cacheUtils } from 'src/utils/cache.utils';
-import { Filter } from 'src/components/elements/Filter/Filter';
 
 const getCacheKey = (filter: FilterEventStatuses, page: number) =>
   `eventsList-${filter ?? ''}-${page}`;

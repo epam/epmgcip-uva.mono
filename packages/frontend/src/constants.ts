@@ -1,6 +1,9 @@
 import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus } from './types';
 import translation from 'src/translations/Russian.json';
 
+export const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+export const STORAGE_IMAGES_PATH = 'public/images';
+
 export const ROOT_ROUTE = '/';
 export const EVENTS_ROUTE = '/events';
 export const CREATE_EVENT_ROUTE = '/events/create';
