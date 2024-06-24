@@ -134,9 +134,7 @@ export enum UserStatus {
   Inactive = 'inactive',
 }
 
-export interface IValidationError {
-  [key: string]: string;
-}
+export type IValidationError = { [key: string]: string };
 
 export interface IOption {
   name: string;

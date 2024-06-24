@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, DatePicker, ImageLoader, Input, Loader, Select, Slider } from 'src/components';
 import {
@@ -30,9 +31,13 @@ import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDurat
 import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
 import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
+import { saveEvents, setEventsLoading } from 'src/redux/actions';
+import { getShortDate } from 'src/components/formElements/DatePicker/utils';
 
 export const CreateEventPage = () => {
+  const dispatch: Dispatch = useDispatch();
   const navigate = useNavigate();
+
   const editor = useSelector((state: IState) => state.editor);
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -60,6 +65,8 @@ export const CreateEventPage = () => {
 
   const handleCreateEvent = () => {
     navigate(EVENTS_ROUTE);
+    dispatch(saveEvents([], true, false));
+    dispatch(setEventsLoading(true));
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -72,7 +79,7 @@ export const CreateEventPage = () => {
       const newEvent: IEvent = {
         id: eventId,
         languageSpecificData,
-        startDate: eventStartDate,
+        startDate: getShortDate(eventStartDate),
         startTime: eventStartTime,
         endTime: eventEndTime,
         duration: eventDuration,
@@ -83,7 +90,7 @@ export const CreateEventPage = () => {
         volunteersQuantity: volunteersQuantity,
         status: eventStatus,
         image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
-        endDate: eventEndDate,
+        endDate: getShortDate(eventEndDate),
         telegramChannelLink,
       };
 
@@ -99,30 +106,27 @@ export const CreateEventPage = () => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
 
     setValidation(
-      // todo: rewrite it for name, description, place - should be at least one language
-      validateEventValues({
-        // name: eventName,
-        // description: eventDescription,
-        // place: eventPlace,
-        startDate: eventStartDate,
-        startTime: eventStartTime,
-        endTime: eventEndTime,
-        duration: eventDuration,
-        registrationDate: eventRegistrationDate,
-        gender: gender as Gender,
-        language: eventLanguage.join(''),
-        volunteersQuantity: volunteersQuantity,
-        image: image ? image.name : '',
-      })
+      validateEventValues(
+        {
+          startDate: eventStartDate,
+          startTime: eventStartTime,
+          endTime: eventEndTime,
+          duration: eventDuration,
+          registrationDate: eventRegistrationDate,
+          gender: gender as Gender,
+          language: eventLanguage.join(''),
+          volunteersQuantity: volunteersQuantity,
+          image: image ? image.name : '',
+        },
+        languageSpecificData
+      )
     );
   }, [
     editor,
     navigate,
-    // eventName,
-    // eventDescription,
+    languageSpecificData,
     eventStartDate,
     image,
-    // eventPlace,
     eventStartTime,
     eventEndTime,
     eventDuration,

@@ -16,10 +16,7 @@ export const LanguageButtons = ({
 }: LanguageButtonsProps) => {
   return (
     <div className={css.createEventLanguageSpecific}>
-      {/* todo: 
-          validation - add it + it should not be provoked by buttons clicking; add remove button and alerts;
-          fix tests (14 errors)
-        */}
+      {/* todo: add remove button and alerts; */}
       <div className={css.createEventLanguageSpecificButtons}>
         {languages.map(lang => (
           <Button
@@ -31,6 +28,7 @@ export const LanguageButtons = ({
                 event: 'toggle',
               })
             }
+            stopPropagation={true}
             className={
               css.toggleLanguageButton +
               `${

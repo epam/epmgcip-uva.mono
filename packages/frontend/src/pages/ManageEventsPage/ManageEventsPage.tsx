@@ -115,7 +115,7 @@ export const ManageEventsPage = () => {
               </div>
             )}
           </div>
-          {eventsData.initialized && !eventsData.finished && (
+          {eventsData.initialized && !eventsData.finished && eventsData.data.length >= limit && (
             <Button
               className={css.loadMoreButton}
               onClick={() => {

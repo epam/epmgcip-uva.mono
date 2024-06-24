@@ -20,6 +20,17 @@ export const getNormalizeDate = (date: string) => {
   return `${day}-${month}-${year}`;
 };
 
+export const getShortDate = (date: string) => {
+  const [day, month, year] = date.split('-');
+  const dateObj = new Date(+year, +month - 1, +day);
+
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  const formattedDate = dateObj.toLocaleDateString('en-GB', options);
+
+  return formattedDate.replace(/\./g, '');
+};
+
+
 
 export const getDaysInMonth = (
   month = new Date().getMonth(),

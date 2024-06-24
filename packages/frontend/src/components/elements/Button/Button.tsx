@@ -7,6 +7,7 @@ interface ButtonProps {
   className?: string;
   id?: string;
   disabled?: boolean;
+  stopPropagation?: boolean;
 }
 
 export const Button = ({
@@ -15,12 +16,19 @@ export const Button = ({
   className,
   id,
   disabled,
+  stopPropagation,
 }: ButtonProps) => {
   const buttonClasses = getClassesList(css.button, className);
 
   return (
     <button
-      onClick={onClick}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        if (stopPropagation) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+        onClick && onClick();
+      }}
       className={buttonClasses}
       id={id}
       disabled={disabled}
