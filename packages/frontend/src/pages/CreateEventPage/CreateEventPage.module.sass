@@ -17,6 +17,10 @@
         display: flex
         flex-direction: column
         align-items: center
+        gap: 14px
+
+        .postLanguages
+            width: 100%
 
         .selectPlaceholder
             @extend .T1
@@ -61,3 +65,20 @@
 .createEventPadding
     padding-left: 24px
     padding-right: 24px
+
+.modalCancelButton
+    color: colors.$blue-dark
+    background-color: colors.$white
+    border: 1px solid colors.$blue-dark
+
+    &:hover
+        color: colors.$white
+        background-color: colors.$blue
+        border: none
+
+.modalDeleteButton
+    background-color: colors.$red
+    color: colors.$white
+
+    &:hover
+        background-color: colors.$blue-light

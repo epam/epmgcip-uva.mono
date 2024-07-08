@@ -1,8 +1,9 @@
-import { Input, TextArea } from 'src/components';
+import { Button, Input, TextArea } from 'src/components';
 import { Line } from 'src/components/elements/Line/Line';
 import { Language } from 'src/types';
-import { LanguageReducerAction } from '../../types';
+import { LanguageEvent, LanguageReducerAction } from '../../types';
 import { getLabels } from '../../utils/languages';
+import DeleteSvg from 'src/assets/delete.svg';
 import css from './LanguageSpecificFields.module.sass';
 
 interface LanguageSpecificFieldsProps {
@@ -34,20 +35,34 @@ export const LanguageSpecificFields = ({
   const errorMessageForDescription = validation[`${language}Description`];
   const isValidationErrorForPlace = isSubmitting && !!validation[`${language}Place`];
   const errorMessageForPlace = validation[`${language}Place`];
+
+  function onChange(key: string) {
+    return (value: string | React.SetStateAction<string>) => {
+      dispatch({
+        language,
+        event: LanguageEvent.Change,
+        update: { [key]: value as string },
+        withApproval: false,
+      });
+    };
+  }
+
+  function onToggle() {
+    dispatch({ language, withApproval: true, event: LanguageEvent.Toggle });
+  }
+
   return (
     <>
       <div className={css.wrapper}>
-        <h2 className={css.title}>{labels.title}</h2>
+        <div className={css.header}>
+          <h2 className={css.title}>{labels.title}</h2>
+          <Button onClick={onToggle} stopPropagation={true}>
+            <img src={DeleteSvg} alt={`delete ${language} language button`} />
+          </Button>
+        </div>
         <Input
           value={name}
-          setChange={(name: string | React.SetStateAction<string>) => {
-            dispatch({
-              language,
-              event: 'change',
-              update: { name: name as string },
-              withApproval: false,
-            });
-          }}
+          setChange={onChange('name')}
           labelText={labels.name}
           required
           labelClassName={css.createEventPadding}
@@ -56,14 +71,7 @@ export const LanguageSpecificFields = ({
         />
         <TextArea
           value={description}
-          setChange={(description: string | React.SetStateAction<string>) => {
-            dispatch({
-              language,
-              event: 'change',
-              update: { description: description as string },
-              withApproval: false,
-            });
-          }}
+          setChange={onChange('description')}
           labelText={labels.description}
           required
           labelClassName={css.createEventPadding}
@@ -72,14 +80,7 @@ export const LanguageSpecificFields = ({
         />
         <Input
           value={place}
-          setChange={(place: string | React.SetStateAction<string>) => {
-            dispatch({
-              language,
-              event: 'change',
-              update: { place: place as string },
-              withApproval: false,
-            });
-          }}
+          setChange={onChange('place')}
           labelText={labels.place}
           required
           labelClassName={css.createEventPadding}

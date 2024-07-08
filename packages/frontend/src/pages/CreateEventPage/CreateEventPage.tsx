@@ -1,8 +1,18 @@
-import { useEffect, useReducer, useState } from 'react';
 import { Dispatch } from '@reduxjs/toolkit';
+import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, DatePicker, ImageLoader, Input, Loader, Select, Slider } from 'src/components';
+import {
+  Button,
+  DatePicker,
+  ImageLoader,
+  Input,
+  Loader,
+  Modal,
+  Select,
+  Slider,
+} from 'src/components';
+import { getShortDate } from 'src/components/formElements/DatePicker/utils';
 import {
   EVENTS_ROUTE,
   EVENT_STATUS,
@@ -12,8 +22,10 @@ import {
   STORAGE_IMAGES_PATH,
   VOLUNTEER_GENDER,
 } from 'src/constants';
+import { saveEvents, setEventsLoading } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
 import {
+  CreateEventAlerts,
   EventStatus,
   Gender,
   IEvent,
@@ -30,10 +42,33 @@ import { EventStatusDescription } from './components/EventStatusDescription/Even
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
 import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
 import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
+import { LanguageEvent } from './types';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
-import { saveEvents, setEventsLoading } from 'src/redux/actions';
-import { getShortDate } from 'src/components/formElements/DatePicker/utils';
 
+const submitTextMap: Record<CreateEventAlerts, string> = {
+  [CreateEventAlerts.Leaving]: translation.leave,
+  [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.ok,
+  [CreateEventAlerts.ConfirmLanguageDeletion]: translation.delete,
+  [CreateEventAlerts.None]: '',
+};
+
+const alertTextMap: Record<CreateEventAlerts, string> = {
+  // todo: move all alerts messages to translation.alerts (group them)
+  [CreateEventAlerts.Leaving]: translation.alerts.unsavedChanges,
+  [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.alerts.deletingLastEventLanguage,
+  [CreateEventAlerts.ConfirmLanguageDeletion]: translation.alerts.deleteEventLanguage,
+  [CreateEventAlerts.None]: '',
+};
+
+const alertHeaderMap: Record<CreateEventAlerts, string> = {
+  // todo: move all alerts messages to translation.alerts (group them)
+  [CreateEventAlerts.Leaving]: translation.alerts.closePage,
+  [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.alerts.removeLanguage,
+  [CreateEventAlerts.ConfirmLanguageDeletion]: translation.alerts.removeLanguage,
+  [CreateEventAlerts.None]: '',
+};
+
+// todo: this page needs simplification
 export const CreateEventPage = () => {
   const dispatch: Dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,11 +78,12 @@ export const CreateEventPage = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validation, setValidation] = useState<IValidationError>({});
+  const [alert, setAlert] = useState(CreateEventAlerts.None);
 
   const [image, setImage] = useState<File | null>(null);
   const [languageSpecificData, dispatchLanguageSpecificData] = useReducer(
     languageSpecificDataReducer,
-    { [Language.Russian]: getEmptyLanguageData(Language.Russian) }
+    { data: { [Language.Russian]: getEmptyLanguageData(Language.Russian) } }
   );
   const [eventStartDate, setEventStartDate] = useState('');
   const [eventEndDate, setEventEndDate] = useState('');
@@ -118,7 +154,7 @@ export const CreateEventPage = () => {
           volunteersQuantity: volunteersQuantity,
           image: image ? image.name : '',
         },
-        languageSpecificData
+        languageSpecificData.data
       )
     );
   }, [
@@ -136,6 +172,35 @@ export const CreateEventPage = () => {
     volunteersQuantity,
   ]);
 
+  const combinedAlert =
+    alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
+
+  const closeModal = () => {
+    if (languageSpecificData.alert) {
+      dispatchLanguageSpecificData({
+        event: LanguageEvent.ClearAlert,
+        language: Language.Russian,
+        withApproval: false,
+      });
+    } else {
+      setAlert(CreateEventAlerts.None);
+    }
+  };
+
+  const submitModal = () => {
+    if (languageSpecificData.alert === CreateEventAlerts.ConfirmLanguageDeletion) {
+      dispatchLanguageSpecificData({
+        language: languageSpecificData.alertData!.language,
+        withApproval: false,
+        event: LanguageEvent.Toggle,
+      });
+    } else if (alert === CreateEventAlerts.Leaving) {
+      handleCreateEvent();
+    }
+
+    closeModal();
+  };
+
   return (
     isEditorHasPermissions && (
       <div className={css.createEventWrapper}>
@@ -146,24 +211,27 @@ export const CreateEventPage = () => {
             isValidationError={isSubmitting && !!validation.image}
             errorMessage={validation.image}
           />
-          <LanguageButtons
-            languages={languages}
-            dispatch={dispatchLanguageSpecificData}
-            languageSpecificData={languageSpecificData}
-          />
-          {Object.values(languageSpecificData).map((lang, index) => (
-            <LanguageSpecificFields
-              key={lang.type}
-              name={lang.name}
-              description={lang.description}
-              language={lang.type}
-              place={lang.place}
-              isLast={Object.keys(languageSpecificData).length === index + 1}
+          <div className={css.postLanguages}>
+            <LanguageButtons
+              languages={languages}
+              labelText={translation.addLanguage}
               dispatch={dispatchLanguageSpecificData}
-              validation={validation}
-              isSubmitting={isSubmitting}
+              languageSpecificData={languageSpecificData}
             />
-          ))}
+            {Object.values(languageSpecificData.data).map((lang, index) => (
+              <LanguageSpecificFields
+                key={lang.type}
+                name={lang.name}
+                description={lang.description}
+                language={lang.type}
+                place={lang.place}
+                isLast={Object.keys(languageSpecificData).length === index + 1}
+                dispatch={dispatchLanguageSpecificData}
+                validation={validation}
+                isSubmitting={isSubmitting}
+              />
+            ))}
+          </div>
           <DatePicker
             value={eventStartDate}
             setChange={setEventStartDate}
@@ -274,7 +342,7 @@ export const CreateEventPage = () => {
           <EventStatusDescription />
           <div className={css.buttonsPanel}>
             <Button
-              onClick={handleCreateEvent}
+              onClick={() => setAlert(CreateEventAlerts.Leaving)}
               className={`${css.createEventButton} ${css.backButton}`}
             >
               {translation.back}
@@ -287,6 +355,24 @@ export const CreateEventPage = () => {
             </Button>
           </div>
         </form>
+        {combinedAlert !== CreateEventAlerts.None && (
+          <Modal
+            cancelButtonMessage={translation.cancel}
+            submitButtonMessage={submitTextMap[combinedAlert]}
+            isLoading={false}
+            handleClose={closeModal}
+            handleSubmit={submitModal}
+            message={alertTextMap[combinedAlert]}
+            submitClassName={
+              combinedAlert === CreateEventAlerts.ForbidOnlyLanguageDeletion
+                ? css.modalCancelButton
+                : css.modalDeleteButton
+            }
+            cancelClassName={css.modalCancelButton}
+            headerMessage={alertHeaderMap[combinedAlert]}
+            onlySubmit={combinedAlert === CreateEventAlerts.ForbidOnlyLanguageDeletion}
+          />
+        )}
       </div>
     )
   );

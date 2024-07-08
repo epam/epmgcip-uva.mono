@@ -1,4 +1,5 @@
 @use 'src/style/colors'
+@import 'src/style/typography'
 
 .createEventLanguageSpecific
     width: 100%
@@ -6,9 +7,17 @@
 
     .createEventLanguageSpecificButtons
         display: flex
-        justify-content: space-between
+        flex-direction: column
+        gap: 8px
         padding: 18px 24px 0
-        align-items: flex-start
+
+        .header
+            @extend .H6
+
+        .buttonRow
+            display: flex
+            justify-content: space-between
+            align-items: flex-start
 
         .toggleLanguageButton
             color: colors.$blue-dark
