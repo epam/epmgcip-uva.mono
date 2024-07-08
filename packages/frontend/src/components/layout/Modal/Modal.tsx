@@ -12,9 +12,12 @@ interface ModalProps {
   message: string;
   submitClassName?: string;
   cancelClassName?: string;
+  onlySubmit?: boolean;
+  headerMessage?: string;
 }
 
 export const Modal = ({
+  headerMessage,
   cancelButtonMessage,
   submitButtonMessage,
   isLoading,
@@ -23,18 +26,22 @@ export const Modal = ({
   message,
   submitClassName,
   cancelClassName,
+  onlySubmit,
 }: ModalProps) => {
-  const submitClassNames = getClassesList(css.deleteUserButton, submitClassName);
-  const cancelClassNames = getClassesList(css.deleteUserButton, cancelClassName);
+  const submitClassNames = getClassesList(css.modalButton, submitClassName);
+  const cancelClassNames = getClassesList(css.modalButton, cancelClassName);
 
   return (
     <div className={css.modalWrapper}>
       <div className={css.modalContainer}>
+        {headerMessage && <div className={css.modalHeader}>{headerMessage}</div>}
         <div className={css.modalMessage}>{message}</div>
         <div className={css.buttonsPanel}>
-          <Button onClick={handleClose} className={cancelClassNames}>
-            {cancelButtonMessage}
-          </Button>
+          {!onlySubmit && (
+            <Button onClick={handleClose} className={cancelClassNames}>
+              {cancelButtonMessage}
+            </Button>
+          )}
           <Button onClick={handleSubmit} className={submitClassNames} disabled={isLoading}>
             {isLoading ? <Loader size={'12px'} /> : submitButtonMessage}
           </Button>

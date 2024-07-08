@@ -40,6 +40,7 @@ export const Filter = <T,>({
         onClick={() => {
           setIsFilterOpen(!isFilterOpen);
         }}
+        aria-label="filter-button"
       >
         {showCurrentValue(options, currentValue)}
         <img className={css.eventsFilterIcon} src={FilterSvg} />

@@ -24,7 +24,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
             )}
           >
             <Dot color={event.status === EventStatus.Active ? 'green' : 'gray'} />
-            <div>{translation[(event.status + 'Event') as keyof typeof translation]}</div>
+            <div>{translation[(event.status + 'Event') as 'draftEvent']}</div>
           </div>
           <div className={css.eventCardVolunteersQuantity}>
             <img className={css.groupIcon} src={GroupSvg} />

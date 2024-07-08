@@ -62,6 +62,13 @@ export interface EventLanguageSpecificFields {
   place: string;
 }
 
+export enum CreateEventAlerts {
+  None,
+  ForbidOnlyLanguageDeletion,
+  ConfirmLanguageDeletion,
+  Leaving,
+}
+
 export interface EventLanguageSpecificData {
   [Language.Russian]: EventLanguageSpecificFields;
   [Language.Uzbek]: EventLanguageSpecificFields;
@@ -69,9 +76,17 @@ export interface EventLanguageSpecificData {
   [Language.Qoraqalpoq]: EventLanguageSpecificFields;
 }
 
+export type EventLanguageSpecific = {
+  data: AtLeastOne<EventLanguageSpecificData>;
+  alert?: CreateEventAlerts;
+  alertData?: {
+    language: Language;
+  };
+};
+
 export interface IEvent {
   id: string;
-  languageSpecificData: AtLeastOne<EventLanguageSpecificData>;
+  languageSpecificData: EventLanguageSpecific;
   startDate: string;
   startTime: string;
   endTime: string;
@@ -87,7 +102,6 @@ export interface IEvent {
 
   image: string;
   imageUrl?: string;
-
 }
 
 interface IData<T> {

@@ -1,10 +1,10 @@
-import russianTranslation from 'src/translations/Russian.json';
+import { Reducer } from 'react';
 import englishTranslation from 'src/translations/English.json';
 import karakalpakTranslation from 'src/translations/Karakalpak.json';
+import russianTranslation from 'src/translations/Russian.json';
 import uzbekTranslation from 'src/translations/Uzbek.json';
-import { Reducer } from 'react';
-import { EventLanguageSpecificFields, IEvent, Language } from 'src/types';
-import { LanguageReducerAction } from '../types';
+import { CreateEventAlerts, EventLanguageSpecificFields, IEvent, Language } from 'src/types';
+import { LanguageEvent, LanguageReducerAction } from '../types';
 
 export const getEmptyLanguageData = (lang: Language): EventLanguageSpecificFields => ({
   type: lang,
@@ -17,41 +17,58 @@ export const languageSpecificDataReducer: Reducer<
   IEvent['languageSpecificData'],
   LanguageReducerAction
 > = (state, action) => {
-  if (action.event === 'toggle') {
-    const operation = action.language in state ? 'remove' : 'add';
+  if (action.event === LanguageEvent.Toggle) {
+    const operation = action.language in state.data ? 'remove' : 'add';
     switch (operation) {
       case 'add':
         return {
           ...state,
-          [action.language]: getEmptyLanguageData(action.language),
+          data: {
+            ...state.data,
+            [action.language]: getEmptyLanguageData(action.language),
+          },
         };
       case 'remove': {
-        if (Object.keys(state).length === 1) {
-          // todo: show alert that only language can't be deleted
-          return state;
+        if (Object.keys(state.data).length === 1) {
+          return { ...state, alert: CreateEventAlerts.ForbidOnlyLanguageDeletion };
         }
         if (
           !action.withApproval ||
-          (state[action.language]?.name === '' &&
-            state[action.language]?.description === '' &&
-            state[action.language]?.place === '')
+          (state.data[action.language]?.name === '' &&
+            state.data[action.language]?.description === '' &&
+            state.data[action.language]?.place === '')
         ) {
-          const newState = { ...state };
-          delete newState[action.language];
-          return newState;
+          const newStateData = { ...state.data };
+
+          delete newStateData[action.language];
+
+          return { data: newStateData };
         } else {
-          // todo: show dialog with warning that data will be lost
-          return state;
+          return {
+            ...state,
+            alert: CreateEventAlerts.ConfirmLanguageDeletion,
+            alertData: {
+              language: action.language,
+            },
+          };
         }
       }
     }
   }
-  if (action.event === 'change' && action.update) {
+
+  if (action.event === LanguageEvent.ClearAlert) {
+    return { ...state, alert: undefined, alertData: undefined };
+  }
+
+  if (action.event === LanguageEvent.Change && action.update) {
     return {
       ...state,
-      [action.language]: {
-        ...state[action.language],
-        ...action.update,
+      data: {
+        ...state.data,
+        [action.language]: {
+          ...state.data[action.language],
+          ...action.update,
+        },
       },
     };
   }

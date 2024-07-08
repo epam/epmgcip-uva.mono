@@ -14,40 +14,43 @@ export const getEvent = async (eventId: string) => {
 };
 
 export const getEventNameInLanguage = (event: IEvent, language?: Language): string | undefined => {
-  if (!event.languageSpecificData) {
+  const data = event.languageSpecificData?.data;
+  if (!data) {
     return;
   }
   if (language) {
-    return event.languageSpecificData[language]?.name;
+    return data[language]?.name;
   }
-  if (Language.Russian in event.languageSpecificData) {
-    return event.languageSpecificData[Language.Russian]!.name;
+  if (Language.Russian in data) {
+    return data[Language.Russian]!.name;
   }
-  return Object.values(event.languageSpecificData)[0].name;
+  return Object.values(data)[0].name;
 };
 
 export const getEventPlaceInLanguage = (event: IEvent, language?: Language): string | undefined => {
-  if (!event.languageSpecificData) {
+  const data = event.languageSpecificData?.data;
+  if (!data) {
     return;
   }
   if (language) {
-    return event.languageSpecificData[language]?.place;
+    return data[language]?.place;
   }
-  if (Language.Russian in event.languageSpecificData) {
-    return event.languageSpecificData[Language.Russian]!.place;
+  if (Language.Russian in data) {
+    return data[Language.Russian]!.place;
   }
-  return Object.values(event.languageSpecificData)[0].place;
+  return Object.values(data)[0].place;
 };
 
 export const getEventLanguageSpecificData = (event: IEvent, language?: Language) => {
-  if (!event.languageSpecificData) {
+  const data = event.languageSpecificData?.data;
+  if (!data) {
     return;
   }
   if (language) {
-    return event.languageSpecificData[language];
+    return data[language];
   }
-  if (Language.Russian in event.languageSpecificData) {
-    return event.languageSpecificData[Language.Russian];
+  if (Language.Russian in data) {
+    return data[Language.Russian];
   }
-  return Object.values(event.languageSpecificData)[0];
+  return Object.values(data)[0];
 };

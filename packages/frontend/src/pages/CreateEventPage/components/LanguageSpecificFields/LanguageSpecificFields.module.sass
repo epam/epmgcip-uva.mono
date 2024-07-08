@@ -11,10 +11,21 @@
 .last
     margin-bottom: 18px
 
-.title
-    @extend .H5
-    align-self: flex-start
+.header
+    display: flex
+    width: 100%
+    justify-content: space-between
+    align-items: center
     padding: 0 24px
+    align-self: flex-start
+    box-sizing: border-box
+
+    & .title
+        @extend .H5
+
+    & img
+        width: 24px
+        height: 24px
 
 .languageSpecificFieldsTitle
     @extend .H6
