@@ -14,6 +14,8 @@ import {
 } from 'src/components';
 import { getShortDate } from 'src/components/formElements/DatePicker/utils';
 import {
+  DEFAULT_MAX_AGE,
+  DEFAULT_MIN_AGE,
   EVENTS_ROUTE,
   EVENT_STATUS,
   LANGUAGE,
@@ -34,7 +36,7 @@ import {
   Language,
   languages,
 } from 'src/types';
-import { createEvent } from 'src/utils/createEvent';
+import { createEvent, isCreateFormDirty } from 'src/utils/createEvent';
 import { validateEventValues } from 'src/utils/validateEventValues';
 import { v4 as uuidv4 } from 'uuid';
 import css from './CreateEventPage.module.sass';
@@ -92,52 +94,63 @@ export const CreateEventPage = () => {
   const [eventDuration, setEventDuration] = useState('');
   const [eventRegistrationDate, setEventRegistrationDate] = useState('');
   const [gender, setGender] = useState('');
-  const [minVolunteersAge, setMinVolunteersAge] = useState(16);
-  const [maxVolunteersAge, setMaxVolunteersAge] = useState(61);
+  const [minVolunteersAge, setMinVolunteersAge] = useState(DEFAULT_MIN_AGE);
+  const [maxVolunteersAge, setMaxVolunteersAge] = useState(DEFAULT_MAX_AGE);
   const [eventLanguage, setEventLanguage] = useState<Language[]>([]);
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
 
-  const handleCreateEvent = () => {
-    navigate(EVENTS_ROUTE);
-    dispatch(saveEvents([], true, false));
-    dispatch(setEventsLoading(true));
-  };
+  // show warning on page close if there are changes
+  useEffect(() => {
+    const handleUnload = (e: { preventDefault: () => void; returnValue: string }) => {
+      if (
+        isCreateFormDirty(
+          {
+            startDate: eventStartDate,
+            startTime: eventStartTime,
+            endTime: eventEndTime,
+            duration: eventDuration,
+            registrationDate: eventRegistrationDate,
+            gender: gender as Gender,
+            volunteersQuantity: volunteersQuantity,
+            endDate: eventEndDate,
+            telegramChannelLink,
+          },
+          languageSpecificData,
+          minVolunteersAge,
+          maxVolunteersAge,
+          eventStatus
+        )
+      ) {
+        e.preventDefault();
+        e.returnValue = alertTextMap[CreateEventAlerts.Leaving];
+        return alertTextMap[CreateEventAlerts.Leaving];
+      }
+    };
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+    window.addEventListener('beforeunload', handleUnload);
 
-    setIsSubmitting(() => true);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, [
+    eventDuration,
+    eventEndDate,
+    eventEndTime,
+    eventRegistrationDate,
+    eventStartDate,
+    eventStartTime,
+    eventStatus,
+    gender,
+    languageSpecificData,
+    maxVolunteersAge,
+    minVolunteersAge,
+    telegramChannelLink,
+    volunteersQuantity,
+  ]);
 
-    if (Object.keys(validation).length === 0) {
-      const eventId = uuidv4();
-      const newEvent: IEvent = {
-        id: eventId,
-        languageSpecificData,
-        startDate: getShortDate(eventStartDate),
-        startTime: eventStartTime,
-        endTime: eventEndTime,
-        duration: eventDuration,
-        registrationDate: eventRegistrationDate,
-        gender: gender as Gender,
-        ageMin: minVolunteersAge,
-        ageMax: maxVolunteersAge,
-        volunteersQuantity: volunteersQuantity,
-        status: eventStatus,
-        image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
-        endDate: getShortDate(eventEndDate),
-        telegramChannelLink,
-      };
-
-      setIsCreating(() => true);
-
-      createEvent(newEvent, image as File).then(() => {
-        handleCreateEvent();
-      });
-    }
-  };
-
+  // validate form on sumbit
   useEffect(() => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
 
@@ -187,6 +200,71 @@ export const CreateEventPage = () => {
     }
   };
 
+  const handleCreateEvent = () => {
+    navigate(EVENTS_ROUTE);
+    dispatch(saveEvents([], false, false, false));
+    dispatch(setEventsLoading(true));
+  };
+
+  const onLeave = () => {
+    if (
+      isCreateFormDirty(
+        {
+          startDate: eventStartDate,
+          startTime: eventStartTime,
+          endTime: eventEndTime,
+          duration: eventDuration,
+          registrationDate: eventRegistrationDate,
+          gender: gender as Gender,
+          volunteersQuantity: volunteersQuantity,
+          endDate: eventEndDate,
+          telegramChannelLink,
+        },
+        languageSpecificData,
+        minVolunteersAge,
+        maxVolunteersAge,
+        eventStatus
+      )
+    ) {
+      setAlert(CreateEventAlerts.Leaving);
+    } else {
+      handleCreateEvent();
+    }
+  };
+
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    setIsSubmitting(() => true);
+
+    if (Object.keys(validation).length === 0) {
+      const eventId = uuidv4();
+      const newEvent: IEvent = {
+        id: eventId,
+        languageSpecificData,
+        startDate: getShortDate(eventStartDate),
+        startTime: eventStartTime,
+        endTime: eventEndTime,
+        duration: eventDuration,
+        registrationDate: eventRegistrationDate,
+        gender: gender as Gender,
+        ageMin: minVolunteersAge,
+        ageMax: maxVolunteersAge,
+        volunteersQuantity: volunteersQuantity,
+        status: eventStatus,
+        image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
+        endDate: getShortDate(eventEndDate),
+        telegramChannelLink,
+      };
+
+      setIsCreating(() => true);
+
+      createEvent(newEvent, image as File).then(() => {
+        handleCreateEvent();
+      });
+    }
+  };
+
   const submitModal = () => {
     if (languageSpecificData.alert === CreateEventAlerts.ConfirmLanguageDeletion) {
       dispatchLanguageSpecificData({
@@ -225,7 +303,7 @@ export const CreateEventPage = () => {
                 description={lang.description}
                 language={lang.type}
                 place={lang.place}
-                isLast={Object.keys(languageSpecificData).length === index + 1}
+                isLast={Object.keys(languageSpecificData.data).length === index + 1}
                 dispatch={dispatchLanguageSpecificData}
                 validation={validation}
                 isSubmitting={isSubmitting}
@@ -341,10 +419,7 @@ export const CreateEventPage = () => {
           />
           <EventStatusDescription />
           <div className={css.buttonsPanel}>
-            <Button
-              onClick={() => setAlert(CreateEventAlerts.Leaving)}
-              className={`${css.createEventButton} ${css.backButton}`}
-            >
+            <Button onClick={onLeave} className={`${css.createEventButton} ${css.backButton}`}>
               {translation.back}
             </Button>
             <Button
