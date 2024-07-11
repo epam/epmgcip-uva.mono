@@ -10,7 +10,7 @@ import {
   SET_MANAGE_USERS_SCROLL_SIZE,
   SET_SHOW_MENU,
   SET_USER_SEARCH_INPUT,
-  UPDATE_USERS_LIST
+  UPDATE_USERS_LIST,
 } from './types';
 
 export const setEditor = (editor: IUser): IAction => ({
@@ -42,12 +42,12 @@ export const setManageUsersSearchInput = (searchInput: string): IAction => ({
 export const setManageUsersScrollSize = (scrollSize: number): IAction => ({
   type: SET_MANAGE_USERS_SCROLL_SIZE,
   payload: scrollSize,
-})
+});
 
 export const setManageUsersScrollDirection = (scrollDirection: ScrollDirection): IAction => ({
   type: SET_MANAGE_USERS_SCROLL_DIRECTION,
   payload: scrollDirection,
-})
+});
 
 // EVENTS
 
@@ -56,7 +56,12 @@ export const setEventsLoading = (loading: boolean): IAction => ({
   payload: loading,
 });
 
-export const saveEvents = (events: IEvent[], isError: boolean, isLast: boolean, initialized: boolean = true): IAction => ({
+export const saveEvents = (
+  events: IEvent[],
+  isError: boolean,
+  isLast: boolean,
+  initialized: boolean = true
+): IAction => ({
   type: SAVE_EVENTS,
   payload: { isError, isLast, data: events, initialized },
 });

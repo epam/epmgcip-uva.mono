@@ -111,3 +111,6 @@ export const MONTHS = [
   { name: translation.november, value: Month.November },
   { name: translation.december, value: Month.December },
 ];
+
+export const DEFAULT_MIN_AGE = 16;
+export const DEFAULT_MAX_AGE = 61;
