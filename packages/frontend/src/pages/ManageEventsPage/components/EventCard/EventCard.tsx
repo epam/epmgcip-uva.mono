@@ -9,9 +9,16 @@ import { EventStatus, IEvent } from 'src/types';
 import { getClassesList } from 'src/utils/getClassesList';
 import { getEventNameInLanguage, getEventPlaceInLanguage } from 'src/utils/getEvent';
 import css from './EventCard.module.sass';
+import { useNavigate } from 'react-router-dom';
 
 export const EventCard = ({ event }: { event: IEvent }) => {
   const isRegistrationOpen = useRegistrationStatus(event);
+  const navigate = useNavigate();
+
+  const navigateToEvent = () => {
+    navigate(`/event/${event.id}`)
+  }
+  
   return (
     <article className={css.eventCard}>
       <div className={css.eventCardImageWrapper}>
@@ -34,7 +41,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
         </div>
       </div>
       <div className={css.eventCardInfo}>
-        <header>
+        <header onClick={navigateToEvent}>
           <h2 className={css.eventCardTitle}>{getEventNameInLanguage(event)}</h2>
         </header>
         <div
