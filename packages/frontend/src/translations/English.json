@@ -2,5 +2,7 @@
     "self": "English",
     "title": "Name",
     "description": "Description",
-    "place": "Location"
+    "place": "Location",
+    "createEvent": "Сreate an Event",
+    "editEvent": "Edit an Event"
 }

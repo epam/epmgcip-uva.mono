@@ -7,6 +7,7 @@ export const STORAGE_IMAGES_PATH = 'public/images';
 export const ROOT_ROUTE = '/';
 export const EVENTS_ROUTE = '/events';
 export const CREATE_EVENT_ROUTE = '/events/create';
+export const EDIT_EVENT_ROUTE = '/events/edit/:eventId';
 export const VOLUNTEERS_ROUTE = '/volunteers';
 export const MANAGE_USERS_ROUTE = '/users';
 export const CREATE_USER_ROUTE = '/users/create';

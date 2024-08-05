@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import CalendarSvg from 'src/assets/calendar.svg';
 import GroupSvg from 'src/assets/group.svg';
 import LocationSvg from 'src/assets/location.svg';
@@ -7,11 +8,18 @@ import { useRegistrationStatus } from 'src/hooks/useRegistrationStatus';
 import translation from 'src/translations/Russian.json';
 import { EventStatus, IEvent } from 'src/types';
 import { getClassesList } from 'src/utils/getClassesList';
-import { getEventNameInLanguage, getEventPlaceInLanguage } from 'src/utils/getEvent';
+import { getEventNameInLanguage, getEventPlaceInLanguage, getEventId } from 'src/utils/getEvent';
 import css from './EventCard.module.sass';
 
 export const EventCard = ({ event }: { event: IEvent }) => {
+  const navigate = useNavigate();
   const isRegistrationOpen = useRegistrationStatus(event);
+
+  const handleEditEvent = (eventId: string | undefined) => {
+    if (!!eventId)
+      navigate(`/events/edit/${eventId}`);
+  };
+
   return (
     <article className={css.eventCard}>
       <div className={css.eventCardImageWrapper}>
@@ -35,7 +43,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
       </div>
       <div className={css.eventCardInfo}>
         <header>
-          <h2 className={css.eventCardTitle}>{getEventNameInLanguage(event)}</h2>
+          <h2 className={css.eventCardTitle} onClick={() => { handleEditEvent(getEventId(event)) }}>{getEventNameInLanguage(event)}</h2>
         </header>
         <div
           className={getClassesList(

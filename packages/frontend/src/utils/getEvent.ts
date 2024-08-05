@@ -13,6 +13,15 @@ export const getEvent = async (eventId: string) => {
   return undefined;
 };
 
+export const getEventId = (event: IEvent): string | undefined => {
+  const eventId = event.id;
+  if (!eventId) {
+    return;
+  }
+
+  return eventId;
+}
+
 export const getEventNameInLanguage = (event: IEvent, language?: Language): string | undefined => {
   const data = event.languageSpecificData?.data;
   if (!data) {

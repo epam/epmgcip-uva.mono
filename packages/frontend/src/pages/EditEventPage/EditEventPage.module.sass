@@ -1,0 +1,84 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.editEventWrapper
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+
+    .editEventTitle
+        @extend .H3
+        color: colors.$gray-600
+        padding: 18px 24px 24px
+
+    .editEventForm
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 14px
+
+        .postLanguages
+            width: 100%
+
+        .selectPlaceholder
+            @extend .T1
+            color: colors.$gray-200
+
+        .buttonsPanel
+            width: calc(100vw - 48px)
+            max-width: calc(768px - 48px)
+            margin-top: 18px
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            gap: 18px
+            padding-bottom: 24px
+
+            .editEventButton
+                @extend .H6
+                width: 147px
+                height: 48px
+                box-sizing: border-box
+                border-radius: 8px
+                justify-content: center
+                align-items: center
+
+            .backButton
+                color: colors.$purple
+                background-color: colors.$white
+                border: 1px solid colors.$purple
+
+                &:hover
+                    color: colors.$white
+                    background-color: colors.$blue
+                    border: none
+
+            .submitButton
+                color: colors.$white
+                background-color: colors.$blue-bright
+
+                &:hover
+                    background-color: colors.$blue-light
+
+.editEventPadding
+    padding-left: 24px
+    padding-right: 24px
+
+.modalCancelButton
+    color: colors.$blue-dark
+    background-color: colors.$white
+    border: 1px solid colors.$blue-dark
+
+    &:hover
+        color: colors.$white
+        background-color: colors.$blue
+        border: none
+
+.modalDeleteButton
+    background-color: colors.$red
+    color: colors.$white
+
+    &:hover
+        background-color: colors.$blue-light

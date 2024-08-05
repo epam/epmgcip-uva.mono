@@ -2,5 +2,7 @@
     "self": "O'zbek",
     "title": "Ism",
     "description": "Tavsifi",
-    "place": "Manzil"
+    "place": "Manzil",
+    "createEvent": "Tadbir yaratish",
+    "editEvent": "Tadbirni tahrirlash"
 }
