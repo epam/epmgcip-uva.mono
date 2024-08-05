@@ -12,6 +12,8 @@
   width: 100%
   height: auto
   display: block
+  max-height: 200px
+  object-fit: cover
 
 .overlayTop,
 .overlayBottom
@@ -56,18 +58,14 @@
   display: flex
   align-items: center
 
-.activeEvent,
-.nonActiveEvent
-  color: c.$green
+.eventStatus
   background-color: white
-  padding: 1px 7px 1px 0
+  padding: 5px 7px 5px 7px
   border-radius: 0.375rem
   font-weight: bold
   display: flex
   align-items: center
 
-.nonActiveEvent
-  color: c.$gray-200
 
 .activeStatusDot
   background-color: green
@@ -95,7 +93,6 @@
   width: 24px
   height: 20px
   margin-right: 8px
-  color: c.$purple-light
 
 .newApplications
   color: c.$blue-bright

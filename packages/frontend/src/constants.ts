@@ -47,6 +47,13 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
 });
 
+export const languagesLong: Record<Language, string> = {
+  [Language.Russian]: 'Русский',
+  [Language.Uzbek]: "O'zbek",
+  [Language.English]: 'English',
+  [Language.Qoraqalpoq]: 'Karakalpak',
+};
+
 export const DELETE_USER_QUESTION = (value: string) =>
   `Вы точно хотите удалить пользователя ${value}?`;
 
