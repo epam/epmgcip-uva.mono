@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getEvent, getEventNameInLanguage, getEventPlaceInLanguage } from 'src/utils/getEvent';
-import { EventStatus, IEvent, Language } from 'src/types';
+import { EventStatus, IEvent, Language, languagesShort } from 'src/types';
 import { Toolbar } from './components/Toolbar/Toolbar';
 import translation from 'src/translations/Russian.json';
 import { EVENTS_ROUTE, languagesLong, VOLUNTEERS_ROUTE } from 'src/constants';
@@ -80,10 +80,7 @@ export const EventDetailsPage = () => {
               <div className={css.overlayTop}>
                 {languageDataArray.map(lang => (
                   <span key={lang.type} className={css.eventLanguages}>
-                    {lang.type == 'russian' ? 'Рус' : ''}
-                    {lang.type == 'english' ? 'Eng' : ''}
-                    {lang.type == 'uzbek' ? 'Uzb' : ''}
-                    {lang.type == 'qoraqalpoq' ? 'Kaa' : ''}
+                    {languagesShort[lang.type]}
                   </span>
                 ))}
               </div>
