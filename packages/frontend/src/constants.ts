@@ -6,6 +6,7 @@ export const STORAGE_IMAGES_PATH = 'public/images';
 
 export const ROOT_ROUTE = '/';
 export const EVENTS_ROUTE = '/events';
+export const EVENT_DETAILS_ROUTE = '/event/:eventId';
 export const CREATE_EVENT_ROUTE = '/events/create';
 export const VOLUNTEERS_ROUTE = '/volunteers';
 export const MANAGE_USERS_ROUTE = '/users';
@@ -45,6 +46,13 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_CREATED: `Событие ${value} успешно создано`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
 });
+
+export const languagesLong: Record<Language, string> = {
+  [Language.Russian]: 'Русский',
+  [Language.Uzbek]: "O'zbek",
+  [Language.English]: 'English',
+  [Language.Qoraqalpoq]: 'Karakalpak',
+};
 
 export const DELETE_USER_QUESTION = (value: string) =>
   `Вы точно хотите удалить пользователя ${value}?`;

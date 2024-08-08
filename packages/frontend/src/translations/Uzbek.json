@@ -2,5 +2,7 @@
     "self": "O'zbek",
     "title": "Ism",
     "description": "Tavsifi",
-    "place": "Manzil"
+    "place": "Manzil",
+    "edit": "Tahrirlash",
+    "closeRecruitment": "Yig‘ishni yopish"
 }
