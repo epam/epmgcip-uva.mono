@@ -2,8 +2,9 @@
   "compilerOptions": {
       "strict": true,
       "esModuleInterop": true,
-      "experimentalDecorators": true
+      "experimentalDecorators": true,
+      "sourceMaps": true,
   },
   "compileOnSave": true,
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build"],
 }

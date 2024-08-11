@@ -1,7 +1,7 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Button,
   DatePicker,
@@ -24,7 +24,7 @@ import {
   STORAGE_IMAGES_PATH,
   VOLUNTEER_GENDER,
 } from 'src/constants';
-import { saveEvents, setEventsLoading } from 'src/redux/actions';
+import { changeEventInitializerValue, saveEvents, setEventsLoading } from 'src/redux/actions';
 import translation from 'src/translations/Russian.json';
 import {
   CreateEventAlerts,
@@ -35,43 +35,80 @@ import {
   IValidationError,
   Language,
   languages,
+  UpdateEventAlerts,
 } from 'src/types';
-import { createEvent, isCreateFormDirty } from 'src/utils/createEvent';
+import { saveEvent, isCreateFormDirty } from 'src/utils/saveEvent';
 import { validateEventValues } from 'src/utils/validateEventValues';
 import { v4 as uuidv4 } from 'uuid';
-import css from './CreateEventPage.module.sass';
+import css from './EventFormPage.module.sass';
 import { EventStatusDescription } from './components/EventStatusDescription/EventStatusDescription';
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
 import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
 import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
 import { LanguageEvent } from './types';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
+import { getEvent } from 'src/utils/getEvent';
 
-const submitTextMap: Record<CreateEventAlerts, string> = {
+const submitTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   [CreateEventAlerts.Leaving]: translation.leave,
   [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.ok,
   [CreateEventAlerts.ConfirmLanguageDeletion]: translation.delete,
   [CreateEventAlerts.None]: '',
+  [UpdateEventAlerts.None]: '',
+  [UpdateEventAlerts.ConfirmUpdateDraft]: translation.yes,
+  [UpdateEventAlerts.ConfirmUpdateActive]: translation.yes,
+  [UpdateEventAlerts.ConfirmPublishToTelegram]: translation.yes,
+  [UpdateEventAlerts.ConfirmDeleteFromTelegram]: translation.yes,
+  [UpdateEventAlerts.ShowEventPublishSuccess]: translation.yes,
+  [UpdateEventAlerts.ShowEventPublishCancellation]: translation.yes,
+  [UpdateEventAlerts.ConfirmAddNewLanguageSpecificData]: translation.yes,
+  [UpdateEventAlerts.ConfirmDefaultUpdate]: translation.yes,
+  [UpdateEventAlerts.ConfirmEventWithExistingStatusActive]: translation.yes,
 };
 
-const alertTextMap: Record<CreateEventAlerts, string> = {
+const alertTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   // todo: move all alerts messages to translation.alerts (group them)
   [CreateEventAlerts.Leaving]: translation.alerts.unsavedChanges,
   [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.alerts.deletingLastEventLanguage,
   [CreateEventAlerts.ConfirmLanguageDeletion]: translation.alerts.deleteEventLanguage,
   [CreateEventAlerts.None]: '',
+  [UpdateEventAlerts.None]: '',
+  [UpdateEventAlerts.ConfirmUpdateDraft]: translation.yes,
+  [UpdateEventAlerts.ConfirmUpdateActive]: translation.updateEvent,
+  [UpdateEventAlerts.ConfirmPublishToTelegram]: translation.saveAndPublishToTG,
+  [UpdateEventAlerts.ConfirmDeleteFromTelegram]: translation.saveAndDeleteFromTG,
+  [UpdateEventAlerts.ShowEventPublishSuccess]: translation.changesSavedEventPublished,
+  [UpdateEventAlerts.ShowEventPublishCancellation]: translation.changesSavedEventCanceclled,
+  [UpdateEventAlerts.ConfirmAddNewLanguageSpecificData]: translation.addNewLanguageSpecificData,
+  [UpdateEventAlerts.ConfirmDefaultUpdate]: translation.askSaveChanges,
+  [UpdateEventAlerts.ConfirmEventWithExistingStatusActive]:
+    translation.saveEventWithExistingStatusActive,
 };
 
-const alertHeaderMap: Record<CreateEventAlerts, string> = {
+const alertHeaderMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   // todo: move all alerts messages to translation.alerts (group them)
   [CreateEventAlerts.Leaving]: translation.alerts.closePage,
   [CreateEventAlerts.ForbidOnlyLanguageDeletion]: translation.alerts.removeLanguage,
   [CreateEventAlerts.ConfirmLanguageDeletion]: translation.alerts.removeLanguage,
   [CreateEventAlerts.None]: '',
+  [UpdateEventAlerts.None]: '',
+  [UpdateEventAlerts.ConfirmUpdateDraft]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmUpdateActive]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmPublishToTelegram]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmDeleteFromTelegram]: translation.updateEventTitle,
+  [UpdateEventAlerts.ShowEventPublishSuccess]: translation.updateEventTitle,
+  [UpdateEventAlerts.ShowEventPublishCancellation]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmAddNewLanguageSpecificData]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmDefaultUpdate]: translation.updateEventTitle,
+  [UpdateEventAlerts.ConfirmEventWithExistingStatusActive]: translation.updateEventTitle,
 };
 
 // todo: this page needs simplification
-export const CreateEventPage = () => {
+export const EventFormPage = () => {
+  const { eventId } = useParams<{ eventId?: string }>();
+  const [existingEvent, setExisingEvent] = useState<IEvent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const dispatch: Dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,7 +117,7 @@ export const CreateEventPage = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validation, setValidation] = useState<IValidationError>({});
-  const [alert, setAlert] = useState(CreateEventAlerts.None);
+  const [alert, setAlert] = useState<CreateEventAlerts | UpdateEventAlerts>(CreateEventAlerts.None);
 
   const [image, setImage] = useState<File | null>(null);
   const [languageSpecificData, dispatchLanguageSpecificData] = useReducer(
@@ -100,6 +137,56 @@ export const CreateEventPage = () => {
   const [volunteersQuantity, setVolunteersQuantity] = useState('');
   const [telegramChannelLink, setTelegramChannelLink] = useState('');
   const [eventStatus, setEventStatus] = useState(EventStatus.Draft);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (eventId) {
+        try {
+          const eventData = await getEvent(eventId);
+          if (eventData) {
+            const languages: Language[] = Object.keys(
+              eventData.languageSpecificData.data
+            ) as Language[];
+            Object.keys(eventData.languageSpecificData.data).forEach(language =>
+              dispatchLanguageSpecificData({
+                event: LanguageEvent.ReplaceData,
+                language: language as Language,
+                update: eventData.languageSpecificData.data[language as Language],
+                withApproval: false,
+              })
+            );
+            setEventStartDate(formatDateString(eventData.startDate));
+            if (eventData.endDate) setEventEndDate(formatDateString(eventData.endDate));
+            setEventStartTime(eventData.startTime);
+            setEventEndTime(eventData.endTime);
+            setEventDuration(eventData.duration);
+            setEventRegistrationDate(eventData.registrationDate);
+            setGender(eventData.gender);
+            setMinVolunteersAge(eventData.ageMin);
+            setMaxVolunteersAge(eventData.ageMax);
+            setEventLanguage(languages);
+            setVolunteersQuantity(eventData.volunteersQuantity);
+            if (eventData.telegramChannelLink)
+              setTelegramChannelLink(eventData.telegramChannelLink);
+            setEventStatus(eventData.status);
+          }
+          if (eventData) {
+            setExisingEvent(eventData);
+          } else {
+            setError('Event not found');
+          }
+        } catch (err) {
+          console.error('Error fetching event:', err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        console.log('No eventId provided');
+        setLoading(false);
+      }
+    };
+    fetchEvent();
+  }, [eventId]);
 
   // show warning on page close if there are changes
   useEffect(() => {
@@ -165,7 +252,7 @@ export const CreateEventPage = () => {
           gender: gender as Gender,
           language: eventLanguage.join(''),
           volunteersQuantity: volunteersQuantity,
-          image: image ? image.name : '',
+          image: existingEvent ? existingEvent.imageUrl! : image ? image.name : '',
         },
         languageSpecificData.data
       )
@@ -185,6 +272,14 @@ export const CreateEventPage = () => {
     volunteersQuantity,
   ]);
 
+  const formatDateString = (dateString: string): string => {
+    const date = new Date(dateString);
+    return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(
+      2,
+      '0'
+    )}-${date.getFullYear()}`;
+  };
+
   const combinedAlert =
     alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
 
@@ -200,10 +295,14 @@ export const CreateEventPage = () => {
     }
   };
 
-  const handleCreateEvent = () => {
+  const handleSaveEvent = () => {
+    if (!existingEvent) {
+      dispatch(saveEvents([], false, false, false));
+      dispatch(setEventsLoading(true));
+    } else {
+      dispatch(changeEventInitializerValue(false));
+    }
     navigate(EVENTS_ROUTE);
-    dispatch(saveEvents([], false, false, false));
-    dispatch(setEventsLoading(true));
   };
 
   const onLeave = () => {
@@ -228,40 +327,82 @@ export const CreateEventPage = () => {
     ) {
       setAlert(CreateEventAlerts.Leaving);
     } else {
-      handleCreateEvent();
+      handleSaveEvent();
     }
   };
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     setIsSubmitting(() => true);
-
+    if (error) {
+      console.log(error);
+      return;
+    }
     if (Object.keys(validation).length === 0) {
-      const eventId = uuidv4();
-      const newEvent: IEvent = {
-        id: eventId,
-        languageSpecificData,
-        startDate: getShortDate(eventStartDate),
-        startTime: eventStartTime,
-        endTime: eventEndTime,
-        duration: eventDuration,
-        registrationDate: eventRegistrationDate,
-        gender: gender as Gender,
-        ageMin: minVolunteersAge,
-        ageMax: maxVolunteersAge,
-        volunteersQuantity: volunteersQuantity,
-        status: eventStatus,
-        image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
-        endDate: getShortDate(eventEndDate),
-        telegramChannelLink,
-      };
+      if (existingEvent) {
+        if (eventStatus == 'active' && existingEvent.status !== 'active') {
+          setAlert(UpdateEventAlerts.ConfirmPublishToTelegram);
+        } else if (eventStatus == 'draft' && existingEvent.status !== 'draft') {
+          setAlert(UpdateEventAlerts.ConfirmDeleteFromTelegram);
+        } else if (eventStatus == 'active' && existingEvent.status == 'active') {
+          setAlert(UpdateEventAlerts.ConfirmEventWithExistingStatusActive);
+        } else if (
+          Object.keys(existingEvent.languageSpecificData.data).length <
+          Object.keys(languageSpecificData.data).length
+        ) {
+          setAlert(UpdateEventAlerts.ConfirmAddNewLanguageSpecificData);
+        } else {
+          setAlert(UpdateEventAlerts.ConfirmDefaultUpdate);
+        }
+        const updatedEvent: IEvent = {
+          id: existingEvent.id,
+          languageSpecificData,
+          startDate: getShortDate(eventStartDate),
+          startTime: eventStartTime,
+          endTime: eventEndTime,
+          duration: eventDuration,
+          registrationDate: eventRegistrationDate,
+          gender: gender as Gender,
+          ageMin: minVolunteersAge,
+          ageMax: maxVolunteersAge,
+          volunteersQuantity: volunteersQuantity,
+          status: eventStatus,
+          image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
+          imageUrl: existingEvent.imageUrl,
+          endDate: getShortDate(eventEndDate),
+          telegramChannelLink,
+        };
+        setIsCreating(() => true);
+        saveEvent(updatedEvent, image as File, 'update').then(() => {
+          handleSaveEvent();
+        });
+      } else {
+        const eventId = uuidv4();
+        const newEvent: IEvent = {
+          id: eventId,
+          languageSpecificData,
+          startDate: getShortDate(eventStartDate),
+          startTime: eventStartTime,
+          endTime: eventEndTime,
+          duration: eventDuration,
+          registrationDate: eventRegistrationDate,
+          gender: gender as Gender,
+          ageMin: minVolunteersAge,
+          ageMax: maxVolunteersAge,
+          volunteersQuantity: volunteersQuantity,
+          status: eventStatus,
+          image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${eventId}`,
+          endDate: getShortDate(eventEndDate),
+          telegramChannelLink,
+        };
 
-      setIsCreating(() => true);
+        setIsCreating(() => true);
 
-      createEvent(newEvent, image as File).then(() => {
-        handleCreateEvent();
-      });
+        saveEvent(newEvent, image as File).then(() => {
+          handleSaveEvent();
+        });
+      }
     }
   };
 
@@ -273,21 +414,25 @@ export const CreateEventPage = () => {
         event: LanguageEvent.Toggle,
       });
     } else if (alert === CreateEventAlerts.Leaving) {
-      handleCreateEvent();
+      handleSaveEvent();
     }
 
     closeModal();
   };
 
   return (
-    isEditorHasPermissions && (
+    isEditorHasPermissions &&
+    !loading && (
       <div className={css.createEventWrapper}>
-        <div className={css.createEventTitle}>{translation.createEvent}</div>
+        <div className={css.createEventTitle}>
+          {existingEvent ? translation.edit : translation.createEvent}
+        </div>
         <form className={css.createEventForm} onSubmit={handleSubmit}>
           <ImageLoader
             setImage={setImage}
             isValidationError={isSubmitting && !!validation.image}
             errorMessage={validation.image}
+            previewExistingImage={existingEvent?.imageUrl}
           />
           <div className={css.postLanguages}>
             <LanguageButtons
@@ -303,7 +448,14 @@ export const CreateEventPage = () => {
                 description={lang.description}
                 language={lang.type}
                 place={lang.place}
-                isLast={Object.keys(languageSpecificData.data).length === index + 1}
+                isLast={
+                  Object.keys(
+                    existingEvent
+                      ? existingEvent.languageSpecificData.data
+                      : languageSpecificData.data
+                  ).length ===
+                  index + 1
+                }
                 dispatch={dispatchLanguageSpecificData}
                 validation={validation}
                 isSubmitting={isSubmitting}
@@ -426,7 +578,13 @@ export const CreateEventPage = () => {
               className={`${css.createEventButton} ${css.submitButton}`}
               id="create-event-submit"
             >
-              {isCreating ? <Loader size={'12px'} /> : translation.add}
+              {isCreating ? (
+                <Loader size={'12px'} />
+              ) : existingEvent ? (
+                translation.save
+              ) : (
+                translation.add
+              )}
             </Button>
           </div>
         </form>

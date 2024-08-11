@@ -17,6 +17,10 @@ export const UPDATE_USERS_LIST = 'UPDATE_USERS_LIST';
 type UpdateUsersListPayload = IUser[];
 type UpdateUsersListAction = InternalAction<typeof UPDATE_USERS_LIST, UpdateUsersListPayload>;
 
+export const CHANGE_EVENT_INITIALIZER_VALUE = 'CHANGE_EVENT_INITIALIZER_VALUE';
+type ChangeEventInitializerValuePayload = boolean;
+type ChangeEventInitializerValueAction = InternalAction<typeof CHANGE_EVENT_INITIALIZER_VALUE, ChangeEventInitializerValuePayload>;
+
 export const SET_USER_SEARCH_INPUT = 'SET_USER_SEARCH_INPUT';
 type SetUserSearchInputPayload = string;
 type SetUserSearchInputAction = InternalAction<typeof SET_USER_SEARCH_INPUT, SetUserSearchInputPayload>;
@@ -69,4 +73,5 @@ export type IAction = SetEditorAction |
     SetMenageUsersScrollSizeAction |
     SetUserSearchInputAction |
     UpdateUsersListAction |
-    SaveEventsAction;
+    SaveEventsAction |
+    ChangeEventInitializerValueAction

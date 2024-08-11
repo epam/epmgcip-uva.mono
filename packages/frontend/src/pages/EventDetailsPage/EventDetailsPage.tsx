@@ -35,7 +35,7 @@ export const EventDetailsPage = () => {
   const navigate = useNavigate();
   const buttonBack = { title: translation.return, onClick: () => navigate(EVENTS_ROUTE) };
   const menuActions: IToolbarActions[] = [
-    { title: translation.edit, onClick: () => console.log('Redirection to edit event page') },
+    { title: translation.edit, onClick: () => navigate(`/event/edit/${eventId}`) },
     { title: translation.closeRecruitment, onClick: () => console.log('Closing recruitment') },
   ];
   const languageDataArray: EventLanguageSpecificData[] = event

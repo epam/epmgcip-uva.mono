@@ -29,9 +29,8 @@ export const ManageEventsPage = () => {
 
   useEffect(() => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
-
     if (!eventsData.error && (!eventsData.initialized || (!eventsData.finished && showNext))) {
-      const lastEventStartDate = eventsData.data.length
+      const lastEventStartDate = eventsData.data.length && eventsData.initialized
         ? eventsData.data[eventsData.data.length - 1].startDate
         : undefined;
       getEvents(filter, lastEventStartDate, limit)

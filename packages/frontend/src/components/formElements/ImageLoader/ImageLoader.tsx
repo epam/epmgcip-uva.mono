@@ -9,6 +9,7 @@ interface ImageLoaderProps {
   setImage: React.Dispatch<React.SetStateAction<File | null>>;
   isValidationError?: boolean;
   errorMessage?: string;
+  previewExistingImage?: string;
 }
 
 const convertBytesToMegabytes = (value: number) =>
@@ -18,11 +19,14 @@ export const ImageLoader = ({
   setImage,
   isValidationError,
   errorMessage,
+  previewExistingImage
 }: ImageLoaderProps) => {
   const imageLoaderClasses = getClassesList(css.imageLoader);
-  const [preview, setPreview] = useState<string>('');
+  const [preview, setPreview] = useState<string>(previewExistingImage ? previewExistingImage : '');
+  
 
   const handleSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files)
     if (e.target.files !== null) {
       const imageFile = e.target.files[0];
 
