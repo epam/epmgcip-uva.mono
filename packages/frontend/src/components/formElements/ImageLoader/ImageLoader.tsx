@@ -26,7 +26,6 @@ export const ImageLoader = ({
   
 
   const handleSetImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files)
     if (e.target.files !== null) {
       const imageFile = e.target.files[0];
 
