@@ -272,13 +272,6 @@ export const EventFormPage = () => {
     volunteersQuantity,
   ]);
 
-  // const formatDateString = (dateString: string): string => {
-  //   const date = new Date(dateString);
-  //   return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(
-  //     2,
-  //     '0'
-  //   )}-${date.getFullYear()}`;
-  // };
 
   const combinedAlert =
     alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
