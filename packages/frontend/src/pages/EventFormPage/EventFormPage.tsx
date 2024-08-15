@@ -12,7 +12,7 @@ import {
   Select,
   Slider,
 } from 'src/components';
-import { getShortDate } from 'src/components/formElements/DatePicker/utils';
+import { getFormatDate, getShortDate } from 'src/components/formElements/DatePicker/utils';
 import {
   DEFAULT_MAX_AGE,
   DEFAULT_MIN_AGE,
@@ -155,8 +155,8 @@ export const EventFormPage = () => {
                 withApproval: false,
               })
             );
-            setEventStartDate(formatDateString(eventData.startDate));
-            if (eventData.endDate) setEventEndDate(formatDateString(eventData.endDate));
+            setEventStartDate(getFormatDate(eventData.startDate));
+            if (eventData.endDate) setEventEndDate(getFormatDate(eventData.endDate));
             setEventStartTime(eventData.startTime);
             setEventEndTime(eventData.endTime);
             setEventDuration(eventData.duration);
@@ -272,13 +272,13 @@ export const EventFormPage = () => {
     volunteersQuantity,
   ]);
 
-  const formatDateString = (dateString: string): string => {
-    const date = new Date(dateString);
-    return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(
-      2,
-      '0'
-    )}-${date.getFullYear()}`;
-  };
+  // const formatDateString = (dateString: string): string => {
+  //   const date = new Date(dateString);
+  //   return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(
+  //     2,
+  //     '0'
+  //   )}-${date.getFullYear()}`;
+  // };
 
   const combinedAlert =
     alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;

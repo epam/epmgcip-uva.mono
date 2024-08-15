@@ -1,4 +1,11 @@
-export const getFormatDate = (date: Date) => {
+export const getFormatDate = (date: Date | string) => {
+  if(typeof date ==='string'){
+    const formatedDate = new Date(date);
+    return `${String(formatedDate.getDate()).padStart(2, '0')}-${String(formatedDate.getMonth() + 1).padStart(
+      2,
+      '0'
+    )}-${formatedDate.getFullYear()}`;
+  }
   let day = '' + date.getDate();
   let month = '' + (date.getMonth() + 1);
   const year = date.getFullYear();

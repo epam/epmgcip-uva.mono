@@ -74,4 +74,4 @@ export type IAction = SetEditorAction |
     SetUserSearchInputAction |
     UpdateUsersListAction |
     SaveEventsAction |
-    ChangeEventInitializerValueAction
+    ChangeEventInitializerValueAction;

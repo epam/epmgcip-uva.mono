@@ -69,7 +69,7 @@ export enum CreateEventAlerts {
   Leaving,
 }
 
-export enum UpdateEventAlerts{
+export enum UpdateEventAlerts {
   None = 10,
   ConfirmUpdateDraft,
   ConfirmUpdateActive,
@@ -79,7 +79,7 @@ export enum UpdateEventAlerts{
   ShowEventPublishCancellation,
   ConfirmAddNewLanguageSpecificData,
   ConfirmDefaultUpdate,
-  ConfirmEventWithExistingStatusActive
+  ConfirmEventWithExistingStatusActive,
 }
 
 export interface EventLanguageSpecificData {
