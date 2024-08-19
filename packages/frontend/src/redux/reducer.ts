@@ -1,6 +1,7 @@
 import { IState, IUser, ScrollDirection } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
+  CHANGE_EVENT_INITIALIZER_VALUE,
   IAction,
   SAVE_EVENTS,
   SET_EDITOR,
@@ -101,6 +102,17 @@ const rootReducer = (state = initialState, action: IAction): IState => {
           }
         }
       };
+
+    case CHANGE_EVENT_INITIALIZER_VALUE:
+      return{
+        ...state, manageEventsPage: {
+          ...state.manageEventsPage,
+          data: {
+            ...state.manageEventsPage.data,
+            initialized: false
+          }
+        }
+      }
     case SAVE_EVENTS:
       return {
         ...state, manageEventsPage: {

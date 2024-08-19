@@ -69,6 +69,19 @@ export enum CreateEventAlerts {
   Leaving,
 }
 
+export enum UpdateEventAlerts {
+  None = 10,
+  ConfirmUpdateDraft,
+  ConfirmUpdateActive,
+  ConfirmPublishToTelegram,
+  ConfirmDeleteFromTelegram,
+  ShowEventPublishSuccess,
+  ShowEventPublishCancellation,
+  ConfirmAddNewLanguageSpecificData,
+  ConfirmDefaultUpdate,
+  ConfirmEventWithExistingStatusActive,
+}
+
 export interface EventLanguageSpecificData {
   [Language.Russian]: EventLanguageSpecificFields;
   [Language.Uzbek]: EventLanguageSpecificFields;

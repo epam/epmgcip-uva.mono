@@ -7,6 +7,7 @@ export const STORAGE_IMAGES_PATH = 'public/images';
 export const ROOT_ROUTE = '/';
 export const EVENTS_ROUTE = '/events';
 export const EVENT_DETAILS_ROUTE = '/event/:eventId';
+export const EDIT_EVENT_ROUTE = '/event/edit/:eventId';
 export const CREATE_EVENT_ROUTE = '/events/create';
 export const VOLUNTEERS_ROUTE = '/volunteers';
 export const MANAGE_USERS_ROUTE = '/users';
@@ -43,7 +44,9 @@ export const NOTIFICATIONS = (value?: string) => ({
   IMAGE_WRONG_TYPE:
     'Извините, загрузка изображения невозможна. Разрешены следующие форматы изображений: png, jpg, jpeg, webp',
   EVENT_EXISTS: `Извините, событие c id ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
+  EVENT_UPDATE_ERROR: `Ошибка сохранения события ${value}`,
   EVENT_CREATED: `Событие ${value} успешно создано`,
+  EVENT_UPDATED: `Событие ${value} успешно обновлено`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
 });
 

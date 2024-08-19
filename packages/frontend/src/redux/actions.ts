@@ -1,6 +1,7 @@
 import { FilterEventStatuses, IEvent, IUser, ScrollDirection } from 'src/types';
 import {
   ADD_USERS_TO_LIST,
+  CHANGE_EVENT_INITIALIZER_VALUE,
   IAction,
   SAVE_EVENTS,
   SET_EDITOR,
@@ -70,3 +71,8 @@ export const setEventsStatusFilter = (statusFilter: FilterEventStatuses): IActio
   type: SET_EVENT_STATUS_FILTER,
   payload: statusFilter,
 });
+
+export const changeEventInitializerValue = (initializerValue: boolean): IAction => ({
+  type: CHANGE_EVENT_INITIALIZER_VALUE,
+  payload: initializerValue
+})

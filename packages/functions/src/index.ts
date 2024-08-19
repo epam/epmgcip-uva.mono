@@ -4,9 +4,7 @@ import {checkAuthToken} from "./middlewares/check-auth-token";
 import authRouter from "./resources/auth/auth.router";
 import userRouter from "./resources/user/user.router";
 
-
 const app = express();
-
 app.use("/auth", authRouter);
 app.use("/user", checkAuthToken, userRouter);
 

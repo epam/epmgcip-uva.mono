@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
       "strict": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true
+      "esModuleInterop": true
   },
   "compileOnSave": true,
   "exclude": ["node_modules", "build"]
