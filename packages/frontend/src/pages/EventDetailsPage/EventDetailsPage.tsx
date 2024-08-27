@@ -13,6 +13,7 @@ import TranslationSvg from 'src/assets/translation.svg';
 import MapPinSvg from 'src/assets/mapPin.svg';
 import CalendarSvg from 'src/assets/calendar.svg';
 import TimeSvg from 'src/assets/time.svg';
+import { getFormatDate } from 'src/components/formElements/DatePicker/utils';
 
 export interface IToolbarActions {
   title: string;
@@ -176,7 +177,7 @@ export const EventDetailsPage = () => {
           <div className={css.wrapperForInfoBlock}>
             <img className={css.eventInfoIcons} src={CalendarSvg} />
             <span>
-              {event.startDate} - {event.endDate}
+              {getFormatDate(event.startDate, '.')} - {getFormatDate(event.endDate as string, '.')}
             </span>
           </div>
           <div className={css.wrapperForInfoBlock}>

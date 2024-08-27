@@ -1,10 +1,19 @@
-export const getFormatDate = (date: Date | string) => {
-  if(typeof date ==='string'){
+export const getFormatDate = (date: Date | string, separator?: '/' | '.' | '-') => {
+  if (typeof date === 'string') {
     const formatedDate = new Date(date);
-    return `${String(formatedDate.getDate()).padStart(2, '0')}-${String(formatedDate.getMonth() + 1).padStart(
-      2,
-      '0'
-    )}-${formatedDate.getFullYear()}`;
+    if (separator == '/') {
+      return `${String(formatedDate.getDate()).padStart(2, '0')}/${String(
+        formatedDate.getMonth() + 1
+      ).padStart(2, '0')}/${formatedDate.getFullYear()}`;
+    } else if (separator == '.') {
+      return `${String(formatedDate.getDate()).padStart(2, '0')}.${String(
+        formatedDate.getMonth() + 1
+      ).padStart(2, '0')}.${formatedDate.getFullYear()}`;
+    } else {
+      return `${String(formatedDate.getDate()).padStart(2, '0')}-${String(
+        formatedDate.getMonth() + 1
+      ).padStart(2, '0')}-${formatedDate.getFullYear()}`;
+    }
   }
   let day = '' + date.getDate();
   let month = '' + (date.getMonth() + 1);
@@ -37,12 +46,7 @@ export const getShortDate = (date: string) => {
   return formattedDate.replace(/\./g, '');
 };
 
-
-
-export const getDaysInMonth = (
-  month = new Date().getMonth(),
-  year = new Date().getFullYear()
-) => {
+export const getDaysInMonth = (month = new Date().getMonth(), year = new Date().getFullYear()) => {
   const date = new Date(year, month, 1);
   const days = [];
 

@@ -1,7 +1,6 @@
 import {type NextFunction, type Request, type Response} from "express";
 import {logger} from "firebase-functions/v1";
 
-// @ts-expect-error No return need because of next()
 export const checkAuthToken = (
   req: Request,
   res: Response,
