@@ -18,6 +18,7 @@ import {
   DEFAULT_MIN_AGE,
   EVENTS_ROUTE,
   EVENT_STATUS,
+  EVENT_STATUS_FOR_ACTIVE,
   LANGUAGE,
   ROOT_ROUTE,
   STORAGE_BUCKET,
@@ -48,6 +49,7 @@ import { LanguageSpecificFields } from './components/LanguageSpecificFields/Lang
 import { LanguageEvent } from './types';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
 import { getEvent } from 'src/utils/getEvent';
+import { deleteEvent } from 'src/utils/deleteEvent';
 
 const submitTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   [CreateEventAlerts.Leaving]: translation.leave,
@@ -272,7 +274,6 @@ export const EventFormPage = () => {
     volunteersQuantity,
   ]);
 
-
   const combinedAlert =
     alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
 
@@ -289,6 +290,16 @@ export const EventFormPage = () => {
   };
 
   const handleSaveEvent = () => {
+    if (!existingEvent) {
+      dispatch(saveEvents([], false, false, false));
+      dispatch(setEventsLoading(true));
+    } else {
+      dispatch(changeEventInitializerValue(false));
+    }
+    navigate(EVENTS_ROUTE);
+  };
+
+  const handleDeleteEvent = () => {
     if (!existingEvent) {
       dispatch(saveEvents([], false, false, false));
       dispatch(setEventsLoading(true));
@@ -348,28 +359,35 @@ export const EventFormPage = () => {
         } else {
           setAlert(UpdateEventAlerts.ConfirmDefaultUpdate);
         }
-        const updatedEvent: IEvent = {
-          id: existingEvent.id,
-          languageSpecificData,
-          startDate: getShortDate(eventStartDate),
-          startTime: eventStartTime,
-          endTime: eventEndTime,
-          duration: eventDuration,
-          registrationDate: eventRegistrationDate,
-          gender: gender as Gender,
-          ageMin: minVolunteersAge,
-          ageMax: maxVolunteersAge,
-          volunteersQuantity: volunteersQuantity,
-          status: eventStatus,
-          image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
-          imageUrl: existingEvent.imageUrl,
-          endDate: getShortDate(eventEndDate),
-          telegramChannelLink,
-        };
-        setIsCreating(() => true);
-        saveEvent(updatedEvent, image as File, 'update').then(() => {
-          handleSaveEvent();
-        });
+        if (eventStatus == 'canceled' && eventId) {
+          setIsCreating(() => true);
+          deleteEvent(eventId).then(() => {
+            handleDeleteEvent();
+          });
+        } else {
+          const updatedEvent: IEvent = {
+            id: existingEvent.id,
+            languageSpecificData,
+            startDate: getShortDate(eventStartDate),
+            startTime: eventStartTime,
+            endTime: eventEndTime,
+            duration: eventDuration,
+            registrationDate: eventRegistrationDate,
+            gender: gender as Gender,
+            ageMin: minVolunteersAge,
+            ageMax: maxVolunteersAge,
+            volunteersQuantity: volunteersQuantity,
+            status: eventStatus,
+            image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
+            imageUrl: existingEvent.imageUrl,
+            endDate: getShortDate(eventEndDate),
+            telegramChannelLink,
+          };
+          setIsCreating(() => true);
+          saveEvent(updatedEvent, image as File, 'update').then(() => {
+            handleSaveEvent();
+          });
+        }
       } else {
         const eventId = uuidv4();
         const newEvent: IEvent = {
@@ -497,7 +515,7 @@ export const EventFormPage = () => {
           <DatePicker
             value={eventRegistrationDate}
             setChange={setEventRegistrationDate}
-            labelText={translation.registrationPeriod}
+            labelText={translation.registrationDeadline}
             max={eventStartDate}
             required
             labelClassName={css.createEventPadding}
@@ -557,7 +575,7 @@ export const EventFormPage = () => {
           <Select
             value={eventStatus}
             setChange={setEventStatus}
-            options={EVENT_STATUS}
+            options={existingEvent?.status == 'active' ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
             labelText={translation.status}
             required
             labelClassName={css.createEventPadding}

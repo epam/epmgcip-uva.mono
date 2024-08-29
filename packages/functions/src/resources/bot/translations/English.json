@@ -1,0 +1,19 @@
+{
+  "self": "English",
+  "title": "Name",
+  "description": "Description",
+  "place": "Location",
+  "edit": "Edit",
+  "closeRecruitment": "Registration is closed",
+  "openedRecruitment": "Open call",
+  "when": "When",
+  "eventHours": "Charity hours",
+  "where": "Where",
+  "volunteersRequirements": "Volunteer Requirements",
+  "gender": "Gender",
+  "age": "Age",
+  "languages": "Languages",
+  "people": "People",
+  "registrationDeadline": "Registration Deadline",
+  "until": "Until"
+}
