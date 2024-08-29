@@ -5,7 +5,6 @@ import authRouter from "./resources/auth/auth.router";
 import userRouter from "./resources/user/user.router";
 import * as admin from "firebase-admin";
 import {Change, onDocumentCreated,
-  onDocumentDeleted,
   onDocumentUpdated,
   QueryDocumentSnapshot} from "firebase-functions/v2/firestore";
 import {updatePublishedEvent}
@@ -13,25 +12,35 @@ import {updatePublishedEvent}
 import {sendToChannel} from "./resources/bot/actions/sendToChannel";
 import {deleteTelegramMessage}
   from "./resources/bot/actions/deleteTelegramMessage";
+import {logger} from "firebase-functions";
 
 admin.initializeApp();
 
 export const publishToTelegram =
-onDocumentCreated("events/{eventId}", (event) => {
+onDocumentCreated("events/{eventId}", async (event) => {
   const snapshot = event.data;
-  if (snapshot) {
+  if (!snapshot) {
+    logger.error("No data associated with the event");
+    return;
+  }
+  try {
     const data = snapshot.data();
-    sendToChannel(data);
+    await sendToChannel(data);
+  } catch (err) {
+    logger.error("Unable to send post to channel", err);
   }
 });
 
 
 export const deleteEventFromTelegram =
- onDocumentDeleted("events/{eventId}", (event) => {
-   const snapshot = event.data;
-   if (snapshot) {
-     const data = snapshot.data();
-     deleteTelegramMessage(data);
+ onDocumentUpdated("events/{eventId}", async (event) => {
+   const beforeData = event.data?.before.data();
+   const afterData = event.data?.after.data();
+
+   if (beforeData && afterData) {
+     if (beforeData.status !== "canceled" && afterData.status === "canceled") {
+       await deleteTelegramMessage(afterData);
+     }
    }
  });
 

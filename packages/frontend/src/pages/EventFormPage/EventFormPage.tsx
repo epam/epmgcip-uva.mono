@@ -49,7 +49,6 @@ import { LanguageSpecificFields } from './components/LanguageSpecificFields/Lang
 import { LanguageEvent } from './types';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
 import { getEvent } from 'src/utils/getEvent';
-import { deleteEvent } from 'src/utils/deleteEvent';
 
 const submitTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   [CreateEventAlerts.Leaving]: translation.leave,
@@ -299,16 +298,6 @@ export const EventFormPage = () => {
     navigate(EVENTS_ROUTE);
   };
 
-  const handleDeleteEvent = () => {
-    if (!existingEvent) {
-      dispatch(saveEvents([], false, false, false));
-      dispatch(setEventsLoading(true));
-    } else {
-      dispatch(changeEventInitializerValue(false));
-    }
-    navigate(EVENTS_ROUTE);
-  };
-
   const onLeave = () => {
     if (
       isCreateFormDirty(
@@ -359,12 +348,6 @@ export const EventFormPage = () => {
         } else {
           setAlert(UpdateEventAlerts.ConfirmDefaultUpdate);
         }
-        if (eventStatus == 'canceled' && eventId) {
-          setIsCreating(() => true);
-          deleteEvent(eventId).then(() => {
-            handleDeleteEvent();
-          });
-        } else {
           const updatedEvent: IEvent = {
             id: existingEvent.id,
             languageSpecificData,
@@ -387,7 +370,7 @@ export const EventFormPage = () => {
           saveEvent(updatedEvent, image as File, 'update').then(() => {
             handleSaveEvent();
           });
-        }
+    
       } else {
         const eventId = uuidv4();
         const newEvent: IEvent = {
@@ -575,7 +558,7 @@ export const EventFormPage = () => {
           <Select
             value={eventStatus}
             setChange={setEventStatus}
-            options={existingEvent?.status == 'active' ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
+            options={existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
             labelText={translation.status}
             required
             labelClassName={css.createEventPadding}

@@ -1,9 +1,9 @@
 import {getFormatDate} from "../utils/index";
 import translation from "../translations/Russian.json";
-import * as admin from "firebase-admin";
+import {firestore} from "firebase-admin";
 
 export const createMessage = (
-  event: admin.firestore.DocumentData,
+  event: firestore.DocumentData,
   description: string,
   title: string,
   eventPlace: string,

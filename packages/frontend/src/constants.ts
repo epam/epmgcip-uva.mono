@@ -96,7 +96,7 @@ export const EVENT_STATUS = [
 
 export const EVENT_STATUS_FOR_ACTIVE = [
   { name: translation.active, value: EventStatus.Active },
-  { name: translation.cancelled, value: EventStatus.Canceled },
+  { name: translation.canceledEvent, value: EventStatus.Canceled },
 ]
 
 export const IMAGE_TYPE = [ImageType.Jpeg, ImageType.Jpg, ImageType.Png, ImageType.Webp];

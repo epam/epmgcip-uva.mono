@@ -4,6 +4,7 @@ import {formatLanguageSpecificData}
 import {sendToChannel} from "./sendToChannel";
 import * as admin from "firebase-admin";
 import axios from "axios";
+import {logger} from "firebase-functions/v1";
 
 export const updatePublishedEvent = async (
   eventData: admin.firestore.DocumentData
@@ -39,7 +40,7 @@ export const updatePublishedEvent = async (
         }
       );
     }
-  } catch (error) {
-    return;
+  } catch (err) {
+    logger.error("Failed to update existing post in channel.", err);
   }
 };
