@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-      "strict": true,
-      "esModuleInterop": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "dist"]
 }

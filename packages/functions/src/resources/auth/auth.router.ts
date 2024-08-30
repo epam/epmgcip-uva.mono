@@ -1,11 +1,11 @@
-import {Router} from "express";
+import { Router } from 'express';
 
 const router = Router();
 
-router.post("/", (req, res) =>
+router.post('/', (req, res) =>
   res.status(200).json({
-    status: "auth endpoint",
-  })
+    status: 'auth endpoint',
+  }),
 );
 
 export default router;

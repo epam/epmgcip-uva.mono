@@ -2,15 +2,9 @@
     "private": true,
     "name": "uva-monorepo",
     "author": "EPAM",
-    "license": "MIT",
-    "workspaces": {
-        "packages": [
-            "packages/*"
-        ],
-        "nohoist": [
-            "**/uva-shared"
-        ]
-    },
+    "workspaces": [
+        "packages/*"
+    ],
     "scripts": {
         "workspace:functions:build": "yarn workspace uva-functions build",
         "workspace:functions:start": "yarn workspace uva-functions start",
@@ -19,9 +13,9 @@
         "workspace:frontend:start": "yarn workspace uva-frontend dev",
         "workspace:frontend:lint": "yarn workspace uva-frontend lint",
         "workspace:shared:build": "yarn workspace uva-shared build",
-        "build:shared": "run-s workspace:shared:build workspace:shared:build",
-        "build:functions": "yarn workspace:functions:build",
-        "build:frontend": "yarn workspace:frontend:build",
+        "build:shared": "run-s workspace:shared:build",
+        "build:functions": "yarn build:shared && yarn workspace:functions:build",
+        "build:frontend": "yarn build:shared && yarn workspace:frontend:build",
         "deploy:functions": "firebase deploy --only functions",
         "deploy:frontend": "firebase deploy --only hosting",
         "be:dev": "yarn workspace:functions:start",
