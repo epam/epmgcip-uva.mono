@@ -1,46 +1,43 @@
-import {createMessage} from "../dataModifyers/createMessage";
-import {formatLanguageSpecificData}
-  from "../dataModifyers/formatLanguageSpecificData";
-import {sendToChannel} from "./sendToChannel";
-import * as admin from "firebase-admin";
-import axios from "axios";
-import {logger} from "firebase-functions/v1";
+import axios from 'axios';
+import { firestore } from 'firebase-admin';
+import { logger } from 'firebase-functions';
+import { EventStatus } from 'uva-shared';
+import { TG_CHANNEL_ID } from '../../../constants/env.js';
+import { TelegramBotCommands } from '../../../constants/telegram.js';
+import { getHeaders, getTgCommandUrl } from '../../../utils/axios.js';
+import { createMessage } from '../dataModifyers/createMessage.js';
+import { formatLanguageSpecificData } from '../dataModifyers/formatLanguageSpecificData.js';
+import { sendToChannel } from './sendToChannel.js';
 
-export const updatePublishedEvent = async (
-  eventData: admin.firestore.DocumentData
-) => {
+export const updatePublishedEvent = async (eventData: firestore.DocumentData) => {
   const event = eventData;
-  const formattedLangData =
-     formatLanguageSpecificData(eventData.languageSpecificData);
-  const msg =
-     createMessage(
-       event,
-       formattedLangData.description,
-       formattedLangData.title,
-       formattedLangData.eventPlace,
-       formattedLangData.languageKeys
-     );
+  const formattedLangData = formatLanguageSpecificData(eventData.languageSpecificData);
+  const msg = createMessage(
+    event,
+    formattedLangData.description,
+    formattedLangData.title,
+    formattedLangData.eventPlace,
+    formattedLangData.languageKeys,
+  );
 
   try {
-    if (!event.telegramMessageId && event.status === "active") {
+    if (!event.telegramMessageId && event.status === EventStatus.Active) {
       await sendToChannel(event);
-    } else if (event.telegramMessageId && event.status === "active") {
+    } else if (event.telegramMessageId && EventStatus.Active) {
       await axios.post(
-        `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/editMessageCaption`,
+        getTgCommandUrl(TelegramBotCommands.editMessageCaption),
         {
-          chat_id: process.env.TELEGRAM_CHANNEL_ID,
+          chat_id: TG_CHANNEL_ID,
           message_id: eventData.telegramMessageId,
           caption: msg,
-          parse_mode: "HTML",
+          parse_mode: 'HTML',
         },
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+          headers: getHeaders(),
+        },
       );
     }
   } catch (err) {
-    logger.error("Failed to update existing post in channel.", err);
+    logger.error('Failed to update existing post in channel.', err);
   }
 };

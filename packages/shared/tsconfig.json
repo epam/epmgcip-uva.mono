@@ -1,22 +1,27 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    /*  Module */
     "module": "ESNext",
-    "target": "es2020",
+    "target": "ES2022",
     "resolveJsonModule": true,
     "moduleResolution": "node",
 
-    "sourceMap": true,
-
+    /*  Output */
     "rootDir": "src",
     "outDir": "build",
-
-    "strict": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
+    "sourceMap": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
+
+    /* Linting */
+    "strict": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false
   },
   "compileOnSave": true,
   "include": ["src"]

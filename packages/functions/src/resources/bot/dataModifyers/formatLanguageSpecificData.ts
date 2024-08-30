@@ -1,17 +1,16 @@
-import {EventLanguageSpecific} from "../types/index";
+import { EventLanguageSpecific } from 'uva-shared';
 
-export const formatLanguageSpecificData = (
-  languageSpecificData:EventLanguageSpecific) => {
+export const formatLanguageSpecificData = (languageSpecificData: EventLanguageSpecific) => {
   const description = Object.entries(languageSpecificData.data)
     .map(([, data]) => `${data.description}`)
-    .join(" / ");
+    .join(' / ');
   const title = Object.entries(languageSpecificData.data)
     .map(([, data]) => `${data.name}`)
-    .join(" / ");
+    .join(' / ');
   const eventPlace = Object.entries(languageSpecificData.data)
     .map(([, data]) => `${data.place}`)
-    .join(" / ");
-  const languageKeys = Object.keys(languageSpecificData.data).join(", ");
+    .join(' / ');
+  const languageKeys = Object.keys(languageSpecificData.data).join(', ');
   return {
     description: description,
     title: title,
