@@ -18,6 +18,7 @@ import {
   DEFAULT_MIN_AGE,
   EVENTS_ROUTE,
   EVENT_STATUS,
+  EVENT_STATUS_FOR_ACTIVE,
   LANGUAGE,
   ROOT_ROUTE,
   STORAGE_BUCKET,
@@ -272,7 +273,6 @@ export const EventFormPage = () => {
     volunteersQuantity,
   ]);
 
-
   const combinedAlert =
     alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
 
@@ -348,28 +348,29 @@ export const EventFormPage = () => {
         } else {
           setAlert(UpdateEventAlerts.ConfirmDefaultUpdate);
         }
-        const updatedEvent: IEvent = {
-          id: existingEvent.id,
-          languageSpecificData,
-          startDate: getShortDate(eventStartDate),
-          startTime: eventStartTime,
-          endTime: eventEndTime,
-          duration: eventDuration,
-          registrationDate: eventRegistrationDate,
-          gender: gender as Gender,
-          ageMin: minVolunteersAge,
-          ageMax: maxVolunteersAge,
-          volunteersQuantity: volunteersQuantity,
-          status: eventStatus,
-          image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
-          imageUrl: existingEvent.imageUrl,
-          endDate: getShortDate(eventEndDate),
-          telegramChannelLink,
-        };
-        setIsCreating(() => true);
-        saveEvent(updatedEvent, image as File, 'update').then(() => {
-          handleSaveEvent();
-        });
+          const updatedEvent: IEvent = {
+            id: existingEvent.id,
+            languageSpecificData,
+            startDate: getShortDate(eventStartDate),
+            startTime: eventStartTime,
+            endTime: eventEndTime,
+            duration: eventDuration,
+            registrationDate: eventRegistrationDate,
+            gender: gender as Gender,
+            ageMin: minVolunteersAge,
+            ageMax: maxVolunteersAge,
+            volunteersQuantity: volunteersQuantity,
+            status: eventStatus,
+            image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
+            imageUrl: existingEvent.imageUrl,
+            endDate: getShortDate(eventEndDate),
+            telegramChannelLink,
+          };
+          setIsCreating(() => true);
+          saveEvent(updatedEvent, image as File, 'update').then(() => {
+            handleSaveEvent();
+          });
+    
       } else {
         const eventId = uuidv4();
         const newEvent: IEvent = {
@@ -497,7 +498,7 @@ export const EventFormPage = () => {
           <DatePicker
             value={eventRegistrationDate}
             setChange={setEventRegistrationDate}
-            labelText={translation.registrationPeriod}
+            labelText={translation.registrationDeadline}
             max={eventStartDate}
             required
             labelClassName={css.createEventPadding}
@@ -557,7 +558,7 @@ export const EventFormPage = () => {
           <Select
             value={eventStatus}
             setChange={setEventStatus}
-            options={EVENT_STATUS}
+            options={existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
             labelText={translation.status}
             required
             labelClassName={css.createEventPadding}

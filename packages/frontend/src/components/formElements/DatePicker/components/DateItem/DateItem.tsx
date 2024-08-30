@@ -19,6 +19,7 @@ export const DateItem = ({
     return <div className={css.emptyDataItem}></div>;
   }
 
+
   const displayDate = dateObject.getDate();
   const dateItemClasses = getClassesList(css.dateItem, isSelected ? css.selected : undefined);
 

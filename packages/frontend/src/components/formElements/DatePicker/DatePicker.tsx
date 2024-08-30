@@ -47,7 +47,6 @@ export const DatePicker = ({
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   const daysArray = useMemo(() => getMonth(currentMonth, currentYear), [currentMonth, currentYear]);
-
   const handleShowPopup = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
 
@@ -115,7 +114,7 @@ export const DatePicker = ({
           navigateMonth={handleNavigateMonth}
           setShowPopup={setShowPopup}
         >
-          {daysArray.map((date, index) => (
+          {daysArray!.map((date, index) => (
             <DateItem
               key={index}
               dateObject={date ? new Date(date) : null}

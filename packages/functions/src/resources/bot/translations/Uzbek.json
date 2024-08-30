@@ -1,0 +1,19 @@
+{
+  "self": "O'zbek",
+  "title": "Ism",
+  "description": "Tavsifi",
+  "place": "Manzil",
+  "edit": "Tahrirlash",
+  "closeRecruitment": "Qabul tugadi",
+  "openedRecruitment": "Qabul ochiq",
+  "when": "Qachon",
+  "eventHours": "Ezgu soatlar",
+  "where": "Manzil",
+  "volunteerRequirements": "Volontyorlarni saralash mezonlari",
+  "gender": "Jins",
+  "age": "Yosh",
+  "languages": "Tillar",
+  "people": "Kishi",
+  "registrationDeadline": "Ro'xatdan o'tish oxirgi muddati",
+  "until": "Yilgacha"
+}
