@@ -1,31 +1,11 @@
-export const getFormatDate = (date: Date | string, separator?: "/" | "." | "-") => {
-  if(typeof date ==='string' && separator){
-    const formatedDate = new Date(date);
-    return `${String(formatedDate.getDate()).padStart(2, '0')}${separator}${String(formatedDate.getMonth() + 1).padStart(
-      2,
-      '0'
-    )}${separator}${formatedDate.getFullYear()}`;
-  }
-  if(typeof date ==='string'){
-    const formatedDate = new Date(date);
-    return `${String(formatedDate.getDate()).padStart(2, '0')}-${String(formatedDate.getMonth() + 1).padStart(
-      2,
-      '0'
-    )}-${formatedDate.getFullYear()}`;
-  }
-  let day = '' + date.getDate();
-  let month = '' + (date.getMonth() + 1);
-  const year = date.getFullYear();
+export const getFormatDate = (date: Date | string, separator: '/' | '.' | '-' = '-') => {
+  const formattedDate = typeof date === 'string' ? new Date(date) : date;
 
-  if (day.length < 2) {
-    day = '0' + day;
-  }
+  const day = String(formattedDate.getDate()).padStart(2, '0');
+  const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+  const year = formattedDate.getFullYear();
 
-  if (month.length < 2) {
-    month = '0' + month;
-  }
-
-  return [year, month, day].join('-');
+  return (typeof date === 'string' ? [day, month, year] : [year, month, day]).join(separator);
 };
 
 export const getNormalizeDate = (date: string) => {
