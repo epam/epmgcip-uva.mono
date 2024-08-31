@@ -1,9 +1,10 @@
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
-import { IUser } from 'src/types';
+import { IUser, FirebaseCollection } from 'uva-shared';
 import { showNotification } from './showNotification';
-import { getUser, getUserDocId } from './getUser';
-import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
+import { getUser } from './getUser';
+import { getUserDocId } from 'uva-shared';
+import { NOTIFICATIONS } from 'src/constants';
 
 export const createUser = async (newUser: IUser): Promise<boolean> => {
   const user = await getUser(newUser.telegramName);
