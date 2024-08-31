@@ -16,7 +16,7 @@ export type OnInputChange =
 interface InputProps {
   value: string;
   setChange: OnInputChange;
-  type?: 'text' | 'number' | 'search' | 'time';
+  type?: 'text' | 'number' | 'search' | 'time' | 'tel' | 'email';
   labelText?: string;
   required?: boolean;
   placeholder?: string;
