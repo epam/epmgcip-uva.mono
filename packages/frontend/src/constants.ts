@@ -1,4 +1,4 @@
-import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus } from './types';
+import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus, Education } from './types';
 import translation from 'src/translations/Russian.json';
 
 export const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
@@ -14,6 +14,8 @@ export const MANAGE_USERS_ROUTE = '/users';
 export const CREATE_USER_ROUTE = '/users/create';
 export const EDIT_USER_ROUTE = '/users/edit/:telegramName';
 
+export const CREATE_VOLUNTEER = 'volunteers/create'
+
 export const USER_ROLES = [
   { name: translation.admin, value: UserRole.Admin },
   { name: translation.coordinator, value: UserRole.Coordinator },
@@ -27,6 +29,7 @@ export const USER_STATUSES = [
 export enum FirebaseCollection {
   Users = 'users',
   Events = 'events',
+  Volunteers = 'volunteers',
 }
 
 export const DEFAULT_NOTIFICATION = 'Default Notification Message';
@@ -48,6 +51,10 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_CREATED: `Событие ${value} успешно создано`,
   EVENT_UPDATED: `Событие ${value} успешно обновлено`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
+  VOLUNTEER_EXISTS: `Извините, волонтёр c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
+  VOLUNTEER_CREATED: `Волонтёр ${value} успешно создан`,
+  VOLUNTEER_CREATION_ERROR: `Ошибка при создании волонтёра ${value}`,
+  VOLUNTEER_DOES_NOT_EXIST: `Извините, волонтёр c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
 });
 
 export const languagesLong: Record<Language, string> = {
@@ -73,6 +80,15 @@ export const EMPTY_USER = {
 export const DEVELOPMENT_ENVIRONMENT_URL = 'https://epmgcip-uva-develop.web.app/';
 export const LOCAL_ENVIRONMENT = ['localhost'];
 export const TEST_ENVIRONMENTS = ['epmgcip-uva-develop'];
+
+export const VOLUNTEER_EDUCATION = [
+  { name: translation.basicGeneralEdu, value: Education.BasicGeneral },
+  { name: translation.secondarySpecializedEdu, value: Education.SecondarySpecialized },
+  { name: translation.bachelorsDegree, value: Education.Bachelor },
+  { name: translation.mastersDegree, value: Education.Master },
+  { name: translation.doctorate, value: Education.Doctorate },
+  { name: translation.school, value: Education.School },
+];
 
 export const VOLUNTEER_GENDER = [
   { name: translation.men, value: Gender.Men },
