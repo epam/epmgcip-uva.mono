@@ -3,6 +3,8 @@ import translation from 'src/translations/Russian.json';
 
 export { FirebaseCollection } from 'uva-shared';
 
+export const API_URL = import.meta.env.VITE_CLOUD_FUNCTIONS_URL;
+
 export const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
 export const STORAGE_IMAGES_PATH = 'public/images';
 

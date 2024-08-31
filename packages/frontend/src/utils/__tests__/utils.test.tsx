@@ -4,7 +4,7 @@ import { getSearch } from '../getSearch';
 import { IUser, UserRole, UserStatus } from 'src/types';
 import { validateUserValues } from '../validateUserValues';
 import translation from 'src/translations/Russian.json';
-import { checkUserAuthorization } from '../checkUserAuthorization';
+import { checkUserAuthorization } from '../auth';
 import { render, screen } from '@testing-library/react';
 import { Notification } from 'src/components';
 import { showElement } from '../showElement';
