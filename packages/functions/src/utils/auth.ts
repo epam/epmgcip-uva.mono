@@ -1,5 +1,5 @@
 import { createHash, createHmac } from 'crypto';
-import { TG_AUTH_BOT_TOKEN } from '../constants/env';
+import { TG_AUTH_BOT_TOKEN } from '../constants/env.js';
 import { IAuthPayload } from '../types/auth';
 
 const secret = createHash('sha256').update(TG_AUTH_BOT_TOKEN).digest();
