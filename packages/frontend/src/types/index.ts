@@ -14,6 +14,35 @@ export interface IUser {
   updatedBy?: string;
 }
 
+export interface IVolunteer {
+  id: string,
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthDate: string;
+  language: Language[];
+  education: string;
+  specialization?: string;
+  interests?: string;
+  phone: string;
+  email?: string;
+  image?: File | null;
+  locations?: string,
+  experience?: string,
+  info?: string,
+  feedback?: Feedback[],
+  status?: UserStatus,
+  telegramName: string,
+  telegramId?: number,
+  eventCount?: number,
+}
+
+export interface Feedback {
+  text: string,
+  date: string,
+  creatorId: string,
+}
+
 export enum ScrollDirection {
   Up = 'up',
   Down = 'down',
@@ -27,6 +56,15 @@ export enum EventStatus {
 }
 
 export type FilterEventStatuses = EventStatus | 'all';
+
+export enum Education {
+  BasicGeneral = "basic general",
+  SecondarySpecialized = "secondary specialized",
+  Bachelor = "bachelor",
+  Master = "master",
+  Doctorate = "doctorate",
+  School = "school",
+}
 
 export enum Gender {
   Men = 'men',
