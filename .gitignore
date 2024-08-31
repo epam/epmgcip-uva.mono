@@ -1,5 +1,9 @@
 node_modules/
 
+packages/**/build
+packages/**/dist
+packages/**/tsconfig.tsbuildinfo
+
 # Logs
 logs
 *.log

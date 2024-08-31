@@ -1,22 +1,28 @@
-import express from "express";
-import * as functions from "firebase-functions";
-import {checkAuthToken} from "./middlewares/check-auth-token";
-import authRouter from "./resources/auth/auth.router";
-import userRouter from "./resources/user/user.router";
-import * as admin from "firebase-admin";
-import {Change, onDocumentCreated,
+import cors from 'cors';
+import express from 'express';
+import admin from 'firebase-admin';
+import { logger } from 'firebase-functions';
+import * as functions from 'firebase-functions/v1';
+import {
+  Change,
+  onDocumentCreated,
   onDocumentUpdated,
-  QueryDocumentSnapshot} from "firebase-functions/v2/firestore";
-import {updatePublishedEvent}
-  from "./resources/bot/actions/updatePublishedEvent";
-import {sendToChannel} from "./resources/bot/actions/sendToChannel";
-import {deleteTelegramMessage}
-  from "./resources/bot/actions/deleteTelegramMessage";
-import {logger} from "firebase-functions";
+  QueryDocumentSnapshot,
+} from 'firebase-functions/v2/firestore';
+// import { FIREBASE_SECRET } from './constants/env.js';
+import { DEV_MODE } from './constants/env.js';
+import { checkAuthToken } from './middlewares/check-auth-token.js';
+import authRouter from './resources/auth/auth.router.js';
+import { deleteTelegramMessage } from './resources/bot/actions/deleteTelegramMessage.js';
+import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
+import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
+import userRouter from './resources/user/user.router.js';
 
-admin.initializeApp();
+admin.initializeApp({
+  // credential: admin.credential.cert(FIREBASE_SECRET as admin.ServiceAccount),
+});
 
-const hoursToTrigger = "every 240 hours";
+const hoursToTrigger = 'every 240 hours';
 
 export const scheduledEventStatusUpdate = functions.pubsub
   .schedule(hoursToTrigger)
@@ -24,84 +30,85 @@ export const scheduledEventStatusUpdate = functions.pubsub
     const now = new Date();
 
     try {
-      const snapshot = await admin.firestore()
-        .collection("events")
-        .where("status", "==", "active")
+      const snapshot = await admin
+        .firestore()
+        .collection('events')
+        .where('status', '==', 'active')
         .get();
 
       if (snapshot.empty) {
-        logger.error("No active events to update.");
+        logger.error('No active events to update.');
         return null;
       }
 
       const batch = admin.firestore().batch();
-      snapshot.forEach((doc) => {
+      snapshot.forEach(doc => {
         const eventData = doc.data();
         const eventEndDate = new Date(eventData.endDate);
 
         if (eventEndDate <= now) {
-          batch.update(doc.ref, {status: "completedEvent"});
+          batch.update(doc.ref, { status: 'completedEvent' });
         }
       });
 
       await batch.commit();
-      logger.info("Active events statuses updated to \"completedEvent\".");
+      logger.info('Active events statuses updated to "completedEvent".');
     } catch (error) {
-      logger.error("Error updating event statuses:", error);
+      logger.error('Error updating event statuses:', error);
     }
 
     return null;
   });
 
-export const publishToTelegram =
-onDocumentCreated("events/{eventId}", async (event) => {
+export const publishToTelegram = onDocumentCreated('events/{eventId}', async event => {
   const snapshot = event.data;
   if (!snapshot) {
-    logger.error("No data associated with the event");
+    logger.error('No data associated with the event');
     return;
   }
   try {
     const data = snapshot.data();
     await sendToChannel(data);
   } catch (err) {
-    logger.error("Unable to send post to channel", err);
+    logger.error('Unable to send post to channel', err);
   }
 });
 
+export const deleteEventFromTelegram = onDocumentUpdated('events/{eventId}', async event => {
+  const beforeData = event.data?.before.data();
+  const afterData = event.data?.after.data();
 
-export const deleteEventFromTelegram =
- onDocumentUpdated("events/{eventId}", async (event) => {
-   const beforeData = event.data?.before.data();
-   const afterData = event.data?.after.data();
+  if (beforeData && afterData) {
+    if (beforeData.status !== 'canceled' && afterData.status === 'canceled') {
+      await deleteTelegramMessage(afterData);
+    }
+  }
+});
 
-   if (beforeData && afterData) {
-     if (beforeData.status !== "canceled" && afterData.status === "canceled") {
-       await deleteTelegramMessage(afterData);
-     }
-   }
- });
+export const updatePublishedEventTrigger = onDocumentUpdated('events/{eventId}', event => {
+  const change = event.data as Change<QueryDocumentSnapshot>;
 
-export const updatePublishedEventTrigger =
- onDocumentUpdated("events/{eventId}", (event) => {
-   const change = event.data as Change<QueryDocumentSnapshot>;
+  const beforeData = change.before.data() as admin.firestore.DocumentData;
+  const afterData = change.after.data() as admin.firestore.DocumentData;
 
-   const beforeData = change.before.data() as admin.firestore.DocumentData;
-   const afterData = change.after.data() as admin.firestore.DocumentData;
-
-   if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
-     updatePublishedEvent(afterData);
-   }
- });
-
+  if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
+    updatePublishedEvent(afterData);
+  }
+});
 
 const app = express();
 
-app.use("/auth", authRouter);
-app.use("/user", checkAuthToken, userRouter);
+if (DEV_MODE) {
+  logger.info('Running in dev mode');
+  app.use(cors());
+}
 
-app.get("/", (req, res) => {
+app.use('/auth', authRouter);
+app.use('/user', checkAuthToken, userRouter);
+
+app.get('/', (req, res) => {
   res.status(200).json({
-    status: "ok",
+    status: 'ok',
   });
 });
 

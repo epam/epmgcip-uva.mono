@@ -4,7 +4,7 @@ import { IUser, UserRole, UserStatus } from 'uva-shared';
 
 export const getToken = async (user: TelegramUser): Promise<string | null> => {
   try {
-    const response = await fetch(`${API_URL}/auth/tgAuth`, {
+    const response = await fetch(`${API_URL}/auth/auth-tg`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
