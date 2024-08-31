@@ -2,6 +2,7 @@
 build/**/*.js
 build/**/*.js.map
 
+/packages/functions/build/
 # TypeScript v1 declaration files
 typings/
 

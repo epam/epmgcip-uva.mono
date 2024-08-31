@@ -1,11 +1,16 @@
-export const getFormatDate = (date: Date | string, separator: '/' | '.' | '-' = '-') => {
-  const formattedDate = typeof date === 'string' ? new Date(date) : date;
+export const getFormatDate = (
+  date: Date | string,
+  separator?: "/" | "." | "-"
+): string => {
+  const parsedDate = typeof date === "string" ? new Date(date) : date;
 
-  const day = String(formattedDate.getDate()).padStart(2, '0');
-  const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
-  const year = formattedDate.getFullYear();
+  const day = String(parsedDate.getDate()).padStart(2, "0");
+  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+  const year = String(parsedDate.getFullYear());
 
-  return (typeof date === 'string' ? [day, month, year] : [year, month, day]).join(separator);
+  const sep = separator || "/";
+
+  return `${day}${sep}${month}${sep}${year}`;
 };
 
 export const getNormalizeDate = (date: string) => {

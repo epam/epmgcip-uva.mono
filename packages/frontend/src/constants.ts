@@ -50,6 +50,8 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_UPDATE_ERROR: `Ошибка сохранения события ${value}`,
   EVENT_CREATED: `Событие ${value} успешно создано`,
   EVENT_UPDATED: `Событие ${value} успешно обновлено`,
+  EVENT_DELETED: `Событие ${value} успешно удалено`,
+  EVENT_DELETE_ERROR: `Ошибка при удалении события ${value}`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
   VOLUNTEER_EXISTS: `Извините, волонтёр c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
   VOLUNTEER_CREATED: `Волонтёр ${value} успешно создан`,
@@ -107,6 +109,11 @@ export const EVENT_STATUS = [
   { name: translation.active, value: EventStatus.Active },
   { name: translation.draft, value: EventStatus.Draft },
 ];
+
+export const EVENT_STATUS_FOR_ACTIVE = [
+  { name: translation.active, value: EventStatus.Active },
+  { name: translation.canceledEvent, value: EventStatus.Canceled },
+]
 
 export const IMAGE_TYPE = [ImageType.Jpeg, ImageType.Jpg, ImageType.Png, ImageType.Webp];
 

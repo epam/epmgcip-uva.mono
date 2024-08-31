@@ -84,8 +84,8 @@ export const ManageEventsPage = () => {
               { name: translation.all, value: 'all' },
               { name: translation.draftEvent, value: EventStatus.Draft },
               { name: translation.activeEvent, value: EventStatus.Active },
-              { name: translation.completed, value: EventStatus.Completed },
-              { name: translation.cancelled, value: EventStatus.Canceled },
+              { name: translation.completedEvent, value: EventStatus.Completed },
+              { name: translation.canceledEvent, value: EventStatus.Canceled },
             ]}
           />
         </>

@@ -1,8 +1,19 @@
 {
-    "self": "Karakalpak",
-    "title": "Isim",
-    "description": "Tavsifi",
-    "place": "Manzil",
-    "edit": "Түзету",
-    "closeRecruitment": "Жинақты жауып тастау"
+  "self": "Karakalpak",
+  "title": "Isim",
+  "description": "Tavsifi",
+  "place": "Manzil",
+  "edit": "Түзету",
+  "closeRecruitment": "Qabıl tugadi",
+  "openedRecruitment": "Qabıl ashıq",
+  "when": "Qashan",
+  "eventHours": "Iygilikli saatlar",
+  "where": "Mánzil",
+  "volunteersRequirements": "Volontyorlarni saralaw kriteryaları",
+  "gender": "Jınıs",
+  "age": "Jas",
+  "languages": "Tiller",
+  "people": "Kisi",
+  "registrationDeadline": "Ro'yxatdan o'tkazish múddeti",
+  "until": "Jilgacha"
 }

@@ -12,6 +12,10 @@ export const EventStatusDescription = () => {
         <b>{translation.activeTitle}</b>
         {translation.activeDescription}
       </div>
+      <div className={css.eventStatusDescription}>
+        <b>{translation.cancelledTitle}</b>
+        {translation.cancelledDescription}
+      </div>
     </>
   );
 };
