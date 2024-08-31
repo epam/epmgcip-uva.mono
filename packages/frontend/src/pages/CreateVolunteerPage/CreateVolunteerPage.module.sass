@@ -1,0 +1,59 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.createVolunteerWrapper
+    padding: 24px
+    width: 100%
+    height: calc(100vh - 46px)
+    box-sizing: border-box
+    display: flex
+    flex-direction: column
+
+    .createVolunteerTitle
+        @extend .H3
+        color: colors.$gray-600
+        margin-bottom: 18px
+
+    .createVolunteerForm
+        display: flex
+        flex-direction: column
+        align-items: center
+
+        .createUserValidationError
+            @extend .T3
+            align-self: flex-start
+            color: colors.$red
+            margin: 0
+
+        .selectPlaceholder
+            @extend .T1
+            color: colors.$gray-200
+
+        .buttonsPanel
+            width: 100%
+            margin-top: 12px
+            display: flex
+            flex-direction: row
+            justify-content: center
+            gap: 18px
+
+            .createVolunteerButton
+                @extend .H6
+                width: 147px
+                height: 48px
+                box-sizing: border-box
+                border-radius: 8px
+                justify-content: center
+                align-items: center
+
+                &:hover
+                    color: colors.$white
+                    background-color: colors.$blue
+                    border: none
+
+            .submitButton
+                color: colors.$white
+                background-color: colors.$blue-bright
+
+                &:hover
+                    background-color: colors.$blue-light
