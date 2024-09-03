@@ -18,7 +18,7 @@ admin.initializeApp();
 
 export const scheduledEventStatusUpdate = functions.pubsub
   .schedule("every 240 hours")
-  .onRun(async (context) => {
+  .onRun(async () => {
     const now = new Date();
 
     try {
