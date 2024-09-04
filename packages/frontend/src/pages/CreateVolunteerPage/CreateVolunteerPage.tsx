@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { IVolunteer } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 import { createVolunteer } from 'src/utils/createVolunteer';
-import { getVolunteer } from 'src/utils/getVolunteer';
+import { PhoneInput } from 'src/components/formElements/PhoneInput/PhoneInput';
 
 export const CreateVolunteerPage = () => {
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export const CreateVolunteerPage = () => {
   const [interests, setInterests] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [locations, setLocations] = useState('');
   const [telegramName, setTelegramName] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
@@ -69,9 +70,6 @@ export const CreateVolunteerPage = () => {
     const languages = language.join('');
     const imageSize = image?.size as unknown as string;
     const imageType = image?.type as string;
-    const getV = async () => {
-      await getVolunteer("@testi")
-    }
     setValidation(
       validateVolunteerValues({
         firstName,
@@ -166,7 +164,7 @@ export const CreateVolunteerPage = () => {
           isValidationError={isSubmitting && !!validation.interests}
           errorMessage={validation.interests}
         />
-        <Input
+        {/* <Input
           value={phone}
           setChange={setPhone}
           labelText={translation.phone}
@@ -174,6 +172,14 @@ export const CreateVolunteerPage = () => {
           required
           isValidationError={isSubmitting && !!validation.phone}
           errorMessage={validation.phone}
+        /> */}
+        <PhoneInput
+        labelText={translation.phone}
+        required
+        placeholder={translation.choice}
+        onChange={setPhone}
+        isValidationError={isSubmitting && !!validation.phone}
+        errorMessage={validation.phone}
         />
         <Input
           value={email}
@@ -182,6 +188,13 @@ export const CreateVolunteerPage = () => {
           type="email"
           isValidationError={isSubmitting && !!validation.email}
           errorMessage={validation.email}
+        />
+        <Input
+          value={locations}
+          setChange={setLocations}
+          labelText={translation.locations}
+          isValidationError={isSubmitting && !!validation.locations}
+          errorMessage={validation.locations}
         />
         <Input
           value={telegramName}
@@ -199,7 +212,6 @@ export const CreateVolunteerPage = () => {
         <div className={css.buttonsPanel}>
           <Button
             id="create-volun-submit"
-            // onClick={handleCreateVolunteer}
             className={`${css.createVolunteerButton} ${css.submitButton}`}
           >
             {isCreating ? <Loader size={'12px'} /> : translation.add}
