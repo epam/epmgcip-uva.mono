@@ -16,8 +16,10 @@ import {logger} from "firebase-functions";
 
 admin.initializeApp();
 
+const hoursToTrigger = "every 240 hours";
+
 export const scheduledEventStatusUpdate = functions.pubsub
-  .schedule("every 240 hours")
+  .schedule(hoursToTrigger)
   .onRun(async () => {
     const now = new Date();
 
