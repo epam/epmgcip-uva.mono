@@ -57,7 +57,7 @@ export const updatePublishedEventTrigger =
    }
  });
 
- const token = '7209672276:AAF5sHwJeGmYbCd08xZR1amlcGYBD1edqVw';
+ const token = '1111';
  const bot = new TelegramBot(token, { polling: true });
  const registrationUrl = 'https://core.telegram.org/bots/webapps';
 
