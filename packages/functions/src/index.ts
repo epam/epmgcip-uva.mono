@@ -94,8 +94,8 @@ export const updatePublishedEventTrigger =
    }
  });
 
- const token = '1111';
- const bot = new TelegramBot(token, { polling: true });
+
+ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!, { polling: true });
  const registrationUrl = 'https://core.telegram.org/bots/webapps';
 
  bot.onText(/\/start/, (msg) => {
