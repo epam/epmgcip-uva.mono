@@ -17,6 +17,43 @@ import TelegramBot from "node-telegram-bot-api";
 
 admin.initializeApp();
 
+const hoursToTrigger = "every 240 hours";
+
+export const scheduledEventStatusUpdate = functions.pubsub
+  .schedule(hoursToTrigger)
+  .onRun(async () => {
+    const now = new Date();
+
+    try {
+      const snapshot = await admin.firestore()
+        .collection("events")
+        .where("status", "==", "active")
+        .get();
+
+      if (snapshot.empty) {
+        logger.error("No active events to update.");
+        return null;
+      }
+
+      const batch = admin.firestore().batch();
+      snapshot.forEach((doc) => {
+        const eventData = doc.data();
+        const eventEndDate = new Date(eventData.endDate);
+
+        if (eventEndDate <= now) {
+          batch.update(doc.ref, {status: "completedEvent"});
+        }
+      });
+
+      await batch.commit();
+      logger.info("Active events statuses updated to \"completedEvent\".");
+    } catch (error) {
+      logger.error("Error updating event statuses:", error);
+    }
+
+    return null;
+  });
+
 export const publishToTelegram =
 onDocumentCreated("events/{eventId}", async (event) => {
   const snapshot = event.data;
