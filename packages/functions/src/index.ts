@@ -13,6 +13,7 @@ import {sendToChannel} from "./resources/bot/actions/sendToChannel";
 import {deleteTelegramMessage}
   from "./resources/bot/actions/deleteTelegramMessage";
 import {logger} from "firebase-functions";
+import TelegramBot from "node-telegram-bot-api";
 
 admin.initializeApp();
 
@@ -54,6 +55,35 @@ export const updatePublishedEventTrigger =
    if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
      updatePublishedEvent(afterData);
    }
+ });
+
+ const token = '7209672276:AAF5sHwJeGmYbCd08xZR1amlcGYBD1edqVw';
+ const bot = new TelegramBot(token, { polling: true });
+ const registrationUrl = 'https://core.telegram.org/bots/webapps';
+
+ bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, 'Welcome to the FridayAuraBot!\nHow can I assist you?\nPossible use cases:\n\/todo: for appending to a todolist\n\/idea: for random ideas\n\/thoughts: for deep thoughts\n\/blog: for adding blog titles\n\/showtodo: to show todolist\n\/done: to remove item from todolist\n\/showtitles to show all blog titles');
+});
+ 
+ bot.on('message', async (msg) => {
+     const chatId = msg.chat.id;
+     const text = msg.text;
+ 
+     if (text === '/register') {
+         await bot.sendMessage(chatId, "Click the button below to register:", {
+             reply_markup: {
+                 inline_keyboard: [
+                     [
+                         {
+                             text: 'Register',
+                             web_app: { url: registrationUrl }
+                         }
+                     ]
+                 ]
+             }
+         });
+     }
  });
 
 
