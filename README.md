@@ -2,7 +2,7 @@
 
 ## First run
 
-Run in the `root` folder to install packages for all workspaces `yarn install`
+Run in the `root` folder to install packages for all workspaces `yarn install` and build shared lib: `yarn build:shared`
 
 ### To run frontend locally
 

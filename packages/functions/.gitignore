@@ -4,6 +4,9 @@ build
 # TypeScript v1 declaration files
 typings/
 
+#secrets
+certificates/
+
 # Node.js dependency directory
 node_modules/
 
@@ -52,3 +55,6 @@ node_modules/
 
 # dotenv environment variables file
 .env    
+
+#local firebase emulator files
+firebase-export-*

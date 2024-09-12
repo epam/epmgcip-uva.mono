@@ -1,10 +1,8 @@
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
-import { IUser } from 'src/types';
+import { IUser, FirebaseCollection } from 'uva-shared';
 import { editUser } from './editUser';
-import { FirebaseCollection } from 'src/constants';
-
-export const getUserDocId = (telegramName: string) => telegramName.toLowerCase();
+import { getUserDocId } from 'uva-shared';
 
 /**
  * Get user by lowercase telegram name.
@@ -21,10 +19,7 @@ export const getUser = async (telegramName: string, telegramId?: number) => {
   }
 
   if (telegramId) {
-    const queryForUserById = query(
-      collection(firebaseDb, FirebaseCollection.Users),
-      where('telegramId', '==', telegramId)
-    );
+    const queryForUserById = query(collection(firebaseDb, FirebaseCollection.Users), where('telegramId', '==', telegramId));
 
     const querySnapshot = await getDocs(queryForUserById);
 

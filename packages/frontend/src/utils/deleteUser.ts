@@ -2,11 +2,10 @@ import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { showNotification } from './showNotification';
 import { getUser } from './getUser';
-import { FirebaseCollection, NOTIFICATIONS } from 'src/constants';
+import { NOTIFICATIONS } from 'src/constants';
+import { FirebaseCollection } from 'uva-shared';
 
-export const deleteUser = async (
-  telegramName: string,
-): Promise<boolean> => {
+export const deleteUser = async (telegramName: string): Promise<boolean> => {
   const user = await getUser(telegramName);
   const usersRef = collection(firebaseDb, FirebaseCollection.Users);
 

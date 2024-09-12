@@ -1,17 +1,22 @@
 import express from 'express';
 import admin from 'firebase-admin';
+import cors from 'cors';
 import * as functions from 'firebase-functions';
 import { logger } from 'firebase-functions';
 import { Change, onDocumentCreated, onDocumentUpdated, QueryDocumentSnapshot } from 'firebase-functions/v2/firestore';
+import { EventStatus } from 'uva-shared';
+// import { FIREBASE_SECRET } from './constants/env.js';
 import { checkAuthToken } from './middlewares/check-auth-token.js';
 import authRouter from './resources/auth/auth.router.js';
 import { deleteTelegramMessage } from './resources/bot/actions/deleteTelegramMessage.js';
 import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
 import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
 import userRouter from './resources/user/user.router.js';
-import { EventStatus } from 'uva-shared';
+import { DEV_MODE } from './constants/env.js';
 
-admin.initializeApp();
+admin.initializeApp({
+  // credential: admin.credential.cert(FIREBASE_SECRET as admin.ServiceAccount),
+});
 
 const hoursToTrigger = 'every 240 hours';
 
@@ -82,6 +87,11 @@ export const updatePublishedEventTrigger = onDocumentUpdated('events/{eventId}',
 });
 
 const app = express();
+
+if (DEV_MODE) {
+  logger.info('Running in dev mode');
+  app.use(cors());
+}
 
 app.use('/auth', authRouter);
 app.use('/user', checkAuthToken, userRouter);

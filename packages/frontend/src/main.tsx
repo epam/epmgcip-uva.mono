@@ -1,11 +1,11 @@
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import 'src/style/index.css';
-import { RouterProvider } from 'react-router-dom';
-import router from './routes/router.tsx';
-import store from './redux/store.ts';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
+import 'src/style/index.css';
+import store from './redux/store.ts';
+import router from './routes/router.tsx';
 
 const firebaseApp = initializeApp({
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -28,6 +28,6 @@ if (container) {
   root.render(
     <Provider store={store}>
       <RouterProvider router={router} />
-    </Provider>
+    </Provider>,
   );
 }

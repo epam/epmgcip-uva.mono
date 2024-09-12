@@ -2,8 +2,8 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
 import { IUser } from 'src/types';
 import { editUser } from './editUser';
-import { getUserDocId } from './getUser';
-import { FirebaseCollection } from 'src/constants';
+import { getUserDocId } from 'uva-shared';
+import { FirebaseCollection } from 'uva-shared';
 
 /** Get all users.
  *  If id is not is lowercase for some users, re-saves it with correct id.
@@ -26,7 +26,7 @@ export const getAllUsers = async (): Promise<IUser[]> => {
           telegramName: user.telegramName,
           telegramNameLowCase: user.telegramName.toLowerCase(),
         },
-        false
+        false,
       );
     } else if (user.telegramNameLowCase === undefined) {
       editUser(
@@ -34,7 +34,7 @@ export const getAllUsers = async (): Promise<IUser[]> => {
         {
           telegramNameLowCase: user.telegramName.toLowerCase(),
         },
-        false
+        false,
       );
     }
   });

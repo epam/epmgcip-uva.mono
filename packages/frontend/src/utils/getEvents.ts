@@ -1,7 +1,19 @@
-import { QueryFieldFilterConstraint, QueryLimitConstraint, QueryOrderByConstraint, QueryStartAtConstraint, collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
-import { FirebaseCollection } from 'src/constants';
+import {
+  QueryFieldFilterConstraint,
+  QueryLimitConstraint,
+  QueryOrderByConstraint,
+  QueryStartAtConstraint,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from 'firebase/firestore';
 import { firebaseDb } from 'src/main';
-import { FilterEventStatuses, IEvent } from 'src/types';
+import { FilterEventStatuses } from 'src/types';
+import { IEvent, FirebaseCollection } from 'uva-shared';
 
 type QueryArgs = QueryFieldFilterConstraint | QueryOrderByConstraint | QueryStartAtConstraint | QueryLimitConstraint;
 
@@ -14,7 +26,7 @@ interface GetEventsResult {
 export const getEvents = async (
   status?: FilterEventStatuses,
   lastElementStartDate?: IEvent['startDate'] | undefined | null,
-  pageSize = 10
+  pageSize = 10,
 ): Promise<GetEventsResult> => {
   const queryArgs: QueryArgs[] = [orderBy('startDate', 'desc'), limit(pageSize)];
   if (status && status !== 'all') {
@@ -33,7 +45,7 @@ export const getEvents = async (
       lastEventStartDate: events.length ? events[events.length - 1].startDate : null,
     };
   } catch (e) {
-    console.error("Could not retrieve events data", e);
+    console.error('Could not retrieve events data', e);
     return { events: [], lastEventStartDate: null };
   }
 };
