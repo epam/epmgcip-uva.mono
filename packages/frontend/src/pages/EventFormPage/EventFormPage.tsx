@@ -405,16 +405,6 @@ export const EventFormPage = () => {
         handleSaveEvent();
       });
     }
-    // if (languageSpecificData.alert === CreateEventAlerts.ConfirmLanguageDeletion) {
-    //   dispatchLanguageSpecificData({
-    //     language: languageSpecificData.alertData!.language,
-    //     withApproval: false,
-    //     event: LanguageEvent.Toggle,
-    //   });
-    // } else if (alert === CreateEventAlerts.Leaving) {
-    //   handleSaveEvent();
-    // }
-
     closeModal();
   };
 
