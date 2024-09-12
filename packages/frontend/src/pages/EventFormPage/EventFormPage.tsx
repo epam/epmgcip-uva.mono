@@ -12,6 +12,7 @@ import {
   Select,
   Slider,
 } from 'src/components';
+import {RadioButton} from 'src/components/formElements/RadioButton/RadioButton'
 import { getFormatDate, getShortDate } from 'src/components/formElements/DatePicker/utils';
 import {
   DEFAULT_MAX_AGE,
@@ -42,7 +43,6 @@ import { saveEvent, isCreateFormDirty } from 'src/utils/saveEvent';
 import { validateEventValues } from 'src/utils/validateEventValues';
 import { v4 as uuidv4 } from 'uuid';
 import css from './EventFormPage.module.sass';
-import { EventStatusDescription } from './components/EventStatusDescription/EventStatusDescription';
 import { EventTimeDuration } from './components/EventTimeDuration/EventTimeDuration';
 import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
 import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
@@ -299,6 +299,10 @@ export const EventFormPage = () => {
   };
 
   const onLeave = () => {
+    if (eventId || !eventId) {
+      navigate(EVENTS_ROUTE);
+      return;
+    }
     if (
       isCreateFormDirty(
         {
@@ -326,7 +330,6 @@ export const EventFormPage = () => {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-
     setIsSubmitting(() => true);
     if (error) {
       console.log(error);
@@ -348,29 +351,6 @@ export const EventFormPage = () => {
         } else {
           setAlert(UpdateEventAlerts.ConfirmDefaultUpdate);
         }
-          const updatedEvent: IEvent = {
-            id: existingEvent.id,
-            languageSpecificData,
-            startDate: getShortDate(eventStartDate),
-            startTime: eventStartTime,
-            endTime: eventEndTime,
-            duration: eventDuration,
-            registrationDate: eventRegistrationDate,
-            gender: gender as Gender,
-            ageMin: minVolunteersAge,
-            ageMax: maxVolunteersAge,
-            volunteersQuantity: volunteersQuantity,
-            status: eventStatus,
-            image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
-            imageUrl: existingEvent.imageUrl,
-            endDate: getShortDate(eventEndDate),
-            telegramChannelLink,
-          };
-          setIsCreating(() => true);
-          saveEvent(updatedEvent, image as File, 'update').then(() => {
-            handleSaveEvent();
-          });
-    
       } else {
         const eventId = uuidv4();
         const newEvent: IEvent = {
@@ -401,16 +381,30 @@ export const EventFormPage = () => {
   };
 
   const submitModal = () => {
-    if (languageSpecificData.alert === CreateEventAlerts.ConfirmLanguageDeletion) {
-      dispatchLanguageSpecificData({
-        language: languageSpecificData.alertData!.language,
-        withApproval: false,
-        event: LanguageEvent.Toggle,
+    if (existingEvent) {
+      const updatedEvent: IEvent = {
+        id: existingEvent.id,
+        languageSpecificData,
+        startDate: getShortDate(eventStartDate),
+        startTime: eventStartTime,
+        endTime: eventEndTime,
+        duration: eventDuration,
+        registrationDate: eventRegistrationDate,
+        gender: gender as Gender,
+        ageMin: minVolunteersAge,
+        ageMax: maxVolunteersAge,
+        volunteersQuantity: volunteersQuantity,
+        status: eventStatus,
+        image: `${STORAGE_BUCKET}/${STORAGE_IMAGES_PATH}/${existingEvent.imageUrl}`,
+        imageUrl: existingEvent.imageUrl,
+        endDate: getShortDate(eventEndDate),
+        telegramChannelLink,
+      };
+      setIsCreating(() => true);
+      saveEvent(updatedEvent, image as File, 'update').then(() => {
+        handleSaveEvent();
       });
-    } else if (alert === CreateEventAlerts.Leaving) {
-      handleSaveEvent();
     }
-
     closeModal();
   };
 
@@ -555,15 +549,22 @@ export const EventFormPage = () => {
             labelText={translation.telegramChannelLink}
             labelClassName={css.createEventPadding}
           />
-          <Select
-            value={eventStatus}
-            setChange={setEventStatus}
-            options={existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
-            labelText={translation.status}
-            required
-            labelClassName={css.createEventPadding}
+          <RadioButton
+           value={eventStatus}
+           descriptions={[
+              {value: 'active', name: translation.activeTitle + translation.activeDescription},
+              {value:'draft', name: translation.draftTitle + translation.draftDescription},
+              {value:'canceled', name: translation.cancelledTitle + translation.cancelledDescription}
+            ]
+          }
+           setChange={setEventStatus}
+           options={
+            existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS
+           }
+           label={translation.status}
+           required
           />
-          <EventStatusDescription />
+
           <div className={css.buttonsPanel}>
             <Button onClick={onLeave} className={`${css.createEventButton} ${css.backButton}`}>
               {translation.back}
