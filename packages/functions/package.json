@@ -4,6 +4,11 @@
     "version": "1.0.0",
     "main": "build/index.js",
     "type": "module",
+    "workspaces": {
+        "nohoist": [
+            "**"
+        ]
+    },
     "scripts": {
         "lint": "eslint --ext .js,.ts .",
         "clear": "rimraf build",
