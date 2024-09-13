@@ -2,6 +2,7 @@
   "functions": {
     "source": "packages/functions",
     "predeploy": [
+      "yarn build:shared",
       "yarn workspace:functions:lint",
       "yarn workspace:functions:build"
     ],
@@ -14,6 +15,7 @@
   "hosting": {
     "public": "packages/frontend/dist",
     "predeploy": [
+      "yarn build:shared",
       "yarn workspace:frontend:build"
     ],
     "ignore": [
