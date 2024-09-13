@@ -9,27 +9,22 @@ export const getFormatDate = (date: Date | string, separator: '/' | '.' | '-' = 
 };
 
 export const getNormalizeDate = (date: string) => {
-  const [year, month, day] = date.split("-");
+  const [year, month, day] = date.split('-');
 
   return `${day}-${month}-${year}`;
 };
 
 export const getShortDate = (date: string) => {
-  const [day, month, year] = date.split("-");
+  const [day, month, year] = date.split('-');
   const dateObj = new Date(+year, +month - 1, +day);
 
-  // eslint-disable-next-line max-len
-  const options: Intl.DateTimeFormatOptions = {day: "2-digit", month: "short", year: "numeric"};
-  const formattedDate = dateObj.toLocaleDateString("en-GB", options);
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  const formattedDate = dateObj.toLocaleDateString('en-GB', options);
 
-  return formattedDate.replace(/\./g, "");
+  return formattedDate.replace(/\./g, '');
 };
 
-
-export const getDaysInMonth = (
-  month = new Date().getMonth(),
-  year = new Date().getFullYear()
-) => {
+export const getDaysInMonth = (month = new Date().getMonth(), year = new Date().getFullYear()) => {
   const date = new Date(year, month, 1);
   const days = [];
 

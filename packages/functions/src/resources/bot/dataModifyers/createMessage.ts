@@ -1,26 +1,23 @@
-import {getFormatDate} from "../utils/index";
-import translation from "../translations/Russian.json";
-import {firestore} from "firebase-admin";
+import { getFormatDate } from '../utils/index.js';
+import translation from '../translations/Russian.json' assert { type: 'json' };
+import { firestore } from 'firebase-admin';
+import { EventStatus } from 'uva-shared';
 
 export const createMessage = (
   event: firestore.DocumentData,
   description: string,
   title: string,
   eventPlace: string,
-  languageKeys: string
+  languageKeys: string,
 ) => {
   return `
-      <b>${event.status === "active" ?
-    `${translation.openedRecruitment}` :
-    `${translation.closeRecruitment}`}</b>
+      <b>${event.status === EventStatus.Active ? `${translation.openedRecruitment}` : `${translation.closeRecruitment}`}</b>
   
       <b>${title}</b>
   
       📍 ${eventPlace}
   
-      📆 ${getFormatDate(event.startDate)} - ${
-  event.endDate ? getFormatDate(event.endDate):
-    "End is not specifyed."}
+      📆 ${getFormatDate(event.startDate)} - ${event.endDate ? getFormatDate(event.endDate) : 'End is not specified.'}
   
       🕒 ${event.startTime} - ${event.endTime}
       ${translation.eventHours}: ${event.duration}

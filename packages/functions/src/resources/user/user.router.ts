@@ -1,23 +1,23 @@
-import {Router} from "express";
+import { Router } from 'express';
 
 const router = Router();
 
-router.post("/register", (req, res) =>
+router.post('/register', (req, res) =>
   res.status(200).json({
-    status: "register user",
-  })
+    status: 'register user',
+  }),
 );
 
-router.get("/profile", (req, res) =>
+router.get('/profile', (req, res) =>
   res.status(200).json({
-    status: "get user profile",
-  })
+    status: 'get user profile',
+  }),
 );
 
-router.put("/profile", (req, res) =>
+router.put('/profile', (req, res) =>
   res.status(200).json({
-    status: "update user profile",
-  })
+    status: 'update user profile',
+  }),
 );
 
 export default router;

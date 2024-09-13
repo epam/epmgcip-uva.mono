@@ -2,24 +2,15 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  Button,
-  DatePicker,
-  ImageLoader,
-  Input,
-  Loader,
-  Modal,
-  Select,
-  Slider,
-} from 'src/components';
-import {RadioButton} from 'src/components/formElements/RadioButton/RadioButton'
+import { Button, DatePicker, ImageLoader, Input, Loader, Modal, Select, Slider } from 'src/components';
+import { RadioButton } from 'src/components/formElements/RadioButton/RadioButton';
 import { getFormatDate, getShortDate } from 'src/components/formElements/DatePicker/utils';
 import {
   DEFAULT_MAX_AGE,
   DEFAULT_MIN_AGE,
-  EVENTS_ROUTE,
   EVENT_STATUS,
   EVENT_STATUS_FOR_ACTIVE,
+  EVENTS_ROUTE,
   LANGUAGE,
   ROOT_ROUTE,
   STORAGE_BUCKET,
@@ -39,7 +30,8 @@ import {
   languages,
   UpdateEventAlerts,
 } from 'src/types';
-import { saveEvent, isCreateFormDirty } from 'src/utils/saveEvent';
+import { getEvent } from 'src/utils/getEvent';
+import { isCreateFormDirty, saveEvent } from 'src/utils/saveEvent';
 import { validateEventValues } from 'src/utils/validateEventValues';
 import { v4 as uuidv4 } from 'uuid';
 import css from './EventFormPage.module.sass';
@@ -48,7 +40,6 @@ import { LanguageButtons } from './components/LanguageButtons/LanguageButtons';
 import { LanguageSpecificFields } from './components/LanguageSpecificFields/LanguageSpecificFields';
 import { LanguageEvent } from './types';
 import { getEmptyLanguageData, languageSpecificDataReducer } from './utils/languages';
-import { getEvent } from 'src/utils/getEvent';
 
 const submitTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   [CreateEventAlerts.Leaving]: translation.leave,
@@ -82,8 +73,7 @@ const alertTextMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
   [UpdateEventAlerts.ShowEventPublishCancellation]: translation.changesSavedEventCanceclled,
   [UpdateEventAlerts.ConfirmAddNewLanguageSpecificData]: translation.addNewLanguageSpecificData,
   [UpdateEventAlerts.ConfirmDefaultUpdate]: translation.askSaveChanges,
-  [UpdateEventAlerts.ConfirmEventWithExistingStatusActive]:
-    translation.saveEventWithExistingStatusActive,
+  [UpdateEventAlerts.ConfirmEventWithExistingStatusActive]: translation.saveEventWithExistingStatusActive,
 };
 
 const alertHeaderMap: Record<CreateEventAlerts | UpdateEventAlerts, string> = {
@@ -121,10 +111,9 @@ export const EventFormPage = () => {
   const [alert, setAlert] = useState<CreateEventAlerts | UpdateEventAlerts>(CreateEventAlerts.None);
 
   const [image, setImage] = useState<File | null>(null);
-  const [languageSpecificData, dispatchLanguageSpecificData] = useReducer(
-    languageSpecificDataReducer,
-    { data: { [Language.Russian]: getEmptyLanguageData(Language.Russian) } }
-  );
+  const [languageSpecificData, dispatchLanguageSpecificData] = useReducer(languageSpecificDataReducer, {
+    data: { [Language.Russian]: getEmptyLanguageData(Language.Russian) },
+  });
   const [eventStartDate, setEventStartDate] = useState('');
   const [eventEndDate, setEventEndDate] = useState('');
   const [eventStartTime, setEventStartTime] = useState('');
@@ -145,16 +134,14 @@ export const EventFormPage = () => {
         try {
           const eventData = await getEvent(eventId);
           if (eventData) {
-            const languages: Language[] = Object.keys(
-              eventData.languageSpecificData.data
-            ) as Language[];
+            const languages: Language[] = Object.keys(eventData.languageSpecificData.data) as Language[];
             Object.keys(eventData.languageSpecificData.data).forEach(language =>
               dispatchLanguageSpecificData({
                 event: LanguageEvent.ReplaceData,
                 language: language as Language,
                 update: eventData.languageSpecificData.data[language as Language],
                 withApproval: false,
-              })
+              }),
             );
             setEventStartDate(getFormatDate(eventData.startDate));
             if (eventData.endDate) setEventEndDate(getFormatDate(eventData.endDate));
@@ -167,8 +154,7 @@ export const EventFormPage = () => {
             setMaxVolunteersAge(eventData.ageMax);
             setEventLanguage(languages);
             setVolunteersQuantity(eventData.volunteersQuantity);
-            if (eventData.telegramChannelLink)
-              setTelegramChannelLink(eventData.telegramChannelLink);
+            if (eventData.telegramChannelLink) setTelegramChannelLink(eventData.telegramChannelLink);
             setEventStatus(eventData.status);
           }
           if (eventData) {
@@ -182,7 +168,6 @@ export const EventFormPage = () => {
           setLoading(false);
         }
       } else {
-        console.log('No eventId provided');
         setLoading(false);
       }
     };
@@ -208,7 +193,7 @@ export const EventFormPage = () => {
           languageSpecificData,
           minVolunteersAge,
           maxVolunteersAge,
-          eventStatus
+          eventStatus,
         )
       ) {
         e.preventDefault();
@@ -255,8 +240,8 @@ export const EventFormPage = () => {
           volunteersQuantity: volunteersQuantity,
           image: existingEvent ? existingEvent.imageUrl! : image ? image.name : '',
         },
-        languageSpecificData.data
-      )
+        languageSpecificData.data,
+      ),
     );
   }, [
     editor,
@@ -271,10 +256,10 @@ export const EventFormPage = () => {
     gender,
     eventLanguage,
     volunteersQuantity,
+    existingEvent,
   ]);
 
-  const combinedAlert =
-    alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
+  const combinedAlert = alert === CreateEventAlerts.None ? languageSpecificData.alert ?? CreateEventAlerts.None : alert;
 
   const closeModal = () => {
     if (languageSpecificData.alert) {
@@ -319,7 +304,7 @@ export const EventFormPage = () => {
         languageSpecificData,
         minVolunteersAge,
         maxVolunteersAge,
-        eventStatus
+        eventStatus,
       )
     ) {
       setAlert(CreateEventAlerts.Leaving);
@@ -344,8 +329,7 @@ export const EventFormPage = () => {
         } else if (eventStatus == 'active' && existingEvent.status == 'active') {
           setAlert(UpdateEventAlerts.ConfirmEventWithExistingStatusActive);
         } else if (
-          Object.keys(existingEvent.languageSpecificData.data).length <
-          Object.keys(languageSpecificData.data).length
+          Object.keys(existingEvent.languageSpecificData.data).length < Object.keys(languageSpecificData.data).length
         ) {
           setAlert(UpdateEventAlerts.ConfirmAddNewLanguageSpecificData);
         } else {
@@ -412,9 +396,7 @@ export const EventFormPage = () => {
     isEditorHasPermissions &&
     !loading && (
       <div className={css.createEventWrapper}>
-        <div className={css.createEventTitle}>
-          {existingEvent ? translation.edit : translation.createEvent}
-        </div>
+        <div className={css.createEventTitle}>{existingEvent ? translation.edit : translation.createEvent}</div>
         <form className={css.createEventForm} onSubmit={handleSubmit}>
           <ImageLoader
             setImage={setImage}
@@ -437,11 +419,7 @@ export const EventFormPage = () => {
                 language={lang.type}
                 place={lang.place}
                 isLast={
-                  Object.keys(
-                    existingEvent
-                      ? existingEvent.languageSpecificData.data
-                      : languageSpecificData.data
-                  ).length ===
+                  Object.keys(existingEvent ? existingEvent.languageSpecificData.data : languageSpecificData.data).length ===
                   index + 1
                 }
                 dispatch={dispatchLanguageSpecificData}
@@ -550,36 +528,24 @@ export const EventFormPage = () => {
             labelClassName={css.createEventPadding}
           />
           <RadioButton
-           value={eventStatus}
-           descriptions={[
-              {value: 'active', name: translation.activeTitle + translation.activeDescription},
-              {value:'draft', name: translation.draftTitle + translation.draftDescription},
-              {value:'canceled', name: translation.cancelledTitle + translation.cancelledDescription}
-            ]
-          }
-           setChange={setEventStatus}
-           options={
-            existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS
-           }
-           label={translation.status}
-           required
+            value={eventStatus}
+            descriptions={[
+              { value: 'active', name: translation.activeTitle + translation.activeDescription },
+              { value: 'draft', name: translation.draftTitle + translation.draftDescription },
+              { value: 'canceled', name: translation.cancelledTitle + translation.cancelledDescription },
+            ]}
+            setChange={setEventStatus}
+            options={existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
+            label={translation.status}
+            required
           />
 
           <div className={css.buttonsPanel}>
             <Button onClick={onLeave} className={`${css.createEventButton} ${css.backButton}`}>
               {translation.back}
             </Button>
-            <Button
-              className={`${css.createEventButton} ${css.submitButton}`}
-              id="create-event-submit"
-            >
-              {isCreating ? (
-                <Loader size={'12px'} />
-              ) : existingEvent ? (
-                translation.save
-              ) : (
-                translation.add
-              )}
+            <Button className={`${css.createEventButton} ${css.submitButton}`} id="create-event-submit">
+              {isCreating ? <Loader size={'12px'} /> : existingEvent ? translation.save : translation.add}
             </Button>
           </div>
         </form>
@@ -592,9 +558,7 @@ export const EventFormPage = () => {
             handleSubmit={submitModal}
             message={alertTextMap[combinedAlert]}
             submitClassName={
-              combinedAlert === CreateEventAlerts.ForbidOnlyLanguageDeletion
-                ? css.modalCancelButton
-                : css.modalDeleteButton
+              combinedAlert === CreateEventAlerts.ForbidOnlyLanguageDeletion ? css.modalCancelButton : css.modalDeleteButton
             }
             cancelClassName={css.modalCancelButton}
             headerMessage={alertHeaderMap[combinedAlert]}
