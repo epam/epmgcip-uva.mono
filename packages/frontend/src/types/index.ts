@@ -1,4 +1,4 @@
-import { EventStatus, IEvent, IUser } from 'uva-shared';
+import { EventStatus, IEvent, IUser, IVolunteer } from 'uva-shared';
 
 export enum ScrollDirection {
   Up = 'up',
@@ -24,6 +24,7 @@ export type {
   EventLanguageSpecificFields,
   IEvent,
   IUser,
+  IVolunteer,
 } from 'uva-shared';
 
 export type FilterEventStatuses = EventStatus | 'all';
