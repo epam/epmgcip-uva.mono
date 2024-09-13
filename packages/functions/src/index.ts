@@ -8,7 +8,7 @@ import authRouter from "./resources/auth/auth.router.js";
 import { deleteTelegramMessage } from "./resources/bot/actions/deleteTelegramMessage.js";
 import { sendToChannel } from "./resources/bot/actions/sendToChannel.js";
 import { updatePublishedEvent } from "./resources/bot/actions/updatePublishedEvent.js";
-// import userRouter from "./resources/user/user.router.js";
+import userRouter from "./resources/user/user.router.js";
 import { EventStatus } from 'uva-shared';
 
 admin.initializeApp();
@@ -86,7 +86,6 @@ export const updatePublishedEventTrigger =
      updatePublishedEvent(afterData);
    }
  });
-
 
 const app = express();
 
