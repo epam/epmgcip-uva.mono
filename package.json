@@ -2,6 +2,7 @@
     "private": true,
     "name": "uva-monorepo",
     "author": "EPAM",
+    "main": "./packages/functions/build/index.js",
     "workspaces": {
         "packages": [
             "packages/*"
