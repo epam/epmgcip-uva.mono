@@ -3,7 +3,7 @@ import translation from 'src/translations/Russian.json';
 import { Button, Input, Loader, Select, DatePicker, ImageLoader } from 'src/components';
 import { IValidationError, Language } from 'src/types';
 import css from './CreateVolunteerPage.module.sass';
-import { LANGUAGE, VOLUNTEERS_ROUTE, VOLUNTEER_GENDER, VOLUNTEER_EDUCATION } from 'src/constants';
+import { LANGUAGE, VOLUNTEERS_ROUTE, VOLUNTEER_GENDER, VOLUNTEER_EDUCATION, STORAGE_BUCKET, VOLUNTEERS_IMAGES_PATH } from 'src/constants';
 import { validateVolunteerValues } from 'src/utils/validateVolunteerValues';
 import { useNavigate } from 'react-router-dom';
 import { IVolunteer } from 'src/types';
@@ -54,13 +54,13 @@ export const CreateVolunteerPage = () => {
         phone,
         email,
         telegramName,
-        image,
+        image: `${STORAGE_BUCKET}/${VOLUNTEERS_IMAGES_PATH}/${telegramName}`, // image does not work in the setDoc or getDoc VOLUNTEERS_IMAGES_PATH
         eventCount,
       }
 
       setIsCreating(() => true);
 
-      createVolunteer(newVolunteer).then(() => {
+      createVolunteer(newVolunteer, image!).then(() => {
         handleCreateVolunteer();
       })
     }
@@ -93,6 +93,11 @@ export const CreateVolunteerPage = () => {
     <div className={css.createVolunteerWrapper}>
       <div className={css.createVolunteerTitle}>{translation.volunteerRegistration}</div>
       <form className={css.createVolunteerForm} onSubmit={handleSubmit}>
+        <ImageLoader
+          setImage={setImage}
+          isValidationError={isSubmitting && !!validation.image}
+          errorMessage={validation.image}
+        />
         <Input
           value={firstName}
           setChange={setFirstName}
@@ -164,15 +169,6 @@ export const CreateVolunteerPage = () => {
           isValidationError={isSubmitting && !!validation.interests}
           errorMessage={validation.interests}
         />
-        {/* <Input
-          value={phone}
-          setChange={setPhone}
-          labelText={translation.phone}
-          type="tel"
-          required
-          isValidationError={isSubmitting && !!validation.phone}
-          errorMessage={validation.phone}
-        /> */}
         <PhoneInput
         labelText={translation.phone}
         required
@@ -203,11 +199,6 @@ export const CreateVolunteerPage = () => {
           required
           isValidationError={isSubmitting && !!validation.telegramName}
           errorMessage={validation.telegramName}
-        />
-        <ImageLoader
-          setImage={setImage}
-          isValidationError={isSubmitting && !!validation.image}
-          errorMessage={validation.image}
         />
         <div className={css.buttonsPanel}>
           <Button

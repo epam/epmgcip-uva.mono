@@ -49,7 +49,7 @@ export const validateVolunteerValues = (inputValues: IValidationError) => {
     errors.interests = translation.interests;
   }
 
-  if (inputValues.imageType && inputValues.imageType != "image/jpeg") {
+  if (inputValues.imageType && inputValues.imageType != "image/jpeg" && inputValues.imageType != "image/apng") {
     errors.image = translation.wrongImageType;
   }
 

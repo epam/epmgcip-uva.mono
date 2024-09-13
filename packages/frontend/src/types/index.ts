@@ -26,7 +26,7 @@ export interface IVolunteer {
   interests?: string;
   phone: string;
   email?: string;
-  image?: File | null;
+  image?: string;
   locations?: string,
   experience?: string,
   info?: string,
