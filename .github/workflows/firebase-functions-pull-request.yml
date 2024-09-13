@@ -6,6 +6,7 @@ name: Lint & Build Firebase Functions on PR
       - develop
     paths:
       - "packages/functions/**"
+      - "packages/shared/**"
       - ".github/workflows/firebase-functions-*.yml"
 jobs:
   build:
