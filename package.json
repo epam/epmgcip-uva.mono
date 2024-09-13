@@ -2,9 +2,16 @@
     "private": true,
     "name": "uva-monorepo",
     "author": "EPAM",
-    "workspaces": [
-        "packages/*"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": [
+            "packages/functions/**",
+            "packages/frontend/**",
+            "packages/shared"
+        ]
+    },
     "scripts": {
         "workspace:functions:build": "yarn workspace uva-functions build",
         "workspace:functions:start": "yarn workspace uva-functions start",
