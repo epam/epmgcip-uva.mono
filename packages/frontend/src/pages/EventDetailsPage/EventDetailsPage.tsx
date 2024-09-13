@@ -39,9 +39,7 @@ export const EventDetailsPage = () => {
     { title: translation.edit, onClick: () => navigate(`/event/edit/${eventId}`) },
     { title: translation.closeRecruitment, onClick: () => console.log('Closing recruitment') },
   ];
-  const languageDataArray: EventLanguageSpecificData[] = event
-    ? Object.values(event.languageSpecificData.data)
-    : [];
+  const languageDataArray: EventLanguageSpecificData[] = event ? Object.values(event.languageSpecificData.data) : [];
   useEffect(() => {
     const fetchEvent = async () => {
       if (eventId) {
@@ -58,7 +56,6 @@ export const EventDetailsPage = () => {
           setLoading(false);
         }
       } else {
-        console.log('No eventId provided');
         setLoading(false);
       }
     };
@@ -127,10 +124,7 @@ export const EventDetailsPage = () => {
           </div>
           <div className={css.paricipantsTgChatWrapper}>
             {event.status !== 'draft' ? (
-              <button
-                onClick={() => navigate(VOLUNTEERS_ROUTE)}
-                className={css.paricipantsTgChatButtons}
-              >
+              <button onClick={() => navigate(VOLUNTEERS_ROUTE)} className={css.paricipantsTgChatButtons}>
                 {translation.participantsList}
               </button>
             ) : (
@@ -139,11 +133,7 @@ export const EventDetailsPage = () => {
               </button>
             )}
             {event.telegramChannelLink ? (
-              <a
-                href={event.telegramChannelLink}
-                target="_blank"
-                className={css.paricipantsTgChatButtons}
-              >
+              <a href={event.telegramChannelLink} target="_blank" className={css.paricipantsTgChatButtons}>
                 {translation.telegramChat}
               </a>
             ) : (
@@ -184,7 +174,9 @@ export const EventDetailsPage = () => {
             <span>
               {event.startTime} - {event.endTime}
             </span>
-            <div className={css.durationInfo}>{translation.totalHours} {event.duration}</div>
+            <div className={css.durationInfo}>
+              {translation.totalHours} {event.duration}
+            </div>
           </div>
           <div className={css.eventDescriptionWrapper}>
             <span className={css.eventDescription}>{translation.aboutEvent}</span>

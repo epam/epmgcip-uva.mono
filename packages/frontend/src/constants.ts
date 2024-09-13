@@ -1,5 +1,7 @@
-import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus, Education } from './types';
+import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus, Education } from 'uva-shared';
 import translation from 'src/translations/Russian.json';
+
+export { FirebaseCollection } from 'uva-shared';
 
 export const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
 export const STORAGE_IMAGES_PATH = 'public/images';
@@ -26,12 +28,6 @@ export const USER_STATUSES = [
   { name: translation.active, value: UserStatus.Active },
   { name: translation.inactive, value: UserStatus.Inactive },
 ];
-
-export enum FirebaseCollection {
-  Users = 'users',
-  Events = 'events',
-  Volunteers = 'volunteers',
-}
 
 export const DEFAULT_NOTIFICATION = 'Default Notification Message';
 export const NOTIFICATIONS = (value?: string) => ({
@@ -67,8 +63,7 @@ export const languagesLong: Record<Language, string> = {
   [Language.Qoraqalpoq]: 'Karakalpak',
 };
 
-export const DELETE_USER_QUESTION = (value: string) =>
-  `Вы точно хотите удалить пользователя ${value}?`;
+export const DELETE_USER_QUESTION = (value: string) => `Вы точно хотите удалить пользователя ${value}?`;
 
 export const LOGOUT_USER_QUESTION = 'Вы точно хотите выйти?';
 
@@ -114,7 +109,7 @@ export const EVENT_STATUS = [
 export const EVENT_STATUS_FOR_ACTIVE = [
   { name: translation.active, value: EventStatus.Active },
   { name: translation.canceledEvent, value: EventStatus.Canceled },
-]
+];
 
 export const IMAGE_TYPE = [ImageType.Jpeg, ImageType.Jpg, ImageType.Png, ImageType.Webp];
 

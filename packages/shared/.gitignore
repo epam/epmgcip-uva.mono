@@ -1,5 +1,6 @@
 # Compiled files
 build
+tsconfig.tsbuildinfo
 
 # TypeScript v1 declaration files
 typings/

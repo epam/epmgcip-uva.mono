@@ -1,0 +1,37 @@
+@use 'src/style/colors' as css
+@import 'src/style/typography'
+    
+.radio-button-container
+  margin-bottom: 20px
+  text-align: left
+  @extend .T1
+  width: calc(100vw - 48px)
+  max-width: calc(768px - 48px)
+
+.radio-button-label
+  margin-bottom: 10px
+  font-weight: bold
+
+.radio-button-item
+  margin-bottom: 10px
+  display: flex
+  flex-direction: column
+  border-radius: 10px
+  cursor: pointer
+  font-size: 16px
+  padding: 10px
+
+
+.radio-button-item.selected
+  border: 2px solid css.$gray-200
+
+.radio-button-input
+  margin-right: 12px
+  margin-top: 2px
+  width: 20px
+  height: 20px
+
+.radio-button-description
+  font-size: 14px
+  color: css.$gray-200
+  margin-top: 4px
