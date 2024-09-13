@@ -10,6 +10,7 @@ name: Deploy to Firebase Hosting on PR to develop branch
       - 'packages/frontend/**'
       - 'packages/shared/**'
       - '.github/workflows/firebase-develop-*.yml'
+      - "package.json"
 env:
   VITE_FIREBASE_API_KEY: ${{secrets.FIREBASE_DEVELOP_API_KEY}}
   VITE_FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_DEVELOP_AUTH_DOMAIN}}

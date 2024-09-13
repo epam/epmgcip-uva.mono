@@ -1,6 +1,6 @@
 {
   "functions": {
-    "source": "packages",
+    "source": ".",
     "predeploy": [
       "yarn build:shared",
       "yarn workspace:functions:lint",

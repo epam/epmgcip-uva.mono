@@ -8,6 +8,7 @@ name: Lint & Build Firebase Functions on PR
       - "packages/functions/**"
       - "packages/shared/**"
       - ".github/workflows/firebase-functions-*.yml"
+      - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest
