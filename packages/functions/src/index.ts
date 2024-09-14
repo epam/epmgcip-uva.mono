@@ -10,6 +10,7 @@ import { sendToChannel } from "./resources/bot/actions/sendToChannel.js";
 import { updatePublishedEvent } from "./resources/bot/actions/updatePublishedEvent.js";
 import userRouter from "./resources/user/user.router.js";
 import { EventStatus } from 'uva-shared';
+import { Telegraf } from "telegraf";
 
 admin.initializeApp();
 
@@ -86,6 +87,37 @@ export const updatePublishedEventTrigger =
      updatePublishedEvent(afterData);
    }
  });
+
+const bot = new Telegraf(functions.config().telegram.bot_token);
+
+const registrationUrl = 'https://core.telegram.org/bots/webapps';
+
+bot.start((ctx) => {
+  ctx.reply('Bot is up and running!');
+});
+
+bot.launch().then(() => {
+  console.log('Bot started successfully');
+}).catch((error) => {
+  console.error('Failed to start bot:', error);
+});
+
+  bot.command('register', async (ctx) => {
+      const chatId = ctx.chat.id;
+      await ctx.reply('Click the button below to register:', {
+          reply_markup: {
+              inline_keyboard: [
+                  [
+                      {
+                          text: 'Register',
+                          web_app: { url: registrationUrl }
+                      }
+                  ]
+              ]
+          }
+      });
+  });
+
 
 const app = express();
 
