@@ -1,16 +1,21 @@
-import express from "express";
-import admin from "firebase-admin";
-import * as functions from "firebase-functions/v1";
-import { logger } from "firebase-functions";
-import { Change, onDocumentCreated, onDocumentUpdated, QueryDocumentSnapshot } from "firebase-functions/v2/firestore";
-import { checkAuthToken } from "./middlewares/check-auth-token.js";
-import authRouter from "./resources/auth/auth.router.js";
-import { deleteTelegramMessage } from "./resources/bot/actions/deleteTelegramMessage.js";
-import { sendToChannel } from "./resources/bot/actions/sendToChannel.js";
-import { updatePublishedEvent } from "./resources/bot/actions/updatePublishedEvent.js";
-import userRouter from "./resources/user/user.router.js";
-import { EventStatus } from 'uva-shared';
-import { Telegraf } from "telegraf";
+import express from 'express';
+import admin from 'firebase-admin';
+import * as functions from 'firebase-functions/v1';
+import { logger } from 'firebase-functions';
+import { Change, onDocumentCreated, onDocumentUpdated, QueryDocumentSnapshot } from 'firebase-functions/v2/firestore';
+import { checkAuthToken } from './middlewares/check-auth-token.js';
+import authRouter from './resources/auth/auth.router.js';
+import { deleteTelegramMessage } from './resources/bot/actions/deleteTelegramMessage.js';
+import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
+import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
+import userRouter from './resources/user/user.router.js';
+import { Telegraf } from 'telegraf';
+import { message } from 'telegraf/filters';
+import { webhook } from './resources/bot/actions/webhookHandler.js';
+// import bot from './resources/bot/actions/botController.js'
+// import { setWebhook } from './resources/bot/actions/webhookSetup.js';
+
+export { webhook };
 
 admin.initializeApp();
 
@@ -19,32 +24,29 @@ const hoursToTrigger = 'every 240 hours';
 export const scheduledEventStatusUpdate = functions.pubsub.schedule(hoursToTrigger).onRun(async () => {
   const now = new Date();
 
-    try {
-      const snapshot = await admin.firestore()
-        .collection("events")
-        .where("status", "==", "active")
-        .get();
+  try {
+    const snapshot = await admin.firestore().collection('events').where('status', '==', 'active').get();
 
-      if (snapshot.empty) {
-        logger.error("No active events to update.");
-        return null;
-      }
-
-      const batch = admin.firestore().batch();
-      snapshot.forEach((doc) => {
-        const eventData = doc.data();
-        const eventEndDate = new Date(eventData.endDate);
-
-        if (eventEndDate <= now) {
-          batch.update(doc.ref, {status: "completedEvent"});
-        }
-      });
-
-      await batch.commit();
-      logger.info("Active events statuses updated to \"completedEvent\".");
-    } catch (error) {
-      logger.error("Error updating event statuses:", error);
+    if (snapshot.empty) {
+      logger.error('No active events to update.');
+      return null;
     }
+
+    const batch = admin.firestore().batch();
+    snapshot.forEach(doc => {
+      const eventData = doc.data();
+      const eventEndDate = new Date(eventData.endDate);
+
+      if (eventEndDate <= now) {
+        batch.update(doc.ref, { status: 'completedEvent' });
+      }
+    });
+
+    await batch.commit();
+    logger.info('Active events statuses updated to "completedEvent".');
+  } catch (error) {
+    logger.error('Error updating event statuses:', error);
+  }
 
   return null;
 });
@@ -63,61 +65,27 @@ export const publishToTelegram = onDocumentCreated('events/{eventId}', async eve
   }
 });
 
+export const deleteEventFromTelegram = onDocumentUpdated('events/{eventId}', async event => {
+  const beforeData = event.data?.before.data();
+  const afterData = event.data?.after.data();
 
-export const deleteEventFromTelegram =
- onDocumentUpdated("events/{eventId}", async (event) => {
-   const beforeData = event.data?.before.data();
-   const afterData = event.data?.after.data();
-
-   if (beforeData && afterData) {
-     if (beforeData.status !== "canceled" && afterData.status === "canceled") {
-       await deleteTelegramMessage(afterData);
-     }
-   }
- });
-
-export const updatePublishedEventTrigger =
- onDocumentUpdated("events/{eventId}", (event) => {
-   const change = event.data as Change<QueryDocumentSnapshot>;
-
-   const beforeData = change.before.data() as admin.firestore.DocumentData;
-   const afterData = change.after.data() as admin.firestore.DocumentData;
-
-   if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
-     updatePublishedEvent(afterData);
-   }
- });
-
-const bot = new Telegraf(functions.config().telegram.bot_token);
-
-const registrationUrl = 'https://core.telegram.org/bots/webapps';
-
-bot.start((ctx) => {
-  ctx.reply('Bot is up and running!');
+  if (beforeData && afterData) {
+    if (beforeData.status !== 'canceled' && afterData.status === 'canceled') {
+      await deleteTelegramMessage(afterData);
+    }
+  }
 });
 
-bot.launch().then(() => {
-  console.log('Bot started successfully');
-}).catch((error) => {
-  console.error('Failed to start bot:', error);
+export const updatePublishedEventTrigger = onDocumentUpdated('events/{eventId}', event => {
+  const change = event.data as Change<QueryDocumentSnapshot>;
+
+  const beforeData = change.before.data() as admin.firestore.DocumentData;
+  const afterData = change.after.data() as admin.firestore.DocumentData;
+
+  if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
+    updatePublishedEvent(afterData);
+  }
 });
-
-  bot.command('register', async (ctx) => {
-      const chatId = ctx.chat.id;
-      await ctx.reply('Click the button below to register:', {
-          reply_markup: {
-              inline_keyboard: [
-                  [
-                      {
-                          text: 'Register',
-                          web_app: { url: registrationUrl }
-                      }
-                  ]
-              ]
-          }
-      });
-  });
-
 
 const app = express();
 
@@ -127,6 +95,27 @@ app.use('/user', checkAuthToken, userRouter);
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'ok',
+  });
+});
+
+const bot = new Telegraf(functions.config().telegram.bot_token, {
+  telegram: { webhookReply: true },
+});
+
+const registrationUrl = 'https://core.telegram.org/bots/webapps';
+
+bot.command('register', async ctx => {
+  await ctx.reply('Click the button below to register:', {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: 'Register',
+            web_app: { url: registrationUrl },
+          },
+        ],
+      ],
+    },
   });
 });
 
