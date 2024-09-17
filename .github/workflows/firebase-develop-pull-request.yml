@@ -10,6 +10,7 @@ name: Deploy to Firebase Hosting on PR to develop branch
       - 'packages/frontend/**'
       - 'packages/shared/**'
       - '.github/workflows/firebase-develop-*.yml'
+      - "package.json"
 env:
   VITE_FIREBASE_API_KEY: ${{secrets.FIREBASE_DEVELOP_API_KEY}}
   VITE_FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_DEVELOP_AUTH_DOMAIN}}
@@ -21,10 +22,23 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
-      - run: yarn install --frozen-lockfile && yarn run build:frontend
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          
+      - name: Install dependencies and build
+        run: yarn install --frozen-lockfile && yarn run build:frontend
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPMGCIP_UVA_DEVELOP }}'

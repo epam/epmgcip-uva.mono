@@ -1,19 +1,22 @@
 {
   "functions": {
-    "source": "packages/functions",
+    "source": ".",
     "predeploy": [
+      "yarn build:shared",
       "yarn workspace:functions:lint",
       "yarn workspace:functions:build"
     ],
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "packages/frontend/**"
     ]
   },
   "hosting": {
     "public": "packages/frontend/dist",
     "predeploy": [
+      "yarn build:shared",
       "yarn workspace:frontend:build"
     ],
     "ignore": [
