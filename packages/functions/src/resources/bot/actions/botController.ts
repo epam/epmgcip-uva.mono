@@ -1,5 +1,5 @@
 import { Telegraf } from 'telegraf';
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions/v1';
 
 const bot = new Telegraf(functions.config().telegram.bot_token, {
   telegram: { webhookReply: true },
