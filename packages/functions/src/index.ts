@@ -9,13 +9,9 @@ import { deleteTelegramMessage } from './resources/bot/actions/deleteTelegramMes
 import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
 import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
 import userRouter from './resources/user/user.router.js';
-import { Telegraf } from 'telegraf';
-import { message } from 'telegraf/filters';
 import { webhook } from './resources/bot/actions/webhookHandler.js';
-// import bot from './resources/bot/actions/botController.js'
-// import { setWebhook } from './resources/bot/actions/webhookSetup.js';
 
-export { webhook };
+export const webhookHandler = webhook;
 
 admin.initializeApp();
 
@@ -95,27 +91,6 @@ app.use('/user', checkAuthToken, userRouter);
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'ok',
-  });
-});
-
-const bot = new Telegraf(functions.config().telegram.bot_token, {
-  telegram: { webhookReply: true },
-});
-
-const registrationUrl = 'https://core.telegram.org/bots/webapps';
-
-bot.command('register', async ctx => {
-  await ctx.reply('Click the button below to register:', {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: 'Register',
-            web_app: { url: registrationUrl },
-          },
-        ],
-      ],
-    },
   });
 });
 
