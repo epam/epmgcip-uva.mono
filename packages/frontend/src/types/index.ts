@@ -1,4 +1,5 @@
-import { EventStatus, IEvent, IUser, IVolunteer } from 'uva-shared';
+// eslint-disable-next-line
+import { EventStatus, IEvent, IUser } from 'uva-shared';
 
 export enum ScrollDirection {
   Up = 'up',
