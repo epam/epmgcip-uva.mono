@@ -50,10 +50,9 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_DELETED: `Событие ${value} успешно удалено`,
   EVENT_DELETE_ERROR: `Ошибка при удалении события ${value}`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
-  VOLUNTEER_EXISTS: `Извините, волонтёр c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
-  VOLUNTEER_CREATED: `Волонтёр ${value} успешно создан`,
-  VOLUNTEER_CREATION_ERROR: `Ошибка при создании волонтёра ${value}`,
-  VOLUNTEER_DOES_NOT_EXIST: `Извините, волонтёр c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
+  VOLUNTEER_EXISTS: `Профиль с вашим Telegram ID уже существует. Зарегистрировать его повторно не получится.`,
+  VOLUNTEER_CREATED: `Профиль успешно создан! Теперь вы можете подать заявку на участие в мероприятиях на канале UVA в Telegram. Спасибо за вашу заинтересованность в волонтерстве!`,
+  VOLUNTEER_CREATION_ERROR: `Произошла внутренняя ошибка при попытке регистрации. Пожалуйста, попробуйте позже.`,
 });
 
 export const languagesLong: Record<Language, string> = {
