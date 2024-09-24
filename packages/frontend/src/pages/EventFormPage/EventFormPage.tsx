@@ -312,7 +312,7 @@ export const EventFormPage = () => {
       handleSaveEvent();
     }
   };
-
+  
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setIsSubmitting(() => true);
@@ -530,9 +530,9 @@ export const EventFormPage = () => {
           <RadioButton
             value={eventStatus}
             descriptions={[
-              { value: 'active', name: translation.activeTitle + translation.activeDescription },
               { value: 'draft', name: translation.draftTitle + translation.draftDescription },
               { value: 'canceled', name: translation.cancelledTitle + translation.cancelledDescription },
+              { value: 'active', name: translation.activeTitle + translation.activeDescription },
             ]}
             setChange={setEventStatus}
             options={existingEvent?.status === EventStatus.Active ? EVENT_STATUS_FOR_ACTIVE : EVENT_STATUS}
@@ -545,7 +545,7 @@ export const EventFormPage = () => {
               {translation.back}
             </Button>
             <Button className={`${css.createEventButton} ${css.submitButton}`} id="create-event-submit">
-              {isCreating ? <Loader size={'12px'} /> : existingEvent ? translation.save : translation.add}
+              {isCreating ? <Loader size={'12px'} /> : existingEvent ? translation.save : translation.create}
             </Button>
           </div>
         </form>
