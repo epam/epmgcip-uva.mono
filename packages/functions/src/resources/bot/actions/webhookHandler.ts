@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions/v1';
+import { logger } from 'firebase-functions';
 import bot from './botController.js';
 
 export const webhook = functions.https.onRequest(async (req, res) => {
-  console.log('Received update:', JSON.stringify(req.body));
+  logger.info('Received update:', { body: req.body });
   try {
     await bot.handleUpdate(req.body);
     res.sendStatus(200);
