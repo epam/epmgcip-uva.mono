@@ -9,6 +9,7 @@ import { deleteTelegramMessage } from './resources/bot/actions/deleteTelegramMes
 import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
 import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
 import userRouter from './resources/user/user.router.js';
+import { EventStatus } from 'uva-shared';
 import { webhook } from './resources/bot/actions/webhookHandler.js';
 
 export const webhookHandler = webhook;
@@ -61,25 +62,25 @@ export const publishToTelegram = onDocumentCreated('events/{eventId}', async eve
   }
 });
 
-export const deleteEventFromTelegram = onDocumentUpdated('events/{eventId}', async event => {
-  const beforeData = event.data?.before.data();
-  const afterData = event.data?.after.data();
+export const updatePublishedEventTrigger = onDocumentUpdated('events/{eventId}', async event => {
+  try {
+    const change = event.data as Change<QueryDocumentSnapshot>;
 
-  if (beforeData && afterData) {
-    if (beforeData.status !== 'canceled' && afterData.status === 'canceled') {
-      await deleteTelegramMessage(afterData);
+    const beforeData = change.before.data() as admin.firestore.DocumentData;
+    const afterData = change.after.data() as admin.firestore.DocumentData;
+
+    if (beforeData && afterData) {
+      if (beforeData.status !== EventStatus.Canceled && afterData.status === EventStatus.Canceled) {
+        await deleteTelegramMessage(afterData);
+        return;
+      }
     }
-  }
-});
 
-export const updatePublishedEventTrigger = onDocumentUpdated('events/{eventId}', event => {
-  const change = event.data as Change<QueryDocumentSnapshot>;
-
-  const beforeData = change.before.data() as admin.firestore.DocumentData;
-  const afterData = change.after.data() as admin.firestore.DocumentData;
-
-  if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
-    updatePublishedEvent(afterData);
+    if (JSON.stringify(beforeData) !== JSON.stringify(afterData)) {
+      updatePublishedEvent(afterData);
+    }
+  } catch (err) {
+    logger.error('Failed to update existing post in channel.', err);
   }
 });
 
