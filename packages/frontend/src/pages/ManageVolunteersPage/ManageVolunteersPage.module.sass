@@ -2,16 +2,115 @@
 @import 'src/style/typography'
 
 .volunteersBlockWrapper
-    display: flex
-    flex-direction: column
-    width: 100%
-    margin: 130px 0 24px 0
-    gap: 12px
+  display: flex
+  flex-direction: column
+  width: 100%
+  margin: 0 0 24px 0
+  gap: 12px
 
-    .volunteersBlockLogo
-        margin-top: 80px
-        height: 200px
+  .volunteersBlockLogo
+    margin-top: 80px
+    height: 200px
 
     .emptyMessage
-        @extend .T1
-        text-align: center
+      @extend .T1
+      text-align: center
+
+.volunteersBlockWrapper
+  display: flex
+  flex-direction: column
+  align-items: left
+  justify-content: start
+  padding: 20px
+  width: 100%
+
+.volunteersTitle
+  font-weight: bold
+  font-size: 30px
+  color: colors.$gray-600
+
+.searchbarWrapper
+  width: 100%
+  position: relative
+  display: flex
+  align-items: center
+.searchBar
+  width: calc(100vw - 48px)
+  max-width: calc(768px - 48px)
+  height: 48px
+  border: 1.5px solid colors.$gray-200
+  border-radius: 8px
+  background-color: colors.$white
+  padding: 25px
+  box-sizing: border-box
+  margin-top: 8px
+  font-size: 20px
+  padding-left: 45px
+
+.searchIcon
+  position: absolute
+  left: 10px
+  font: bold
+  pointer-events: none
+
+.phoneIconContainer
+  display: flex
+  align-items: center
+
+.phoneIcon
+  padding-right: 20px
+  width: 23px
+  height: 23px
+
+.volunteerCard
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: flex-start
+  border-bottom: 1px solid #ddd
+  padding: 5px
+  margin: 10px 0
+  width: 100%
+  color: colors.$gray-200
+
+.volunteerFullName
+  font-weight: bold
+  font-size: 20px
+  color: colors.$gray-600
+  margin-bottom: 10px
+
+.volunteerInfoWrapper
+  display: flex
+  align-items: center
+  gap: 5px
+
+.dotSpan
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 10px
+  height: 20px
+
+.scrollToTopButton
+  position: fixed
+  color: black
+  bottom: 20px
+  left: 50%
+  transform: translateX(-50%)
+  padding: 10px 40px
+  font-size: 15px
+  border: 1px solid black
+  border-radius: 5px
+  cursor: pointer
+  z-index: 10
+  &:hover
+    background-color: colors.$blue-bright
+    border: colors.$blue-bright
+    color: white
+
+.loader
+  width: 100%
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center

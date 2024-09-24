@@ -11,6 +11,15 @@ export enum Language {
   Qoraqalpoq = 'qoraqalpoq',
 }
 
+export enum Education {
+  BasicGeneral = "basic general",
+  SecondarySpecialized = "secondary specialized",
+  Bachelor = "bachelor",
+  Master = "master",
+  Doctorate = "doctorate",
+  School = "school",
+}
+
 export const languages: Language[] = [
   Language.Russian,
   Language.Uzbek,
