@@ -97,7 +97,7 @@ export const ManageVolunteersPage = () => {
           ) : (
             volunteers.map(volunteer => (
               <div key={volunteer.id} className={css.volunteerCard}>
-                <p className={css.volunteerFullName}>{volunteer.firstName}</p>
+                <p className={css.volunteerFullName}>{volunteer.firstName} {volunteer.lastName}</p>
                 <div className={css.volunteerInfoWrapper}>
                   <span>{volunteer.gender === 'men' ? 'М' : 'Ж'}</span>
                   <span className={css.dotSpan}>
