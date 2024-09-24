@@ -33,6 +33,10 @@ export const validateVolunteerValues = (inputValues: IValidationError) => {
     errors.phone = translation.phone;
   }
 
+  if (!inputValues.telegramId) {
+    errors.telegramId = translation.telegramId;
+  }
+
   if (inputValues.firstName && inputValues.firstName.length > 50) {
     errors.firstName = translation.nameTooLong;
   }
@@ -49,7 +53,7 @@ export const validateVolunteerValues = (inputValues: IValidationError) => {
     errors.interests = translation.interests;
   }
 
-  if (inputValues.imageType && inputValues.imageType != "image/jpeg" && inputValues.imageType != "image/apng") {
+  if (inputValues.imageType && inputValues.imageType != "image/jpeg" && inputValues.imageType != "image/png") {
     errors.image = translation.wrongImageType;
   }
 

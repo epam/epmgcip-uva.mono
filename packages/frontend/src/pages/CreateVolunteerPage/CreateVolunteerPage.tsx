@@ -27,6 +27,7 @@ export const CreateVolunteerPage = () => {
   const [email, setEmail] = useState('');
   const [locations, setLocations] = useState('');
   const [telegramName, setTelegramName] = useState('');
+  const [telegramId, setTelegramId] = useState('');
   const [image, setImage] = useState<File | null>(null);
 
   const [validation, setValidation] = useState<IValidationError>({});
@@ -56,6 +57,7 @@ export const CreateVolunteerPage = () => {
         telegramName,
         image: `${STORAGE_BUCKET}/${VOLUNTEERS_IMAGES_PATH}/${telegramName}`, // image does not work in the setDoc or getDoc VOLUNTEERS_IMAGES_PATH
         eventCount,
+        telegramId
       }
 
       setIsCreating(() => true);
@@ -84,10 +86,11 @@ export const CreateVolunteerPage = () => {
         email,
         imageSize,
         imageType,
-        telegramName
+        telegramName,
+        telegramId
       })
     );
-  }, [firstName, lastName, gender, birthDate, education, language, specialization, interests, phone, email, image, telegramName])
+  }, [firstName, lastName, gender, birthDate, education, language, specialization, interests, phone, email, image, telegramName, telegramId])
 
   return (
     <div className={css.createVolunteerWrapper}>
@@ -199,6 +202,14 @@ export const CreateVolunteerPage = () => {
           required
           isValidationError={isSubmitting && !!validation.telegramName}
           errorMessage={validation.telegramName}
+        />
+        <Input
+          value={telegramId}
+          setChange={setTelegramId}
+          labelText={translation.telegramId}
+          required
+          isValidationError={isSubmitting && !!validation.telegramId}
+          errorMessage={validation.telegramId}
         />
         <div className={css.buttonsPanel}>
           <Button
