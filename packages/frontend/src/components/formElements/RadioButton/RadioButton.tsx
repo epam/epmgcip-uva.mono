@@ -24,23 +24,28 @@ export function RadioButton<T extends string | number>({
   label,
   required = false,
 }: RadioButtonProps<T>) {
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChange(e.target.value as T);
   };
+  const sortedOptions = [...options].sort((a, b) => {
+    if (a.value === 'draft') return -1;
+    if (b.value === 'draft') return 1;
+    return 0;
+  });
 
   return (
     <div className={css['radio-button-container']}>
       <div className={css['radio-button-label']}>
         {label} {required && <span style={{ color: 'red' }}>*</span>}
       </div>
-      {options.map((option) => {
+      {sortedOptions.map((option) => {
         const description = descriptions.find(desc => desc.value === option.value);
-        const isSelected = value === option.value;
 
         return (
           <div
             key={option.value.toString()}
-            className={`${css['radio-button-item']} ${isSelected ? css['selected'] : ''}`}
+            className={css['radio-button-item']}
           >
             <label style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
               <input
