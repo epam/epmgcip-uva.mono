@@ -1,4 +1,4 @@
-import { FirebaseCollection } from 'uva-shared/src/constants/firebase';
+import { FirebaseCollection } from 'uva-shared';
 import { firebaseDb } from 'src/main';
 import { IVolunteer } from 'uva-shared/src/types/volunteer';
 import {

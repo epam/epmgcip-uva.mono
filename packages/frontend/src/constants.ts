@@ -1,13 +1,11 @@
 import { EventStatus, Gender, ImageType, Language, Month, UserRole, UserStatus } from 'uva-shared';
-import { Education } from 'uva-shared/src/types/common';
+import { Education } from 'uva-shared';
 import translation from 'src/translations/Russian.json';
 
 export { FirebaseCollection } from 'uva-shared';
 
 export const STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
 export const STORAGE_IMAGES_PATH = 'public/images';
-export const VOLUNTEERS_IMAGES_PATH = 'public/volunteers';
-
 export const ROOT_ROUTE = '/';
 export const EVENTS_ROUTE = '/events';
 export const EVENT_DETAILS_ROUTE = '/event/:eventId';
@@ -51,7 +49,6 @@ export const NOTIFICATIONS = (value?: string) => ({
   EVENT_DELETED: `Событие ${value} успешно удалено`,
   EVENT_DELETE_ERROR: `Ошибка при удалении события ${value}`,
   EVENT_CREATION_ERROR: `Ошибка при создании события ${value}`,
-  VOLUNTEER_EXISTS: `Извините, волонтёр c именем ${value} в Telegram уже существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
   VOLUNTEER_CREATED: `Волонтёр ${value} успешно создан`,
   VOLUNTEER_CREATION_ERROR: `Ошибка при создании волонтёра ${value}`,
   VOLUNTEER_DOES_NOT_EXIST: `Извините, волонтёр c именем ${value} в Telegram не существует. Пожалуйста, проверьте данные или обратитесь к администратору`,
