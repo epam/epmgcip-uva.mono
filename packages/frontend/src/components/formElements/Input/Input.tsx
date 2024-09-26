@@ -1,5 +1,8 @@
+import 'react-time-picker/dist/TimePicker.css';
 import { getClassesList } from 'src/utils/getClassesList';
+import TimePicker from 'react-time-picker';
 import css from './Input.module.sass';
+import './Input.sass';
 import translation from 'src/translations/Russian.json';
 import { IAction } from 'src/redux/types';
 
@@ -8,10 +11,7 @@ type InputChange = (value: string) => {
   payload: string;
 };
 
-export type OnInputChange =
-  | React.Dispatch<React.SetStateAction<string>>
-  | InputChange
-  | ((inputString: string) => IAction);
+export type OnInputChange = React.Dispatch<React.SetStateAction<string>> | InputChange | ((inputString: string) => IAction);
 
 interface InputProps {
   value: string;
@@ -24,6 +24,7 @@ interface InputProps {
   inputClassName?: string;
   isValidationError?: boolean;
   errorMessage?: string;
+  pattern?: string;
 }
 
 const positiveIntegerRegex = /^\d+$/;
@@ -40,14 +41,11 @@ export const Input = ({
   inputClassName,
   isValidationError,
   errorMessage,
+  pattern,
 }: InputProps) => {
   const labelClasses = getClassesList(css.label, labelClassName);
 
-  const inputClasses = getClassesList(
-    css.input,
-    inputClassName,
-    isValidationError ? css.inputError : undefined
-  );
+  const inputClasses = getClassesList(css.input, inputClassName, isValidationError ? css.inputError : undefined);
 
   const handleSetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'number' && !validateDigitalValue(e.target.value) && e.target.value !== '') {
@@ -65,16 +63,31 @@ export const Input = ({
           {required && <span className={css.inputRequired}> *</span>}
         </div>
       )}
-      <input
-        type={type}
-        placeholder={placeholder || translation.input}
-        className={inputClasses}
-        value={value}
-        onChange={e => handleSetChange(e)}
-      />
-      {isValidationError && (
-        <p className={css.validationError}>{isValidationError && errorMessage}</p>
+      {type === 'time' ? (
+        <TimePicker
+          onChange={value => setChange(value as string)}
+          value={value}
+          className={inputClasses + ' ' + css.noBorder}
+          required={false}
+          hourPlaceholder="чч"
+          minutePlaceholder="мм"
+          locale="ru-RU"
+          disableClock={true}
+          clearIcon={null}
+          format="HH:mm"
+        />
+      ) : (
+        <input
+          type={type}
+          placeholder={placeholder || translation.input}
+          className={inputClasses}
+          value={value}
+          onChange={e => handleSetChange(e)}
+          pattern={pattern}
+        />
       )}
+
+      {isValidationError && <p className={css.validationError}>{isValidationError && errorMessage}</p>}
     </label>
   );
 };
