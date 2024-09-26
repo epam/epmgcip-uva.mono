@@ -31,13 +31,11 @@ export const EventTimeDuration = ({
       </div>
       <div className={css.eventTimeDurationContent}>
         <div className={css.eventTimeDurationContainer}>
-          <div className={css.eventTimeDurationColumnTitle}>
-            {translation.beginning}
-          </div>
+          <div className={css.eventTimeDurationColumnTitle}>{translation.beginning}</div>
           <Input
             value={eventStartTime}
             setChange={setEventStartTime}
-            type='time'
+            type="time"
             required
             inputClassName={css.eventTimeDurationInput}
             isValidationError={isValidationErrorForStart}
@@ -45,13 +43,11 @@ export const EventTimeDuration = ({
           />
         </div>
         <div className={css.eventTimeDurationContainer}>
-          <div className={css.eventTimeDurationColumnTitle}>
-            {translation.ending}
-          </div>
+          <div className={css.eventTimeDurationColumnTitle}>{translation.ending}</div>
           <Input
             value={eventEndTime}
             setChange={setEventEndTime}
-            type='time'
+            type="time"
             required
             inputClassName={css.eventTimeDurationInput}
             isValidationError={isValidationErrorForEnd}
