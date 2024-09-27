@@ -11,6 +11,7 @@ import {
   SET_MANAGE_USERS_SCROLL_SIZE,
   SET_SHOW_MENU,
   SET_USER_SEARCH_INPUT,
+  SET_VOLUNTEERS_LOADING,
   UPDATE_USERS_LIST,
 } from './types';
 
@@ -50,12 +51,20 @@ export const setManageUsersScrollDirection = (scrollDirection: ScrollDirection):
   payload: scrollDirection,
 });
 
+// VOLUNTEERS
+
+export const setVolunteersLoading = (loading: boolean): IAction => ({
+  type: SET_VOLUNTEERS_LOADING,
+  payload: loading,
+});
+
 // EVENTS
 
 export const setEventsLoading = (loading: boolean): IAction => ({
   type: SET_EVENTS_LOADING,
   payload: loading,
 });
+
 
 export const saveEvents = (
   events: IEvent[],

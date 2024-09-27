@@ -2,24 +2,31 @@ import { useNavigate } from 'react-router-dom';
 import { ROOT_ROUTE } from 'src/constants';
 import { IState } from 'src/types';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import css from './ManageVolunteersPage.module.sass';
 import translation from 'src/translations/Russian.json';
-import { getVolunteers } from 'src/utils/getVolunteers';
-import { IVolunteer } from 'uva-shared/src/types/volunteer';
+import { getVolunteers, GetVolunteersResult } from 'src/utils/getVolunteers';
 import { Button, Dot, Loader } from 'src/components';
 import MagnifyerSvg from 'src/assets/magnifyer.svg';
 import PhoneSvg from 'src/assets/phone.svg';
+import { setVolunteersLoading } from 'src/redux/actions';
+import { Dispatch } from '@reduxjs/toolkit';
 
 export const ManageVolunteersPage = () => {
   const navigate = useNavigate();
+  const dispatch: Dispatch = useDispatch();
   const editor = useSelector((state: IState) => state.editor);
   const [isEditorHasPermissions, setIsEditorHasPermissions] = useState(false);
-  const [volunteers, setVolunteers] = useState<IVolunteer[]>([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [showNext, setShowNext] = useState(false);
+  const limit = useSelector((state: IState) => state.manageVolunteersPage.limit);
+  const [volunteers, setVolunteers] = useState<GetVolunteersResult>({
+    volunteers: [],
+    lastVolunteer: null,
+  });
+  const [loading, setLoading] = useState(true);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  const loadVolunteers = async () => getVolunteers();
+  const loadVolunteers = async () => getVolunteers('', null, limit);
 
   const searchVolunteer = async (name: string) => {
     const foundVolunteer = await getVolunteers(name);
@@ -61,6 +68,19 @@ export const ManageVolunteersPage = () => {
   }, []);
 
   useEffect(() => {
+    if (showNext) {
+      const lastVolunteer = volunteers.lastVolunteer;
+      getVolunteers('', lastVolunteer, limit).then(vols => {
+        setVolunteers(prev => ({
+          volunteers: [...prev.volunteers, ...vols.volunteers],
+          lastVolunteer: vols.lastVolunteer,
+        }));
+        setShowNext(false);
+      });
+    }
+  }, [showNext, volunteers.lastVolunteer, limit]);
+
+  useEffect(() => {
     editor.role ? setIsEditorHasPermissions(() => true) : navigate(ROOT_ROUTE);
     const fetchVolunteers = async () => {
       try {
@@ -95,9 +115,11 @@ export const ManageVolunteersPage = () => {
               <Loader />
             </div>
           ) : (
-            volunteers.map(volunteer => (
+            volunteers.volunteers.map(volunteer => (
               <div key={volunteer.id} className={css.volunteerCard}>
-                <p className={css.volunteerFullName}>{volunteer.firstName} {volunteer.lastName}</p>
+                <p className={css.volunteerFullName}>
+                  {volunteer.firstName} {volunteer.lastName}
+                </p>
                 <div className={css.volunteerInfoWrapper}>
                   <span>{volunteer.gender === 'men' ? 'М' : 'Ж'}</span>
                   <span className={css.dotSpan}>
@@ -110,7 +132,7 @@ export const ManageVolunteersPage = () => {
                   </span>
                   <span>{capitalizeLanguages(volunteer.language)}</span>
                 </div>
-                <p>{volunteer.telegramId}</p>
+                <p>@{volunteer.telegramId}</p>
                 <div className={css.phoneIconContainer}>
                   <p>
                     <img className={css.phoneIcon} src={PhoneSvg} />
@@ -121,6 +143,17 @@ export const ManageVolunteersPage = () => {
             ))
           )}
         </div>
+        {!showNext && volunteers.volunteers.length >= limit && (
+          <Button
+            className={css.loadMoreButton}
+            onClick={() => {
+              setShowNext(true);
+              dispatch(setVolunteersLoading(true));
+            }}
+          >
+            {translation.loadMore}
+          </Button>
+        )}
         {showScrollButton && (
           <Button className={css.scrollToTopButton} onClick={scrollToTop}>
             Up

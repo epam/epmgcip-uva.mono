@@ -45,6 +45,10 @@ export const SET_EVENTS_LOADING = 'SET_EVENTS_LOADING';
 type SetEventsLoadingPayload = boolean;
 type SetEventsLoadingAction = InternalAction<typeof SET_EVENTS_LOADING, SetEventsLoadingPayload>;
 
+export const SET_VOLUNTEERS_LOADING = 'SET_VOLUNTEERS_LOADING';
+type SetVolunteersLoadingPayload = boolean;
+type SetVolunteersLoadingAction = InternalAction<typeof SET_VOLUNTEERS_LOADING, SetVolunteersLoadingPayload>;
+
 export const SAVE_EVENTS = 'SAVE_EVENTS';
 type SaveEventsPayload = {
     isError: boolean;
@@ -65,6 +69,7 @@ type InternalAction<K extends string, P = never> = Action<K> & {
 export type IAction = SetEditorAction |
     AddUsersToListAction |
     SetEventsLoadingAction |
+    SetVolunteersLoadingAction |
     SetEventStatusFilterAction |
     SetShowMenuAction |
     SetManageEventsScrollDirectionAction |

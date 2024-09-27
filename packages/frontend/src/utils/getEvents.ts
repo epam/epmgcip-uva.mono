@@ -3,7 +3,7 @@ import { FirebaseCollection } from 'src/constants';
 import { firebaseDb } from 'src/main';
 import { FilterEventStatuses, IEvent } from 'src/types';
 
-type QueryArgs = QueryFieldFilterConstraint | QueryOrderByConstraint | QueryStartAtConstraint | QueryLimitConstraint;
+export type QueryArgs = QueryFieldFilterConstraint | QueryOrderByConstraint | QueryStartAtConstraint | QueryLimitConstraint;
 
 interface GetEventsResult {
   readonly events: IEvent[];
