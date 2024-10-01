@@ -40,7 +40,7 @@ const initialState: IState = {
   manageVolunteersPage: {
     scrollDirection: ScrollDirection.Down,
     scrollSize: 0,
-    limit: 10,
+    limit: 20,
   },
   isMenu: false,
   loading: false,

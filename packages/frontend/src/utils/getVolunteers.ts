@@ -1,7 +1,7 @@
 import { FirebaseCollection } from 'uva-shared';
 import { firebaseDb } from 'src/main';
 import { IVolunteer } from 'uva-shared/src/types/volunteer';
-import { collection, getDocs, limit, orderBy, query, startAfter } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query, startAfter, where, DocumentSnapshot } from 'firebase/firestore';
 import { QueryArgs } from './getEvents';
 
 export interface GetVolunteersResult {
@@ -9,36 +9,40 @@ export interface GetVolunteersResult {
   readonly lastVolunteer: DocumentSnapshot | null;
 }
 
-import { DocumentSnapshot } from 'firebase/firestore';
-
 export const getVolunteers = async (
   name?: string,
   lastVolunteer?: DocumentSnapshot | null,
-  pageSize = 10,
+  pageSize = 20,
 ): Promise<GetVolunteersResult> => {
-  const queryArgs: QueryArgs[] = [orderBy('firstName', 'desc'), limit(pageSize)];
-
-  if (lastVolunteer) {
-    queryArgs.push(startAfter(lastVolunteer));
-  }
-
-  const queryForVolunteers = query(collection(firebaseDb, FirebaseCollection.Volunteers), ...queryArgs);
-
-  try {
-    const querySnapshot = await getDocs(queryForVolunteers);
-    const volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
+  console.log(name, lastVolunteer, pageSize);
+  let volunteers: IVolunteer[] = [];
+  let querySnapshot;
+  
+  const searchByField = async (field: 'firstName' | 'lastName') => {
+    const queryArgs: QueryArgs[] = [orderBy(field, 'asc'), limit(pageSize)];
 
     if (name) {
-      const filteredVolunteers = volunteers.filter(
-        volunteer =>
-          volunteer.firstName.toLowerCase().includes(name.toLowerCase()) ||
-          volunteer.lastName.toLowerCase().includes(name.toLowerCase()),
-      );
+      const start = name.toLowerCase();
+      const end = start + '\uf8ff';
+      queryArgs.unshift(where(field, '>=', start), where(field, '<', end));
+    }
 
-      return {
-        volunteers: filteredVolunteers,
-        lastVolunteer: filteredVolunteers.length ? querySnapshot.docs[querySnapshot.docs.length - 1] : null,
-      };
+    if (lastVolunteer) {
+      queryArgs.push(startAfter(lastVolunteer));
+    }
+
+    const queryForVolunteers = query(collection(firebaseDb, FirebaseCollection.Volunteers), ...queryArgs);
+    return await getDocs(queryForVolunteers);
+  };
+
+  try {
+    querySnapshot = await searchByField('firstName');
+    volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
+    
+    if (volunteers.length === 0 && name) {
+      console.log('No results by firstName, searching by lastName...');
+      querySnapshot = await searchByField('lastName');
+      volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
     }
 
     return {
