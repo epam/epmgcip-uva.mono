@@ -1,7 +1,18 @@
 import { FirebaseCollection } from 'uva-shared';
 import { firebaseDb } from 'src/main';
 import { IVolunteer } from 'uva-shared/src/types/volunteer';
-import { collection, getDocs, limit, orderBy, query, startAfter, where, DocumentSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+  DocumentSnapshot,
+  or,
+  and,
+} from 'firebase/firestore';
 import { QueryArgs } from './getEvents';
 
 export interface GetVolunteersResult {
@@ -16,33 +27,35 @@ export const getVolunteers = async (
 ): Promise<GetVolunteersResult> => {
   let volunteers: IVolunteer[] = [];
   let querySnapshot;
-  
-  const searchByField = async (field: 'firstName' | 'lastName') => {
-    const queryArgs: QueryArgs[] = [orderBy(field, 'asc'), limit(pageSize)];
 
+  const searchByField = async () => {
+    const queryArgs: QueryArgs[] = [limit(pageSize)];
+
+    let queryForVolunteers;
     if (name) {
       const start = name.toLowerCase();
       const end = start + '\uf8ff';
-      queryArgs.unshift(where(field, '>=', start), where(field, '<', end));
+      queryForVolunteers = query(
+        collection(firebaseDb, FirebaseCollection.Volunteers),
+        or(
+          and(where('firstName', '>=', start), where('firstName', '<', end)),
+          and(where('lastName', '>=', start), where('lastName', '<', end)),
+        ),
+        orderBy('firstName', 'desc'),
+      );
+    } else {
+      queryForVolunteers = query(collection(firebaseDb, FirebaseCollection.Volunteers), ...queryArgs);
     }
 
     if (lastVolunteer) {
       queryArgs.push(startAfter(lastVolunteer));
     }
-
-    const queryForVolunteers = query(collection(firebaseDb, FirebaseCollection.Volunteers), ...queryArgs);
     return await getDocs(queryForVolunteers);
   };
 
   try {
-    querySnapshot = await searchByField('firstName');
+    querySnapshot = await searchByField();
     volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
-    
-    if (volunteers.length === 0 && name) {
-      console.log('No results by firstName, searching by lastName...');
-      querySnapshot = await searchByField('lastName');
-      volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
-    }
 
     return {
       volunteers,

@@ -131,8 +131,11 @@ export const ManageVolunteersPage = () => {
                     <Dot color={'gray'} />
                   </span>
                   <span>{capitalizeLanguages(volunteer.language)}</span>
+                  <span className={css.dotSpan}>
+                    <Dot color={'gray'} />
+                  </span>
+                  <p>{volunteer.telegramName}</p>
                 </div>
-                <p>@{volunteer.telegramId}</p>
                 <div className={css.phoneIconContainer}>
                   <p>
                     <img className={css.phoneIcon} src={PhoneSvg} />
