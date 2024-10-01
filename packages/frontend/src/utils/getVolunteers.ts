@@ -14,7 +14,6 @@ export const getVolunteers = async (
   lastVolunteer?: DocumentSnapshot | null,
   pageSize = 20,
 ): Promise<GetVolunteersResult> => {
-  console.log(name, lastVolunteer, pageSize);
   let volunteers: IVolunteer[] = [];
   let querySnapshot;
   
