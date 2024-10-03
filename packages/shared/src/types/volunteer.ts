@@ -27,6 +27,6 @@ export interface IVolunteer {
     feedback?: Feedback[],
     status?: UserStatus,
     telegramName: string,
-    telegramId?: string,
+    telegramId: string,
     eventCount?: number,
 }
