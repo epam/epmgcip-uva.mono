@@ -1,0 +1,118 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.label
+    @extend .H6
+    display: flex
+    flex-direction: column
+    margin-bottom: 18px
+
+.selectRequired
+    color: colors.$red
+
+.inputRequired
+    color: colors.$red
+
+.inputContainer
+    display: flex
+    align-items: center
+    gap: 10px
+
+.select
+    @extend .T1
+    height: 48px
+    border: 1px solid colors.$gray-200
+    border-radius: 8px
+    background-color: colors.$white
+    padding: 12px
+    box-sizing: border-box
+    margin-top: 8px
+    appearance: none
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    cursor: pointer
+
+    &:active
+        opacity: 0.75
+
+.selectArrow
+    width: 14px
+    transition: transform ease-in-out 0.2s
+
+.selectMenuOpen
+    transform: rotate(180deg)
+
+.selectMenuWrapper
+    position: relative 
+
+.selectMenu
+  padding: 8px 0
+  width: 100%
+  box-sizing: border-box
+  background-color: colors.$white
+  cursor: pointer
+  position: absolute
+  z-index: 2
+  top: 3px
+  left: 0
+  border: 1px solid colors.$gray-200
+  border-radius: 8px
+  color: colors.$blue-dark
+  transition: all 0s ease-out
+  display: flex
+  flex-direction: column
+  gap: 0
+  overflow: scroll
+  max-height: 240px
+
+.option
+    padding: 8px 16px
+        
+    &:hover
+        background-color: colors.$blue-light
+        color: colors.$white
+
+.optionActive
+    background-color: colors.$white
+    color: inherit
+
+.selectedOption
+    background-color: colors.$blue-light
+    color: colors.$white
+
+.selectError
+    border-color: colors.$red
+
+.input
+    width: calc(100vw - 148px)
+    max-width: calc(768px - 148px)
+    @extend .T1
+    height: 48px
+    border: 1px solid colors.$gray-200
+    border-radius: 8px
+    background-color: colors.$white
+    padding: 12px
+    box-sizing: border-box
+    margin-top: 8px
+
+    &::placeholder
+        color: colors.$gray-200
+
+    &[type='time']
+        color: black
+        text-align: left
+
+.inputError
+    border-color: colors.$red
+
+.placeholder
+    @extend .T1
+    color: colors.$gray-200
+    
+.validationError
+    @extend .T3
+    align-self: flex-start
+    color: colors.$red
+    margin-top: 2px
+    margin-bottom: 0

@@ -9,17 +9,11 @@ export interface GetVolunteersResult {
   readonly lastVolunteer: DocumentSnapshot | null;
 }
 
-const formatDateToDDMMYYYY = (dateString: string): string => {
-  if (!dateString) return "";
-  const [year, month, day] = dateString.split('-');
-  return `${day}-${month}-${year}`;
-};
-
 export const getVolunteers = async (
   name?: string,
   languages: string[] = [],
-  volunteerAgeFrom = '',
-  volunteerAgeTo = '',
+  volunteerMinAge = 16,
+  volunteerMaxAge = 61,
   gender = '',
   // After adding ability of blocking volunteer, open this block
   // showBlocked = false,
@@ -27,8 +21,6 @@ export const getVolunteers = async (
   pageSize = 20,
 ): Promise<GetVolunteersResult> => {
   const queryArgs: QueryArgs[] = [];
-  const formattedAgeFrom = formatDateToDDMMYYYY(volunteerAgeFrom);
-  const formattedAgeTo = formatDateToDDMMYYYY(volunteerAgeTo);
 
   if (gender) {
     queryArgs.push(where('gender', '==', gender));
@@ -39,12 +31,12 @@ export const getVolunteers = async (
   //   queryArgs.push(where('isBlocked', '==', true));
   // }
 
-  if (volunteerAgeFrom && volunteerAgeTo) {
-    queryArgs.push(where('birthDate', '<=', formattedAgeTo), where('birthDate', '>=', formattedAgeFrom));
-  } else if (volunteerAgeFrom) {
-    queryArgs.push(where('birthDate', '>=', formattedAgeFrom));
-  } else if (volunteerAgeTo) {
-    queryArgs.push(where('birthDate', '<=', formattedAgeTo));
+  if (volunteerMinAge) {
+    queryArgs.push(where('age', '>=', volunteerMinAge));
+  }
+
+  if (volunteerMaxAge) {
+    queryArgs.push(where('age', '<=', volunteerMaxAge));
   }
 
   if (languages.length > 0) {
@@ -81,10 +73,13 @@ export const getVolunteers = async (
     const firstNameResult = await getDocs(queryForVolunteers);
     const lastNameResult = await getDocs(lastNameQuery);
 
-    const volunteers = [
-      ...firstNameResult.docs.map(doc => doc.data() as IVolunteer),
-      ...lastNameResult.docs.map(doc => doc.data() as IVolunteer),
-    ];
+    // Use a Map to filter out duplicates by document ID
+    const uniqueVolunteers = new Map<string, IVolunteer>();
+
+    firstNameResult.docs.forEach(doc => uniqueVolunteers.set(doc.id, doc.data() as IVolunteer));
+    lastNameResult.docs.forEach(doc => uniqueVolunteers.set(doc.id, doc.data() as IVolunteer));
+
+    const volunteers = Array.from(uniqueVolunteers.values());
 
     return {
       volunteers,
