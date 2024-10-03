@@ -72,6 +72,11 @@ export interface IState {
 
     data: IData<IEvent>;
   };
+  manageVolunteersPage:{
+    scrollDirection: ScrollDirection;
+    limit: number;
+    scrollSize: number;
+  }
   loading: boolean;
   error: null | string;
 }

@@ -37,6 +37,11 @@ const initialState: IState = {
       data: []
     }
   },
+  manageVolunteersPage: {
+    scrollDirection: ScrollDirection.Down,
+    scrollSize: 0,
+    limit: 20,
+  },
   isMenu: false,
   loading: false,
   error: null,
