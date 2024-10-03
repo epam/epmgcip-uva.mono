@@ -20,6 +20,7 @@ export interface IVolunteer {
     phone: string;
     email?: string;
     image?: string;
+    imageURL?: string;
     locations?: string,
     experience?: string,
     info?: string,
