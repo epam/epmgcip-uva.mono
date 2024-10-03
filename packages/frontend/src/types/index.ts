@@ -24,6 +24,7 @@ export type {
   EventLanguageSpecificFields,
   IEvent,
   IUser,
+  IVolunteer,
 } from 'uva-shared';
 
 export type FilterEventStatuses = EventStatus | 'all';

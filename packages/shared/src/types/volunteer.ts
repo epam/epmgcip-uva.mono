@@ -20,12 +20,13 @@ export interface IVolunteer {
     phone: string;
     email?: string;
     image?: string;
+    imageURL?: string;
     locations?: string,
     experience?: string,
     info?: string,
     feedback?: Feedback[],
     status?: UserStatus,
     telegramName: string,
-    telegramId?: number,
+    telegramId: string,
     eventCount?: number,
 }

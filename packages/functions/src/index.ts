@@ -10,6 +10,9 @@ import { sendToChannel } from './resources/bot/actions/sendToChannel.js';
 import { updatePublishedEvent } from './resources/bot/actions/updatePublishedEvent.js';
 import userRouter from './resources/user/user.router.js';
 import { EventStatus } from 'uva-shared';
+import { webhook } from './resources/bot/actions/webhookHandler.js';
+
+export const webhookHandler = webhook;
 
 admin.initializeApp();
 
