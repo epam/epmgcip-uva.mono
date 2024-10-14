@@ -5,9 +5,15 @@ export const useRegistrationStatus = (event: IEvent) => {
     const [isRegistrationOpen, setIsRegistrationOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        // todo: find out how to understand if registration is open
         const calculateIsRegistrationOpen = () => {
-            return new Date(event.registrationDate) < new Date(new Date().setHours(23, 59, 59, 999));
+            const registrationDateParts = event.registrationDate.split('-');
+            const registrationDate = new Date(
+                Number(registrationDateParts[2]),
+                Number(registrationDateParts[1]) - 1,
+                Number(registrationDateParts[0])
+            );
+            console.log(registrationDate < new Date(new Date().setHours(23, 59, 59, 999)))
+            return registrationDate < new Date(new Date().setHours(23, 59, 59, 999));
         };
 
         setIsRegistrationOpen(calculateIsRegistrationOpen());
