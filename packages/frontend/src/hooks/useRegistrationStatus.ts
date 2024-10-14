@@ -12,7 +12,6 @@ export const useRegistrationStatus = (event: IEvent) => {
                 Number(registrationDateParts[1]) - 1,
                 Number(registrationDateParts[0])
             );
-            console.log(registrationDate < new Date(new Date().setHours(23, 59, 59, 999)))
             return registrationDate < new Date(new Date().setHours(23, 59, 59, 999));
         };
 

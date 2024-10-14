@@ -32,11 +32,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
             )}
           >
             <Dot color={event.status === EventStatus.Active ? 'green' : 'gray'} />
-            <div>{event.status === EventStatus.Completed || event.status === EventStatus.Active ?
-            translation[(event.status + 'Event') as 'completedEvent']
-            :
-            translation[(event.status + 'Event') as 'draftEvent']
-            }</div>
+            <div>{translation[(event.status + 'Event') as 'draftEvent' | 'completedEvent' | 'activeEvent' | 'canceledEvent']}</div>
           </div>
           <div className={css.eventCardVolunteersQuantity}>
             <img className={css.groupIcon} src={GroupSvg} />
@@ -52,10 +48,10 @@ export const EventCard = ({ event }: { event: IEvent }) => {
         <div
           className={getClassesList(
             css.evenCardRegistration,
-            !isRegistrationOpen ? css._open : css._closed
+            isRegistrationOpen ? css._closed : css._open
           )}
         >
-          {!isRegistrationOpen ? translation.registrationOpened : translation.registrationClosed}
+          {isRegistrationOpen ? translation.registrationClosed : translation.registrationOpened}
         </div>
         <section className={css.eventCardAdditionalInfo}>
           <div className={css.eventCardAdditionalInfoLine}>
