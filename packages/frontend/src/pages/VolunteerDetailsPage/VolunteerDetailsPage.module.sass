@@ -1,0 +1,98 @@
+@use 'src/style/colors' as c
+@import 'src/style/typography'
+
+.volunteerContainer
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.volunteerName
+  font-weight: bold
+
+.volunteerGeneralInfo
+  display: flex
+  flex-direction: row
+
+.infoLine
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  align-items: center
+
+.divider
+  margin: 10px
+
+.imageContainer
+  position: relative
+  display: flex
+  flex-direction: column
+  align-items: start
+  justify-content: center
+
+.image
+  width: 80px
+  height: 80px
+  border-radius: 50%
+  object-fit: cover
+  margin-right: 20px
+
+.email
+  color: #007bff
+  text-decoration: none
+  font-size: 1rem
+  margin-top: 10px
+
+  &:hover
+    text-decoration: underline
+
+.telegramHandle
+  color: #007bff
+  text-decoration: none
+  font-size: 1rem
+
+  &:hover
+    text-decoration: underline
+
+.tabContainer 
+  display: flex
+  margin-top: 20px
+
+  button 
+    background-color: transparent
+    border: none
+    padding: 10px 20px
+    font-size: 1rem
+    cursor: pointer
+    outline: none
+    color: #6c757d /* Inactive tab text color */
+    position: relative
+
+    &:first-child 
+      margin-right: 20px
+    
+    &:hover 
+      color: #495057
+
+    &.activeTab
+      font-weight: bold /* Bold for active tab */
+      color: #000000 /* Black text for active tab */
+    
+    &.activeTab::after
+      content: ''
+      position: absolute
+      bottom: 0
+      left: 0
+      width: 100%
+      height: 2px
+      background-color: #000000 /* Black underline for active tab */
+
+.generalInfo
+  text-align: left /* Align the text to the left */
+  padding-left: 20px /* Indent content slightly */
+
+  div
+    font-size: 1rem
+    color: #495057
+    margin: 10px 0
+    line-height: 1.5
+

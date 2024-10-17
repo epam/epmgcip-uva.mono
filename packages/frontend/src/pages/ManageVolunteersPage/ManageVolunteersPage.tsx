@@ -96,6 +96,10 @@ export const ManageVolunteersPage = () => {
     fetchVolunteers();
   }, [editor, navigate]);
 
+  const navigateToVolunteer = (id: string) => {
+    navigate(`/volunteers/${id}`)
+  }
+
   return (
     isEditorHasPermissions && (
       <>
@@ -116,7 +120,7 @@ export const ManageVolunteersPage = () => {
             </div>
           ) : (
             volunteers.volunteers.map(volunteer => (
-              <div key={volunteer.id} className={css.volunteerCard}>
+              <div onClick={() => {navigateToVolunteer(volunteer.telegramId)}} key={volunteer.id} className={css.volunteerCard}>
                 <p className={css.volunteerFullName}>
                   {volunteer.firstName} {volunteer.lastName}
                 </p>
