@@ -17,6 +17,7 @@ export const CREATE_USER_ROUTE = '/users/create';
 export const EDIT_USER_ROUTE = '/users/edit/:telegramName';
 
 export const CREATE_VOLUNTEER = 'volunteers/create'
+export const VOLUNTEER_DETAILS_ROUTE = '/volunteers/:volunteerId';
 
 export const USER_ROLES = [
   { name: translation.admin, value: UserRole.Admin },

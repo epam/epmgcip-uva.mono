@@ -11,7 +11,8 @@ import {
   ROOT_ROUTE,
   VOLUNTEERS_ROUTE,
   EDIT_EVENT_ROUTE,
-  CREATE_VOLUNTEER
+  CREATE_VOLUNTEER,
+  VOLUNTEER_DETAILS_ROUTE
 } from '../constants';
 import { ManageEventsPage, TitlePage } from '../pages';
 import { EventFormPage } from 'src/pages/EventFormPage/EventFormPage';
@@ -22,6 +23,7 @@ import { EditUserPage } from 'src/pages/EditUserPage/EditUserPage';
 import { EventDetailsPage } from 'src/pages/EventDetailsPage/EventDetailsPage';
 
 import { CreateVolunteerPage } from 'src/pages/CreateVolunteerPage/CreateVolunteerPage';
+import { VolunteerDetailsPage } from 'src/pages/VolunteerDetailsPage/VolunteerDetailsPage';
 
 const routes = (
   <Route element={<App />}>
@@ -30,6 +32,7 @@ const routes = (
     <Route path={EVENT_DETAILS_ROUTE} element={<EventDetailsPage />} />
     <Route path={EDIT_EVENT_ROUTE} element={<EventFormPage />} />
     <Route path={CREATE_VOLUNTEER} element={<CreateVolunteerPage />} />
+    <Route path={VOLUNTEER_DETAILS_ROUTE} element={<VolunteerDetailsPage />} />
     {/* todo: lazy load pages below (https://reactrouter.com/en/main/route/lazy) */}
     <Route path={CREATE_EVENT_ROUTE} element={<EventFormPage />} />
     <Route path={VOLUNTEERS_ROUTE} element={<ManageVolunteersPage />} />
