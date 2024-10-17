@@ -18,7 +18,8 @@ export const EventCard = ({ event }: { event: IEvent }) => {
   const navigateToEvent = () => {
     navigate(`/event/${event.id}`)
   }
-  
+
+
   return (
     <article className={css.eventCard}>
       <div className={css.eventCardImageWrapper}>
@@ -31,7 +32,7 @@ export const EventCard = ({ event }: { event: IEvent }) => {
             )}
           >
             <Dot color={event.status === EventStatus.Active ? 'green' : 'gray'} />
-            <div>{translation[(event.status + 'Event') as 'draftEvent']}</div>
+            <div>{translation[(event.status + 'Event') as 'draftEvent' | 'completedEvent' | 'activeEvent' | 'canceledEvent']}</div>
           </div>
           <div className={css.eventCardVolunteersQuantity}>
             <img className={css.groupIcon} src={GroupSvg} />
@@ -47,10 +48,10 @@ export const EventCard = ({ event }: { event: IEvent }) => {
         <div
           className={getClassesList(
             css.evenCardRegistration,
-            isRegistrationOpen ? css._open : css._closed
+            isRegistrationOpen ? css._closed : css._open
           )}
         >
-          {isRegistrationOpen ? translation.registrationOpened : translation.registrationClosed}
+          {isRegistrationOpen ? translation.registrationClosed : translation.registrationOpened}
         </div>
         <section className={css.eventCardAdditionalInfo}>
           <div className={css.eventCardAdditionalInfoLine}>

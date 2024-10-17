@@ -35,12 +35,12 @@ export const scheduledEventStatusUpdate = functions.pubsub.schedule(hoursToTrigg
       const eventEndDate = new Date(eventData.endDate);
 
       if (eventEndDate <= now) {
-        batch.update(doc.ref, { status: 'completedEvent' });
+        batch.update(doc.ref, { status: 'completed' });
       }
     });
 
     await batch.commit();
-    logger.info('Active events statuses updated to "completedEvent".');
+    logger.info('Active events statuses updated to "completed".');
   } catch (error) {
     logger.error('Error updating event statuses:', error);
   }
