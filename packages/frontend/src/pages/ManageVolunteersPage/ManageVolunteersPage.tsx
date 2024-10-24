@@ -70,6 +70,8 @@ export const ManageVolunteersPage = () => {
 
   const resetAllFilters = () => {
     setLanguages([]);
+    setVolunteerAgeFrom('');
+    setVolunteerAgeTo('');
     setGender('');
   };
 
