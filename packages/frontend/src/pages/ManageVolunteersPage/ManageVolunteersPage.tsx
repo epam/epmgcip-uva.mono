@@ -37,7 +37,7 @@ export const ManageVolunteersPage = () => {
   const loadVolunteers = async () => getVolunteers('', [], '', '', '', null, limit);
 
   const searchVolunteerByName = async (name: string) => {
-    const foundVolunteer = await getVolunteers(name);
+    const foundVolunteer = await getVolunteers(name, languages, volunteerAgeFrom, volunteerAgeTo, gender, null, limit);
     setVolunteers(foundVolunteer);
   };
 
