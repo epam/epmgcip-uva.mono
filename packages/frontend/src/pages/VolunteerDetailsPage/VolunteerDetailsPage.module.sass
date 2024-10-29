@@ -1,6 +1,31 @@
 @use 'src/style/colors' as c
 @import 'src/style/typography'
 
+.toolbar
+    color: c.$purple-light
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-left: 7px
+    padding-right: 7px
+
+.returnButton
+  color: inherit
+  border: none
+  background: transparent
+  cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding-top: 15px
+  padding-bottom: 15px
+
+.statusContainer
+  display: flex
+  flex-direction: row
+  align-items: center
+
 .volunteerContainer
   display: flex
   flex-direction: column
@@ -96,3 +121,43 @@
     margin: 10px 0
     line-height: 1.5
 
+.dot
+  display: block
+  width: 4px
+  height: 4px
+  border-radius: 50%
+
+  &.green
+    background-color: c.$green
+  &.gray
+    background-color: c.$gray-200
+  &.red
+    background-color: c.$red
+
+.activeStatus
+  margin: 0 5px
+  color: c.$green
+
+.inactiveStatus
+  margin: 0 5px
+  color: c.$red
+
+.buttonContainer 
+  display: flex
+  flex-direction: row
+
+
+.actionButton
+  margin: 5px
+  padding: 10px 15px 10px 15px
+  background: transparent
+  border-radius: 0.375rem
+  cursor: pointer
+  border: 1px solid c.$blue-dark
+  color: c.$blue-dark
+  font-weight: bold
+  width: 100%
+
+.removeButton
+  color: c.$red
+  border-color: c.$red
