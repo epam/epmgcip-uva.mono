@@ -1,0 +1,24 @@
+@use 'src/style/colors'
+@import 'src/style/typography'
+
+.feedbackForm
+    display: flex
+    flex-direction: row
+    align-items: center
+    gap: 8px
+
+    .createEventButton
+        @extend .H6
+        height: 48px
+        width: 48px
+        box-sizing: border-box
+        border-radius: 8px
+        display: flex
+        justify-content: center
+        align-items: center
+
+    .submitButton
+        color: colors.$purple
+        background-color: colors.$white
+        border: 1px solid colors.$gray-200
+        fill: colors.$gray-200

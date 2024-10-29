@@ -1,0 +1,114 @@
+@use 'src/style/colors'
+@use 'src/style/colors' as c
+@import 'src/style/typography'
+
+.feedbackCard
+    display: flex
+    flex-direction: column
+    gap: 8px
+    background-color: colors.$white
+    border-radius: 8px
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1)
+    padding: 12px
+    margin-top: 12px
+
+
+    .feedbackCardInfo
+        padding: 0px 8px 8px 8px
+        display: flex
+        flex-direction: column
+        gap: 6px
+
+        .feedbackCardHeader
+            display: flex
+            justify-content: space-between
+            align-items: center
+        
+
+            .feedbackCardTitle
+                @extend .H6
+                margin: 0
+                cursor: pointer
+
+            .headerRight 
+                display: flex
+                align-items: center
+                gap: 8px
+
+            .menuButtonWrapper
+                position: relative
+            
+                .menuButton
+                    color: inherit
+                    border: none
+                    background: transparent
+                    cursor: pointer
+                    display: flex
+                    align-items: center
+                    justify-content: center
+
+                .menu
+                    position: absolute
+                    box-shadow: 0 0 5px rgba(52, 52, 58, 0.118)
+                    border-radius: 0.375rem
+                    z-index: 1
+                    padding: 12px 16px
+                    background-color: white
+                    top: 35px
+                    right: 0
+                    flex-direction: column
+                    width: 150px
+
+            .eventCardAdditionalInfo
+                @extend .T3
+                color: colors.$purple
+                flex-direction: column
+                gap: 8px
+                display: flex
+
+                .eventCardIcon
+                    width: 18px
+
+                .eventCardAdditionalInfoLine
+                    display: flex
+                    gap: 8px
+                    align-items: center
+
+.feedbackTextarea
+    width: 100%
+    min-height: 100px
+    padding: 10px
+    border-radius: 8px
+    border: 1px solid #D1D1D1
+    font-size: 14px
+    resize: vertical
+    overflow-wrap: break-word
+    word-wrap: break-word
+    box-sizing: border-box
+
+.actionButton
+    margin: 5px 0
+    padding: 10px 15px 10px 15px
+    background: transparent
+    border-radius: 0.375rem
+    cursor: pointer
+    border: 1px solid c.$blue-dark
+    color: c.$blue-dark
+    font-weight: bold
+    width: 100%
+
+.editButtonContainer
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+                
+.removeButton
+    color: c.$red
+    border-color: c.$red
+
+.saveButton
+    background-color: c.$blue
+    color: colors.$white
+    border: none
+
