@@ -12,8 +12,8 @@ export interface GetVolunteersResult {
 export const getVolunteers = async (
   name?: string,
   languages: string[] = [],
-  volunteerMinAge = 16,
-  volunteerMaxAge = 61,
+  volunteerMinBirthYear = 1950,
+  volunteerMaxBirthYear = new Date().getFullYear(),
   gender = '',
   // After adding ability of blocking volunteer, open this block
   // showBlocked = false,
@@ -31,12 +31,12 @@ export const getVolunteers = async (
   //   queryArgs.push(where('isBlocked', '==', true));
   // }
 
-  if (volunteerMinAge) {
-    queryArgs.push(where('age', '>=', volunteerMinAge));
+  if (volunteerMinBirthYear) {
+    queryArgs.push(where('birthYear', '>=', volunteerMinBirthYear));
   }
 
-  if (volunteerMaxAge) {
-    queryArgs.push(where('age', '<=', volunteerMaxAge));
+  if (volunteerMaxBirthYear) {
+    queryArgs.push(where('birthYear', '<=', volunteerMaxBirthYear));
   }
 
   if (languages.length > 0) {

@@ -10,7 +10,6 @@ import { IVolunteer } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 import { createVolunteer } from 'src/utils/createVolunteer';
 import { PhoneInput } from 'src/components/formElements/PhoneInput/PhoneInput';
-import { calculateAge } from 'src/utils/calculateAge';
 
 export const CreateVolunteerPage = () => {
   const navigate = useNavigate();
@@ -49,7 +48,7 @@ export const CreateVolunteerPage = () => {
         lastName,
         gender,
         birthDate,
-        age: calculateAge(birthDate),
+        birthYear: Number(birthDate.split('-')[2]),
         language,
         education,
         specialization,

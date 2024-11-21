@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_MAX_AGE, DEFAULT_MIN_AGE, ROOT_ROUTE } from 'src/constants';
+import { ROOT_ROUTE } from 'src/constants';
 import { IState } from 'src/types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import css from './ManageVolunteersPage.module.sass';
 import translation from 'src/translations/Russian.json';
 import { getVolunteers, GetVolunteersResult } from 'src/utils/getVolunteers';
-import { Button, Dot, Loader, Slider } from 'src/components';
+import { Button, Dot, Loader } from 'src/components';
 import MagnifyerSvg from 'src/assets/magnifyer.svg';
 import PhoneSvg from 'src/assets/phone.svg';
 import { setVolunteersLoading } from 'src/redux/actions';
@@ -22,12 +22,13 @@ export const ManageVolunteersPage = () => {
   const [showNext, setShowNext] = useState(false);
   const [toggleFilterMenu, setToggleFilterMenu] = useState(false);
   const [languages, setLanguages] = useState<string[]>([]);
-  const [volunteerMinAge, setVolunteerMinAge] = useState(DEFAULT_MIN_AGE);
-  const [volunteerMaxAge, setVolunteerMaxAge] = useState(DEFAULT_MAX_AGE);
+  const [volunteerMinBirthYear, setVolunteerMinBirthYear] = useState(1950);
+  const [volunteerMaxBirthYear, setVolunteerMaxBirthYear] = useState(new Date().getFullYear());
   const [gender, setGender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showBlockedVolunteers, setShowBlockedVolunteers] = useState(false);
   const limit = useSelector((state: IState) => state.manageVolunteersPage.limit);
+  const yearsRange = Array.from({ length: 105 }, (_, i) => new Date().getFullYear() - i);
   const [volunteers, setVolunteers] = useState<GetVolunteersResult>({
     volunteers: [],
     lastVolunteer: null,
@@ -35,16 +36,32 @@ export const ManageVolunteersPage = () => {
   const [loading, setLoading] = useState(true);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  const loadVolunteers = async () => getVolunteers('', [], volunteerMinAge, volunteerMaxAge, '', null, limit);
+  const loadVolunteers = async () => getVolunteers('', [], volunteerMinBirthYear, volunteerMaxBirthYear, '', null, limit);
 
   const searchVolunteerByName = async (name: string) => {
-    const foundVolunteer = await getVolunteers(name, languages, volunteerMinAge, volunteerMaxAge, gender, null, limit);
+    const foundVolunteer = await getVolunteers(
+      name,
+      languages,
+      volunteerMinBirthYear,
+      volunteerMaxBirthYear,
+      gender,
+      null,
+      limit,
+    );
     setVolunteers(foundVolunteer);
   };
 
   const applyFilters = async () => {
     setIsLoading(true);
-    const filteredVolunteers = await getVolunteers('', languages, volunteerMinAge, volunteerMaxAge, gender, null, limit);
+    const filteredVolunteers = await getVolunteers(
+      '',
+      languages,
+      volunteerMinBirthYear,
+      volunteerMaxBirthYear,
+      gender,
+      null,
+      limit,
+    );
     setVolunteers(filteredVolunteers);
     setToggleFilterMenu(false);
   };
@@ -58,8 +75,8 @@ export const ManageVolunteersPage = () => {
 
   const resetAllFilters = () => {
     setLanguages([]);
-    setVolunteerMinAge(DEFAULT_MIN_AGE);
-    setVolunteerMaxAge(DEFAULT_MAX_AGE);
+    setVolunteerMinBirthYear(1950);
+    setVolunteerMaxBirthYear(new Date().getFullYear());
     setGender('');
   };
 
@@ -89,7 +106,7 @@ export const ManageVolunteersPage = () => {
   useEffect(() => {
     if (showNext) {
       const lastVolunteer = volunteers.lastVolunteer;
-      getVolunteers('', [], volunteerMinAge, volunteerMaxAge, '', lastVolunteer, limit).then(vols => {
+      getVolunteers('', [], volunteerMinBirthYear, volunteerMaxBirthYear, '', lastVolunteer, limit).then(vols => {
         setVolunteers(prev => ({
           volunteers: [...prev.volunteers, ...vols.volunteers],
           lastVolunteer: vols.lastVolunteer,
@@ -173,15 +190,31 @@ export const ManageVolunteersPage = () => {
                 <label htmlFor="qaraqalpaq">Qaraqalpaq</label>
               </div>
             </div>
-            <Slider
-              min={16}
-              max={61}
-              minValue={volunteerMinAge}
-              setMinValue={setVolunteerMinAge}
-              maxValue={volunteerMaxAge}
-              setMaxValue={setVolunteerMaxAge}
-              labelText={translation.age}
-            />
+              <p className={css.filterSectionTitle}>{translation.birthYear}</p>
+            <div className={css.yearFilterSection}>
+              <label>{translation.from}</label>
+              <select
+                value={volunteerMinBirthYear}
+                onChange={(e) => setVolunteerMinBirthYear(Number(e.target.value))}
+              >
+                {yearsRange.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <label>{translation.to}</label>
+              <select
+                value={volunteerMaxBirthYear}
+                onChange={(e) => setVolunteerMaxBirthYear(Number(e.target.value))}
+              >
+                {yearsRange.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <div className={css.genderSection}>
               <p className={css.genderSectionTitle}>{translation.gender}</p>
@@ -258,7 +291,7 @@ export const ManageVolunteersPage = () => {
             ) : volunteers.volunteers.length == 0 ? (
               <div className={css.noVolunteersFound}>No Volunteers Found</div>
             ) : (
-              volunteers.volunteers.map((volunteer) => (
+              volunteers.volunteers.map(volunteer => (
                 <div key={volunteer.id} className={css.volunteerCard}>
                   <p className={css.volunteerFullName}>
                     {volunteer.firstName} {volunteer.lastName}
