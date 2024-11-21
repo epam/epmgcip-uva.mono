@@ -13,7 +13,7 @@ export interface IVolunteer {
     lastName: string;
     gender: string;
     birthDate: string;
-    age: number;
+    birthYear: number;
     language: Language[];
     education: string;
     specialization?: string;
