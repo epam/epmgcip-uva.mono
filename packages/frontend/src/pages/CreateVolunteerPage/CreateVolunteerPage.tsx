@@ -48,6 +48,7 @@ export const CreateVolunteerPage = () => {
         lastName,
         gender,
         birthDate,
+        birthYear: Number(birthDate.split('-')[2]),
         language,
         education,
         specialization,

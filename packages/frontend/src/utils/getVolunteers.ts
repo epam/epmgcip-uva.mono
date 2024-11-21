@@ -1,18 +1,7 @@
 import { FirebaseCollection } from 'uva-shared';
 import { firebaseDb } from 'src/main';
 import { IVolunteer } from 'uva-shared/src/types/volunteer';
-import {
-  collection,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  startAfter,
-  where,
-  DocumentSnapshot,
-  or,
-  and,
-} from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query, startAfter, where, DocumentSnapshot } from 'firebase/firestore';
 import { QueryArgs } from './getEvents';
 
 export interface GetVolunteersResult {
@@ -22,47 +11,99 @@ export interface GetVolunteersResult {
 
 export const getVolunteers = async (
   name?: string,
+  languages: string[] = [],
+  volunteerMinBirthYear = 1950,
+  volunteerMaxBirthYear = new Date().getFullYear(),
+  gender = '',
+  // After adding ability of blocking volunteer, open this block
+  // showBlocked = false,
   lastVolunteer?: DocumentSnapshot | null,
   pageSize = 20,
 ): Promise<GetVolunteersResult> => {
-  let volunteers: IVolunteer[] = [];
-  let querySnapshot;
+  const queryArgs: QueryArgs[] = [];
 
-  const searchByField = async () => {
-    const queryArgs: QueryArgs[] = [limit(pageSize)];
+  if (gender) {
+    queryArgs.push(where('gender', '==', gender));
+  }
 
-    let queryForVolunteers;
-    if (name) {
-      const start = name.toLowerCase();
-      const end = start + '\uf8ff';
-      queryForVolunteers = query(
-        collection(firebaseDb, FirebaseCollection.Volunteers),
-        or(
-          and(where('firstName', '>=', start), where('firstName', '<', end)),
-          and(where('lastName', '>=', start), where('lastName', '<', end)),
-        ),
-        orderBy('firstName', 'desc'),
-      );
-    } else {
-      queryForVolunteers = query(collection(firebaseDb, FirebaseCollection.Volunteers), ...queryArgs);
-    }
+  // After adding ability of blocking volunteer, open this block
+  // if (showBlocked) {
+  //   queryArgs.push(where('isBlocked', '==', true));
+  // }
 
-    if (lastVolunteer) {
-      queryArgs.push(startAfter(lastVolunteer));
-    }
-    return await getDocs(queryForVolunteers);
-  };
+  if (volunteerMinBirthYear) {
+    queryArgs.push(where('birthYear', '>=', volunteerMinBirthYear));
+  }
+
+  if (volunteerMaxBirthYear) {
+    queryArgs.push(where('birthYear', '<=', volunteerMaxBirthYear));
+  }
+
+  if (languages.length > 0) {
+    queryArgs.push(where('language', 'array-contains-any', languages));
+  }
+
+  if (lastVolunteer) {
+    queryArgs.push(startAfter(lastVolunteer));
+  }
+
+  let queryForVolunteers;
+  if (name) {
+    const start = name.toLowerCase();
+    const end = start + '\uf8ff';
+
+    queryForVolunteers = query(
+      collection(firebaseDb, FirebaseCollection.Volunteers),
+      where('firstName', '>=', start),
+      where('firstName', '<', end),
+      ...queryArgs,
+      orderBy('firstName', 'asc'),
+      limit(pageSize),
+    );
+
+    const lastNameQuery = query(
+      collection(firebaseDb, FirebaseCollection.Volunteers),
+      where('lastName', '>=', start),
+      where('lastName', '<', end),
+      ...queryArgs,
+      orderBy('lastName', 'asc'),
+      limit(pageSize),
+    );
+
+    const firstNameResult = await getDocs(queryForVolunteers);
+    const lastNameResult = await getDocs(lastNameQuery);
+
+    // Use a Map to filter out duplicates by document ID
+    const uniqueVolunteers = new Map<string, IVolunteer>();
+
+    firstNameResult.docs.forEach(doc => uniqueVolunteers.set(doc.id, doc.data() as IVolunteer));
+    lastNameResult.docs.forEach(doc => uniqueVolunteers.set(doc.id, doc.data() as IVolunteer));
+
+    const volunteers = Array.from(uniqueVolunteers.values());
+
+    return {
+      volunteers,
+      lastVolunteer: volunteers.length ? firstNameResult.docs[firstNameResult.docs.length - 1] : null,
+    };
+  } else {
+    queryForVolunteers = query(
+      collection(firebaseDb, FirebaseCollection.Volunteers),
+      ...queryArgs,
+      orderBy('firstName', 'asc'),
+      limit(pageSize),
+    );
+  }
 
   try {
-    querySnapshot = await searchByField();
-    volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
+    const querySnapshot = await getDocs(queryForVolunteers);
+    const volunteers = querySnapshot.docs.map(doc => doc.data() as IVolunteer);
 
     return {
       volunteers,
       lastVolunteer: volunteers.length ? querySnapshot.docs[querySnapshot.docs.length - 1] : null,
     };
   } catch (e) {
-    console.error('Could not retrieve volunteers data', e);
+    console.error('Error querying volunteers:', e);
     return { volunteers: [], lastVolunteer: null };
   }
 };

@@ -116,18 +116,215 @@
   align-items: center
 
 .loadMoreButton
-    @extend .H6
-    width: 147px
-    height: 48px
-    box-sizing: border-box
-    border-radius: 8px
-    justify-content: center
-    align-items: center
-    color: colors.$purple
-    background-color: colors.$white
-    border: 1px solid colors.$purple
+  @extend .H6
+  width: 147px
+  height: 48px
+  box-sizing: border-box
+  border-radius: 8px
+  justify-content: center
+  align-items: center
+  color: colors.$purple
+  background-color: colors.$white
+  border: 1px solid colors.$purple
 
-    &:hover
-        color: colors.$white
-        background-color: colors.$blue
-        border: none
+  &:hover
+    color: colors.$white
+    background-color: colors.$blue
+    border: none
+
+.eventsFilterIcon
+  width: 25px
+  height: 25px
+  cursor: pointer
+  margin-right: 70px
+  border: 2px solid colors.$purple-light
+  padding: 7px
+  border-radius: 10px
+
+.titleAndFilter
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.filterMenu
+  display: flex
+  flex-direction: column
+  width: 100%
+  margin: 0 0 24px 0
+  gap: 12px
+  z-index: 4
+
+.resetButton
+  color: colors.$blue-bright
+  background-color: white
+  border: none
+  text-decoration: underline
+  margin-right: 70px
+  font-size: 15px
+  font-weight: 200
+  cursor: pointer
+
+.filterSectionTitle
+  font-weight: 600
+
+.showBlockedTitle
+  @extend .filterSectionTitle
+
+.birthDateTitle
+  @extend .filterSectionTitle
+
+.genderSection
+  @extend .languagesSection
+
+.languagesSection
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+
+  .genderSectionTitle
+    @extend .filterSectionTitle
+
+  .filterSectionTitle
+    font-weight: bold
+    margin-bottom: 12px
+
+  .genderItem
+    @extend .languageItem
+
+  .languageItem
+    display: flex
+    align-items: center
+    margin-bottom: 8px
+    color: colors.$purple-light
+
+    input
+      margin-right: 8px
+
+.languageInput
+  width: 20px
+  height: 20px
+  border: 1px solid colors.$purple-light
+  border-radius: 5px
+
+.genderInput
+  width: 20px
+  height: 20px
+
+.sliderWrapper
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.sliderLabel
+  position: relative
+  display: inline-block
+  width: 40px
+  height: 20px
+  margin-right: 70px
+
+.sliderInput
+  opacity: 0
+  width: 0
+  height: 0
+
+.sliderButton
+  position: absolute
+  cursor: pointer
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: lightgray
+  border-radius: 34px
+  transition: .4s
+
+  &:before
+    position: absolute
+    content: ""
+    height: 14px
+    width: 14px
+    left: 3px
+    bottom: 3px
+    background-color: white
+    border-radius: 50%
+    transition: .4s
+
+.sliderInput:checked + .sliderButton
+  background-color: blue
+
+.sliderInput:checked + .sliderButton:before
+  transform: translateX(20px)
+
+.buttonsPanel
+  width: calc(100vw - 48px)
+  max-width: calc(768px - 48px)
+  margin-top: 18px
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  gap: 18px
+  padding-bottom: 24px
+
+.noVolunteersFound
+  margin-top: 10%
+  text-align: center
+
+.applyFilterButton
+  @extend .H6
+  width: 147px
+  height: 48px
+  box-sizing: border-box
+  border-radius: 8px
+  justify-content: center
+  align-items: center
+
+.backButton
+  color: colors.$purple
+  background-color: colors.$white
+  border: 1px solid colors.$purple
+
+  &:hover
+    color: colors.$white
+    background-color: colors.$blue
+    border: none
+
+.submitButton
+  color: colors.$white
+  background-color: colors.$blue-bright
+
+  &:hover
+      background-color: colors.$blue-light
+
+.birthDateInput
+  padding: 10px
+  font-size: 15px
+  border-radius: 5px 5px
+  margin-left: 50px
+  border: 1px solid colors.$purple-light
+  text-transform: uppercase
+
+.yearFilterSection
+  display: flex
+  align-items: center
+  gap: 15px
+  width: 100%
+  margin: 16px 0
+
+  label
+    font-size: 16px
+    color: colors.$purple-light
+
+  select
+    height: 36px
+    padding: 4px 12px
+    font-size: 16px
+    color: colors.$gray-600
+    background-color: colors.$white
+    border: 1.5px solid colors.$gray-200
+    border-radius: 6px
+    outline: none 
+    box-shadow: none
+    cursor: pointer
+
+    &:focus
+      border-color: colors.$blue-bright 
